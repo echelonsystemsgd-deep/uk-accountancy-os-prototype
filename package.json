@@ -1,0 +1,44 @@
+{
+  "name": "uk-accountancy-os-prototype",
+  "version": "1.0.0",
+  "description": "Universal commercial demonstration platform for UK accountancy practices: luxury client acquisition front-end, internal practice management backend, and dedicated client document portal.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/echelonsystemsgd-deep/uk-accountancy-os-prototype.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/echelonsystemsgd-deep/uk-accountancy-os-prototype/issues"
+  },
+  "homepage": "https://github.com/echelonsystemsgd-deep/uk-accountancy-os-prototype#readme",
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "clsx": "^2.1.1",
+    "framer-motion": "^14.2.0",
+    "lucide-react": "^1.56.0",
+    "next": "^14.2.24",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^26.6.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.30",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.6.3"
+  }
+}

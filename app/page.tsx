@@ -1,0 +1,76 @@
+"use client";
+
+import React from "react";
+import { useDemoStore } from "@/lib/store";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import FloatingDemoController from "@/components/shared/FloatingDemoController";
+import StickyMobileBar from "@/components/shared/StickyMobileBar";
+import ToastContainer from "@/components/shared/ToastContainer";
+import IntakeDrawer from "@/components/shared/IntakeDrawer";
+
+// Module 1 Components
+import HeroSection from "@/components/frontend/HeroSection";
+import TaxCalculator from "@/components/frontend/TaxCalculator";
+import ServiceGrid from "@/components/frontend/ServiceGrid";
+import CaseStudiesSection from "@/components/frontend/CaseStudiesSection";
+import ComparisonSection from "@/components/frontend/ComparisonSection";
+import FaqSection from "@/components/frontend/FaqSection";
+
+// Module 2 Components
+import AdminHub from "@/components/admin/AdminHub";
+
+// Module 3 Components
+import ClientPortal from "@/components/portal/ClientPortal";
+
+export default function Home() {
+  const { currentView } = useDemoStore();
+
+  return (
+    <main className="min-h-screen bg-[#070A0F] text-[#F8FAFC] flex flex-col selection:bg-gold-500/30 selection:text-white">
+      {/* Global Notifications */}
+      <ToastContainer />
+
+      {/* Global Header */}
+      <Navbar />
+
+      {/* Dynamic Module Viewport */}
+      <div className="flex-1">
+        {currentView === "prospect" && (
+          <div className="animate-in fade-in duration-300">
+            <HeroSection />
+            <TaxCalculator />
+            <ServiceGrid />
+            <CaseStudiesSection />
+            <ComparisonSection />
+            <FaqSection />
+          </div>
+        )}
+
+        {currentView === "admin" && (
+          <div className="animate-in fade-in duration-300">
+            <AdminHub />
+          </div>
+        )}
+
+        {currentView === "portal" && (
+          <div className="animate-in fade-in duration-300">
+            <ClientPortal />
+          </div>
+        )}
+      </div>
+
+      {/* Global Footer */}
+      <Footer />
+
+      {/* Intake Drawer (Mobile Bottom Sheet / Desktop Modal) */}
+      <IntakeDrawer />
+
+      {/* Sticky Mobile Action Bar (Tested on 375px, 390px, 414px) */}
+      <StickyMobileBar />
+
+      {/* Floating Demo Controller Pill */}
+      <FloatingDemoController />
+    </main>
+  );
+}
