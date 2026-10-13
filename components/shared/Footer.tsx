@@ -2,126 +2,103 @@
 
 import React from "react";
 import { useDemoStore } from "@/lib/store";
-import { ShieldCheck, Award, Lock, ExternalLink, ChevronRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export default function Footer() {
   const { setCurrentView, setIsIntakeOpen } = useDemoStore();
 
   return (
-    <footer className="bg-[#05070B] border-t border-[#D4AF37]/20 pt-16 pb-24 sm:pb-16 text-slate-400 text-sm">
+    <footer className="bg-[#07080C] border-t border-white/[0.08] pt-12 pb-24 sm:pb-12 text-[#94A3B8] text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Tier: Brand & Value Prop */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
-          <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#0B0F17] border border-[#D4AF37]/40 flex items-center justify-center">
-                <span className="font-serif-luxury text-lg font-bold text-gold-300">A</span>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/[0.06]">
+          {/* Practice Details */}
+          <div className="md:col-span-2 space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded bg-[#0E111A] border border-white/[0.12] flex items-center justify-center text-[#EDEDED] font-semibold text-xs">
+                A
               </div>
-              <div>
-                <span className="font-serif-luxury text-xl font-semibold text-white tracking-wide">
-                  Apex & Co.
-                </span>
-                <p className="text-[10px] tracking-widest uppercase text-gold-400">
-                  Chartered Accountants & Strategic Tax Advisors
-                </p>
-              </div>
+              <span className="text-sm font-semibold text-[#EDEDED] tracking-tight">
+                Apex &amp; Co. Chartered Accountants
+              </span>
             </div>
-            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-md">
-              Advising British founders, limited companies, and high-net-worth directors on corporation tax architecture, HMRC compliance, R&D tax relief, and high-level fractional CFO strategy.
+            <p className="text-[#64748B] text-xs leading-relaxed max-w-sm">
+              Strategic accounting, Corporation Tax architecture, and compliance for UK limited companies and corporate directors.
             </p>
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B0F17] border border-[#D4AF37]/25 text-[11px] text-gold-300 font-mono">
-                <ShieldCheck className="w-3.5 h-3.5 text-gold-400" />
-                ICAEW Firm No. 902814
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B0F17] border border-[#D4AF37]/25 text-[11px] text-gold-300 font-mono">
-                <Award className="w-3.5 h-3.5 text-gold-400" />
-                ACCA Practice Assurance
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B0F17] border border-white/10 text-[11px] text-slate-300 font-mono">
-                <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                HMRC MTD Ready
-              </span>
+            <div className="text-[11px] text-[#64748B] pt-1 font-mono">
+              ICAEW Firm No. 902814 • ACCA Practice Assurance • HMRC MTD Ready
             </div>
           </div>
 
-          {/* Practice Modules */}
+          {/* Quick Navigation */}
           <div>
-            <h4 className="font-serif-luxury text-white text-base font-semibold mb-3 tracking-wide">
-              Platform Modules
+            <h4 className="text-xs font-semibold text-[#EDEDED] uppercase tracking-wider mb-3">
+              Platform Views
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
                 <button
                   onClick={() => setCurrentView("prospect")}
-                  className="hover:text-gold-300 transition-colors flex items-center gap-1"
+                  className="hover:text-[#EDEDED] transition-colors"
                 >
-                  <ChevronRight className="w-3 h-3 text-gold-500" />
-                  <span>Public Client Acquisition Front-End</span>
+                  Public Acquisition Site
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => setCurrentView("admin")}
-                  className="hover:text-gold-300 transition-colors flex items-center gap-1"
+                  className="hover:text-[#EDEDED] transition-colors"
                 >
-                  <ChevronRight className="w-3 h-3 text-gold-500" />
-                  <span>Practice Command Hub (Partner View)</span>
+                  Practice Hub Dashboard
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => setCurrentView("portal")}
-                  className="hover:text-gold-300 transition-colors flex items-center gap-1"
+                  className="hover:text-[#EDEDED] transition-colors"
                 >
-                  <ChevronRight className="w-3 h-3 text-gold-500" />
-                  <span>Client Software Portal (Dropzone)</span>
+                  Client Dropzone Portal
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => setIsIntakeOpen(true)}
-                  className="hover:text-gold-300 transition-colors flex items-center gap-1 text-gold-400 font-medium"
+                  className="text-[#D4AF37] hover:text-[#C5A028] transition-colors"
                 >
-                  <ChevronRight className="w-3 h-3 text-gold-500" />
-                  <span>Book Strategic Tax Review</span>
+                  Book Consultation
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* London Mayfair Headquarters */}
+          {/* London Office */}
           <div>
-            <h4 className="font-serif-luxury text-white text-base font-semibold mb-3 tracking-wide">
-              Private Practice Offices
+            <h4 className="text-xs font-semibold text-[#EDEDED] uppercase tracking-wider mb-3">
+              Office
             </h4>
-            <address className="not-italic text-xs text-slate-400 space-y-1 leading-relaxed">
-              <p className="text-white font-medium">Mayfair Head Office</p>
-              <p>28 Berkeley Square, Mayfair</p>
+            <div className="text-xs text-[#64748B] space-y-1 leading-relaxed">
+              <p className="text-[#94A3B8]">28 Berkeley Square, Mayfair</p>
               <p>London, W1J 6EN</p>
-              <p className="pt-2">City Chambers: 1 Cornhill, London EC3V 3ND</p>
-              <p className="pt-1 text-gold-300">inquiries@apexandco-advisory.co.uk</p>
-            </address>
+              <p className="pt-2 font-mono">contact@apexandco-advisory.co.uk</p>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Tier: Legal, AML notice & Mercian Wealth Attribution */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        {/* Bottom Bar: Copyright & Mercian Wealth Credit */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#64748B]">
           <div>
-            © {new Date().getFullYear()} Apex & Co. Advisory Ltd. All rights reserved. Registered in England & Wales No. 10984120. Supervised by the ICAEW under the Money Laundering Regulations 2017.
+            © {new Date().getFullYear()} Apex &amp; Co. Advisory Ltd. Reg No. 10984120. Supervised under MLR 2017.
           </div>
 
-          {/* Agency Credibility Attribution */}
-          <div className="flex items-center gap-1.5 py-1 px-3 rounded-full bg-[#0B0F17] border border-[#D4AF37]/30 text-slate-300">
-            <span>Designed & Engineered by</span>
+          <div className="flex items-center gap-1">
+            <span>Designed &amp; Engineered by</span>
             <a
               href="https://mercianwealth.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gold-300 hover:text-white font-medium underline underline-offset-4 decoration-gold-400/50 hover:decoration-gold-300 transition-all inline-flex items-center gap-1"
+              className="text-[#EDEDED] hover:text-[#D4AF37] font-medium underline underline-offset-4 transition-colors inline-flex items-center gap-0.5 ml-1"
             >
               <span>Mercian Wealth</span>
-              <ExternalLink className="w-3 h-3 text-gold-400" />
+              <ExternalLink className="w-2.5 h-2.5" />
             </a>
           </div>
         </div>

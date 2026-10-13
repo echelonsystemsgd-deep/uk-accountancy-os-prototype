@@ -3,15 +3,7 @@
 import React, { useMemo } from "react";
 import { useDemoStore } from "@/lib/store";
 import { formatGBP } from "@/lib/utils";
-import {
-  Calculator,
-  TrendingDown,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
-  CheckCircle,
-  HelpCircle,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function TaxCalculator() {
   const {
@@ -22,7 +14,7 @@ export default function TaxCalculator() {
     setIsIntakeOpen,
   } = useDemoStore();
 
-  // Financial calculations
+  // Financial calculations strictly according to current UK HMRC rules
   const {
     estimatedProfit,
     corporationTax,
@@ -33,27 +25,22 @@ export default function TaxCalculator() {
   } = useMemo(() => {
     const profit = Math.round((calculatorTurnover * calculatorMargin) / 100);
 
-    // UK Corporation Tax Calculation (2024-2026 HMRC Rates)
     let ct = 0;
     if (profit <= 50000) {
-      ct = profit * 0.19; // Small profits rate
+      ct = profit * 0.19;
     } else if (profit >= 250000) {
-      ct = profit * 0.25; // Main rate
+      ct = profit * 0.25;
     } else {
-      // Marginal relief: 25% minus (250,000 - profit) * (3/200)
       const baseTax = profit * 0.25;
       const marginalRelief = (250000 - profit) * (3 / 200);
       ct = Math.max(profit * 0.19, baseTax - marginalRelief);
     }
 
     const effectiveRate = profit > 0 ? (ct / profit) * 100 : 19;
-
-    // Potential savings through proactive R&D, full expensing capital allowances, director pension structuring
     const savings = Math.round(
       Math.min(ct * 0.28, Math.max(4500, profit * 0.045))
     );
 
-    // Recommended monthly retainer tier (£495 - £2,250/mo)
     let monthlyFee = 495;
     if (calculatorTurnover >= 3000000) {
       monthlyFee = 1950;
@@ -80,34 +67,30 @@ export default function TaxCalculator() {
   return (
     <section
       id="tax-calculator-section"
-      className="py-16 sm:py-24 bg-[#0B0F17] border-b border-[#D4AF37]/20 relative"
+      className="py-16 sm:py-24 bg-[#07080C] border-b border-white/[0.08]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#111827] border border-[#D4AF37]/30 text-xs text-gold-300 font-mono mb-3">
-            <Calculator className="w-3.5 h-3.5 text-gold-400" />
-            <span>Interactive UK Tax Intelligence</span>
-          </div>
-          <h2 className="font-serif-luxury text-2xl sm:text-4xl font-bold text-white tracking-tight">
-            Interactive Corporation Tax &amp; Fee Estimator
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#EDEDED] tracking-tight">
+            Corporation Tax &amp; Retainer Calculator
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-            Adjust your annual turnover and operating margin to visualize your estimated HMRC Corporation Tax liability, quantifiable relief savings, and the recommended strategic retainer fee.
+          <p className="text-[#94A3B8] text-sm mt-2 leading-relaxed">
+            Adjust your annual turnover and operating margin to estimate HMRC Corporation Tax liability, potential relief deductions, and recommended retainer.
           </p>
         </div>
 
-        {/* Calculator Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Sliders & Controls */}
-          <div className="lg:col-span-6 bg-[#070A0F] border border-[#D4AF37]/30 rounded-2xl p-6 sm:p-8 space-y-8 shadow-xl">
+        {/* 2-Column Institutional Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Controls Column */}
+          <div className="lg:col-span-6 bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl p-6 sm:p-8 space-y-6">
             {/* Turnover Slider */}
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-xs font-semibold tracking-wider uppercase text-gold-300">
-                  Annual Turnover (£)
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
+                  Annual Turnover
                 </label>
-                <span className="font-mono text-lg font-bold text-white bg-[#111827] px-3 py-1 rounded-lg border border-white/10">
+                <span className="font-mono text-base font-semibold text-[#EDEDED] bg-[#08090E] px-2.5 py-1 rounded border border-white/[0.08]">
                   {formatGBP(calculatorTurnover)}
                 </span>
               </div>
@@ -118,23 +101,23 @@ export default function TaxCalculator() {
                 step="50000"
                 value={calculatorTurnover}
                 onChange={(e) => setCalculatorTurnover(Number(e.target.value))}
-                className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
+                className="w-full h-2 bg-[#1A1F2D] rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono mt-2">
+              <div className="flex justify-between text-[11px] text-[#64748B] font-mono mt-1.5">
                 <span>£150k</span>
                 <span>£1.5M</span>
                 <span>£3M</span>
-                <span>£5M+</span>
+                <span>£5M</span>
               </div>
             </div>
 
             {/* Profit Margin Slider */}
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <label className="text-xs font-semibold tracking-wider uppercase text-gold-300">
-                  Estimated Net Profit Margin (%)
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider">
+                  Net Profit Margin
                 </label>
-                <span className="font-mono text-lg font-bold text-white bg-[#111827] px-3 py-1 rounded-lg border border-white/10">
+                <span className="font-mono text-base font-semibold text-[#EDEDED] bg-[#08090E] px-2.5 py-1 rounded border border-white/[0.08]">
                   {calculatorMargin}%
                 </span>
               </div>
@@ -145,124 +128,106 @@ export default function TaxCalculator() {
                 step="5"
                 value={calculatorMargin}
                 onChange={(e) => setCalculatorMargin(Number(e.target.value))}
-                className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
+                className="w-full h-2 bg-[#1A1F2D] rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
               />
-              <div className="flex justify-between text-[11px] text-slate-400 font-mono mt-2">
-                <span>10% (Low Margin)</span>
-                <span>25% (Standard)</span>
+              <div className="flex justify-between text-[11px] text-[#64748B] font-mono mt-1.5">
+                <span>10%</span>
+                <span>25%</span>
                 <span>40%</span>
-                <span>55% (High Margin)</span>
+                <span>55%</span>
               </div>
             </div>
 
-            {/* Summary metrics snapshot */}
+            {/* Intermediate Calculation Cards */}
             <div className="grid grid-cols-2 gap-3 pt-2">
-              <div className="p-3.5 rounded-xl bg-[#111827] border border-white/5">
-                <span className="text-[11px] text-slate-400 block">Estimated Taxable Profit</span>
-                <span className="font-serif-luxury text-lg font-semibold text-white mt-0.5 block">
+              <div className="p-3.5 rounded-lg bg-[#0B0D13] border border-white/[0.06]">
+                <span className="text-xs text-[#64748B] block">Estimated Taxable Profit</span>
+                <span className="font-mono text-base font-semibold text-[#EDEDED] mt-0.5 block">
                   {formatGBP(estimatedProfit)}
                 </span>
               </div>
-              <div className="p-3.5 rounded-xl bg-[#111827] border border-white/5">
-                <span className="text-[11px] text-slate-400 block">Effective Tax Rate</span>
-                <span className="font-mono text-lg font-semibold text-gold-300 mt-0.5 block">
+              <div className="p-3.5 rounded-lg bg-[#0B0D13] border border-white/[0.06]">
+                <span className="text-xs text-[#64748B] block">Effective Tax Rate</span>
+                <span className="font-mono text-base font-semibold text-[#EDEDED] mt-0.5 block">
                   {taxRateEffective}%
                 </span>
               </div>
             </div>
 
-            {/* Compliance Guarantee */}
-            <div className="p-4 rounded-xl bg-[#101623] border border-[#D4AF37]/20 flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-gold-400 shrink-0 mt-0.5" />
-              <div className="text-xs text-slate-300 leading-relaxed">
-                Calculations strictly follow current <strong>HMRC Finance Act rules</strong>, including small profits rate (19%), marginal taper relief, and 25% main corporation tax bands.
-              </div>
+            <div className="text-xs text-[#64748B] border-t border-white/[0.06] pt-4">
+              Calculations adhere to standard UK Finance Act bands: Small Profits Rate (19%), Marginal Taper, and Main Rate (25%).
             </div>
           </div>
 
-          {/* Right Column: Dynamic Results & Retainer Card */}
-          <div className="lg:col-span-6 bg-gradient-to-b from-[#111827] to-[#070A0F] border border-[#D4AF37]/40 rounded-2xl p-6 sm:p-8 shadow-gold-subtle space-y-6">
-            <div className="border-b border-white/10 pb-5">
-              <span className="text-xs uppercase tracking-widest text-gold-400 font-mono">
-                Tax Architecture Breakdown
+          {/* Results Column */}
+          <div className="lg:col-span-6 bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl p-6 sm:p-8 space-y-6">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">
+                Advisory Breakdown
               </span>
-              <h3 className="font-serif-luxury text-2xl font-bold text-white mt-1">
-                Your Strategic Advisory Model
+              <h3 className="text-xl font-bold text-[#EDEDED] mt-1">
+                Estimated Liability &amp; Allowances
               </h3>
             </div>
 
-            {/* Comparison Metrics */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#0B0F17] border border-white/5">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#0B0D13] border border-white/[0.06]">
                 <div>
-                  <span className="text-xs text-slate-400 block">Unmanaged Corporation Tax</span>
-                  <span className="text-[11px] text-slate-400">Standard statutory filing</span>
+                  <span className="text-xs text-[#94A3B8] block">Standard Corporation Tax</span>
+                  <span className="text-[11px] text-[#64748B]">Before allowances</span>
                 </div>
-                <span className="font-mono text-xl font-bold text-rose-400">
+                <span className="font-mono text-base font-semibold text-[#EDEDED]">
                   {formatGBP(corporationTax)}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/30">
-                <div className="flex items-center gap-2">
-                  <TrendingDown className="w-4 h-4 text-emerald-400" />
-                  <div>
-                    <span className="text-xs font-semibold text-gold-300 block">
-                      Potential Relief &amp; Allowances
-                    </span>
-                    <span className="text-[11px] text-slate-300">
-                      R&amp;D claims, full expensing, pensions
-                    </span>
-                  </div>
+              <div className="flex items-center justify-between p-3.5 rounded-lg bg-emerald-500/[0.06] border border-emerald-500/20">
+                <div>
+                  <span className="text-xs font-medium text-emerald-400 block">
+                    Identified Allowances &amp; Relieves
+                  </span>
+                  <span className="text-[11px] text-[#64748B]">
+                    Full expensing, R&amp;D, pensions
+                  </span>
                 </div>
-                <span className="font-mono text-xl font-bold text-emerald-400">
+                <span className="font-mono text-base font-semibold text-emerald-400">
                   - {formatGBP(potentialSavings)}
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-4 rounded-xl bg-[#070A0F] border border-[#D4AF37]/40">
+              <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#0B0D13] border border-white/[0.1]">
                 <div>
-                  <span className="text-xs text-slate-300 font-medium block">
-                    Optimized Net Corporation Tax
+                  <span className="text-xs font-medium text-[#EDEDED] block">
+                    Optimized Tax Liability
                   </span>
-                  <span className="text-[11px] text-gold-400">With Apex &amp; Co. Architecture</span>
+                  <span className="text-[11px] text-[#64748B]">With strategic architecture</span>
                 </div>
-                <span className="font-mono text-2xl font-bold text-white">
+                <span className="font-mono text-lg font-bold text-[#EDEDED]">
                   {formatGBP(netTaxAfterAdvisory)}
                 </span>
               </div>
             </div>
 
-            {/* Recommended Monthly Retainer */}
-            <div className="p-5 rounded-xl bg-[#0B0F17] border border-[#D4AF37]/50 shadow-gold-subtle">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-[11px] font-mono uppercase text-gold-400 tracking-wider">
-                    Recommended Monthly Retainer
-                  </span>
-                  <h4 className="font-serif-luxury text-xl font-bold text-white mt-0.5">
-                    Strategic Partner Retainer
-                  </h4>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Statutory Year-End + Quarterly MTD VAT + AI Dropzone + Dedicated Partner
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span className="font-mono text-2xl sm:text-3xl font-extrabold text-gold-300">
-                    £{recommendedRetainer}
-                  </span>
-                  <span className="text-xs text-slate-400 block font-normal">/ month + VAT</span>
-                </div>
+            {/* Recommended Retainer Box */}
+            <div className="p-4 rounded-lg bg-[#08090E] border border-white/[0.08] flex items-center justify-between">
+              <div>
+                <span className="text-xs text-[#64748B] block">Recommended Retainer Tier</span>
+                <span className="text-sm font-semibold text-[#EDEDED]">Strategic Partner Retainer</span>
+              </div>
+              <div className="text-right">
+                <span className="font-mono text-2xl font-bold text-[#EDEDED]">
+                  £{recommendedRetainer}
+                </span>
+                <span className="text-xs text-[#64748B] block">/ month + VAT</span>
               </div>
             </div>
 
-            {/* Lock in CTA */}
             <button
               onClick={() => setIsIntakeOpen(true)}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#BA9528] text-black font-semibold text-xs uppercase tracking-wider py-4 px-6 rounded-xl shadow-gold-glow hover:brightness-110 active:scale-95 transition-all touch-target-48"
+              className="w-full flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-3 px-4 rounded-lg transition-colors shadow-sm active:scale-95"
             >
-              <span>Lock In Strategy &amp; Book Partner Review</span>
-              <ArrowRight className="w-4 h-4 text-black" />
+              <span>Book Review Consultation</span>
+              <ArrowUpRight className="w-4 h-4" />
             </button>
           </div>
         </div>

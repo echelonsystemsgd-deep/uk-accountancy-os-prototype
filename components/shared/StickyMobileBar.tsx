@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useDemoStore } from "@/lib/store";
-import { Calculator, ArrowUpRight, Shield, LayoutDashboard } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function StickyMobileBar() {
   const { currentView, setCurrentView, setIsIntakeOpen } = useDemoStore();
@@ -20,55 +20,52 @@ export default function StickyMobileBar() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#070A0F]/95 backdrop-blur-xl border-t border-[#D4AF37]/30 px-3 py-2 pb-safe">
+    <div className="fixed bottom-0 left-0 right-0 z-30 sm:hidden bg-[#07080C]/95 backdrop-blur-md border-t border-white/[0.08] px-4 py-3">
       <div className="flex items-center gap-2 max-w-md mx-auto">
         {currentView === "prospect" ? (
           <>
             <button
               onClick={scrollToCalculator}
-              className="flex-1 flex items-center justify-center gap-2 bg-[#111827] border border-[#D4AF37]/30 text-gold-300 font-medium text-xs rounded-xl py-3 px-3 touch-target-48 active:scale-95 transition-all"
+              className="flex-1 bg-[#0E111A] border border-white/[0.08] text-[#94A3B8] hover:text-[#EDEDED] font-medium text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
-              <Calculator className="w-4 h-4 text-gold-400" />
-              <span>Instant Fee Quote</span>
+              Fee Calculator
             </button>
             <button
               onClick={() => setIsIntakeOpen(true)}
-              className="flex-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs rounded-xl py-3 px-3 shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+              className="flex-1 flex items-center justify-center gap-1 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
               <span>Book Strategy</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-black" />
+              <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </>
         ) : currentView === "portal" ? (
           <>
             <button
               onClick={() => setCurrentView("prospect")}
-              className="flex-1 flex items-center justify-center gap-2 bg-[#111827] border border-white/10 text-slate-300 text-xs rounded-xl py-3 px-3 touch-target-48 active:scale-95 transition-all"
+              className="flex-1 bg-[#0E111A] border border-white/[0.08] text-[#94A3B8] hover:text-[#EDEDED] font-medium text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
-              <span>Back to Site</span>
+              Public Site
             </button>
             <button
               onClick={() => setCurrentView("admin")}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs rounded-xl py-3 px-3 shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+              className="flex-1 bg-[#161A26] border border-white/[0.12] text-[#EDEDED] font-semibold text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
-              <LayoutDashboard className="w-4 h-4 text-black" />
-              <span>Partner Hub</span>
+              Practice Hub
             </button>
           </>
         ) : (
           <>
             <button
               onClick={() => setCurrentView("portal")}
-              className="flex-1 flex items-center justify-center gap-2 bg-[#111827] border border-[#D4AF37]/30 text-gold-300 font-medium text-xs rounded-xl py-3 px-3 touch-target-48 active:scale-95 transition-all"
+              className="flex-1 bg-[#0E111A] border border-white/[0.08] text-[#94A3B8] hover:text-[#EDEDED] font-medium text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
-              <Shield className="w-4 h-4 text-gold-400" />
-              <span>Client Dropzone</span>
+              Client Portal
             </button>
             <button
               onClick={() => setCurrentView("prospect")}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs rounded-xl py-3 px-3 shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+              className="flex-1 bg-[#161A26] border border-white/[0.12] text-[#EDEDED] font-semibold text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
-              <span>Prospect View</span>
+              Public Site
             </button>
           </>
         )}

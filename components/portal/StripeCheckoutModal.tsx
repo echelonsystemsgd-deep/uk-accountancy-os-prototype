@@ -5,16 +5,7 @@ import { useDemoStore } from "@/lib/store";
 import { ClientInvoice } from "@/lib/types";
 import { formatGBPExact } from "@/lib/utils";
 import confetti from "canvas-confetti";
-import {
-  X,
-  CreditCard,
-  Lock,
-  CheckCircle2,
-  ShieldCheck,
-  Building,
-  Sparkles,
-  ArrowRight,
-} from "lucide-react";
+import { X, Lock, Check } from "lucide-react";
 
 interface StripeCheckoutModalProps {
   invoice: ClientInvoice;
@@ -43,240 +34,163 @@ export default function StripeCheckoutModal({
       setIsProcessing(false);
       setIsPaidSuccess(true);
 
-      // Trigger celebratory confetti
       try {
         confetti({
-          particleCount: 80,
-          spread: 60,
+          particleCount: 50,
+          spread: 50,
           origin: { y: 0.6 },
-          colors: ["#D4AF37", "#FFFFFF", "#10B981"],
+          colors: ["#D4AF37", "#EDEDED", "#10B981"],
         });
       } catch (err) {
         // ignore in non-browser env
       }
-    }, 1000);
+    }, 600);
   };
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
       onClick={onClose}
     >
       <div
-        className="w-full sm:max-w-md bg-[#0B0F17] border-t sm:border border-[#D4AF37]/40 sm:rounded-2xl shadow-2xl overflow-hidden text-white flex flex-col max-h-[92vh]"
+        className="w-full sm:max-w-md bg-[#0D0F17] border-t sm:border border-white/[0.1] sm:rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_16px_40px_rgba(0,0,0,0.8)] overflow-hidden text-[#EDEDED] flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Stripe Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#070A0F]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#635BFF]/20 border border-[#635BFF]/50 flex items-center justify-center text-[#7A73FF]">
-              <Lock className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-white flex items-center gap-1.5">
-                <span>Stripe Corporate Checkout</span>
-                <span className="text-[10px] font-mono bg-white/10 text-slate-300 px-1.5 py-0.2 rounded">
-                  256-bit SSL
-                </span>
-              </h3>
-              <p className="text-[11px] text-slate-400">
-                Pay to: <strong className="text-gold-300">Apex &amp; Co. Advisory Ltd</strong>
-              </p>
-            </div>
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#0A0C13]">
+          <div className="flex items-center gap-2">
+            <Lock className="w-4 h-4 text-[#64748B]" />
+            <span className="text-xs font-semibold text-[#EDEDED] tracking-tight">
+              Pay Invoice: {invoice.invoiceNumber}
+            </span>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors touch-target-48 sm:touch-target-auto"
-            aria-label="Close checkout modal"
+            className="p-1.5 text-[#64748B] hover:text-[#EDEDED] rounded-lg transition-colors"
+            aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Body */}
+        {/* Body */}
         <div className="p-6 overflow-y-auto">
           {isPaidSuccess ? (
-            <div className="text-center py-6 space-y-4 animate-in zoom-in-95">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center mx-auto text-emerald-400">
-                <CheckCircle2 className="w-8 h-8" />
+            <div className="text-center py-6 space-y-3">
+              <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto text-emerald-400">
+                <Check className="w-5 h-5" />
               </div>
-
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-400">
-                  Payment Succeeded
-                </span>
-                <h4 className="font-serif-luxury text-xl font-bold text-white mt-1">
-                  {formatGBPExact(invoice.amountTotal)} Settled
-                </h4>
-                <p className="text-xs text-slate-300 mt-2">
-                  Invoice <strong className="text-gold-300">{invoice.invoiceNumber}</strong> has been marked as <strong>PAID</strong>.
-                </p>
-              </div>
-
-              {/* Reactive sync feedback */}
-              <div className="p-3.5 rounded-xl bg-[#070A0F] border border-white/10 text-left text-xs space-y-1.5">
-                <div className="flex items-center gap-1.5 text-gold-300 font-medium">
-                  <Sparkles className="w-3.5 h-3.5 text-gold-400" />
-                  <span>Practice Command Hub Updated:</span>
-                </div>
-                <p className="text-slate-400 text-[11px]">
-                  Unbilled WIP decreased and Practice Collected Revenue was automatically incremented.
-                </p>
-              </div>
-
+              <h4 className="text-sm font-semibold text-[#EDEDED]">
+                Payment Completed
+              </h4>
+              <p className="text-xs text-[#94A3B8]">
+                {formatGBPExact(invoice.amountTotal)} settled. Status updated to <strong>Paid</strong> in practice ledger.
+              </p>
               <div className="pt-2">
                 <button
                   onClick={onClose}
-                  className="w-full bg-[#111827] hover:bg-[#D4AF37] hover:text-black border border-white/10 text-slate-200 text-xs font-semibold py-3 px-4 rounded-xl transition-all touch-target-48 active:scale-95"
+                  className="w-full bg-[#131622] hover:bg-[#1A1F2D] border border-white/[0.08] text-[#EDEDED] text-xs font-medium py-2 px-3 rounded-lg transition-colors"
                 >
-                  Return to Portal Invoices
+                  Close
                 </button>
               </div>
             </div>
           ) : (
             <form onSubmit={handlePay} className="space-y-4">
-              {/* Invoice Summary Box */}
-              <div className="p-4 rounded-xl bg-[#070A0F] border border-[#D4AF37]/30 space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">Invoice:</span>
-                  <span className="font-mono text-white font-medium">{invoice.invoiceNumber}</span>
+              {/* Summary */}
+              <div className="p-3.5 rounded-lg bg-[#08090E] border border-white/[0.06] text-xs space-y-1.5">
+                <div className="flex justify-between">
+                  <span className="text-[#64748B]">Service:</span>
+                  <span className="text-[#EDEDED] truncate max-w-[200px]">{invoice.description}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">Service:</span>
-                  <span className="text-white text-right max-w-[200px] truncate">
-                    {invoice.description}
-                  </span>
+                <div className="flex justify-between">
+                  <span className="text-[#64748B]">Net Amount:</span>
+                  <span className="font-mono text-[#94A3B8]">{formatGBPExact(invoice.amountNet)}</span>
                 </div>
-                <div className="flex justify-between text-xs border-t border-white/5 pt-2">
-                  <span className="text-slate-400">Net Amount:</span>
-                  <span className="font-mono text-slate-300">
-                    {formatGBPExact(invoice.amountNet)}
-                  </span>
+                <div className="flex justify-between">
+                  <span className="text-[#64748B]">VAT (20%):</span>
+                  <span className="font-mono text-[#94A3B8]">{formatGBPExact(invoice.vatAmount)}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-slate-400">VAT (20%):</span>
-                  <span className="font-mono text-slate-300">
-                    {formatGBPExact(invoice.vatAmount)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm font-bold border-t border-white/10 pt-2">
-                  <span className="text-gold-300">Total Payable:</span>
-                  <span className="font-mono text-gold-300 text-base">
-                    {formatGBPExact(invoice.amountTotal)}
-                  </span>
+                <div className="flex justify-between pt-1.5 border-t border-white/[0.06] font-semibold text-[#EDEDED]">
+                  <span>Total Due:</span>
+                  <span className="font-mono">{formatGBPExact(invoice.amountTotal)}</span>
                 </div>
               </div>
 
-              {/* Simulated Apple Pay Button */}
-              <button
-                type="button"
-                onClick={handlePay}
-                disabled={isProcessing}
-                className="w-full bg-white hover:bg-slate-100 text-black font-semibold text-xs py-3 px-4 rounded-xl flex items-center justify-center gap-1.5 shadow-sm touch-target-48 active:scale-95 transition-all"
-              >
-                <span>Pay with</span>
-                <span className="font-bold text-sm tracking-tight">Pay</span>
-              </button>
-
-              <div className="relative flex items-center justify-center">
-                <div className="border-t border-white/10 w-full" />
-                <span className="bg-[#0B0F17] px-3 text-[10px] text-slate-400 uppercase tracking-widest font-mono">
-                  Or pay with Corporate Card
-                </span>
-              </div>
-
-              {/* Card Inputs */}
-              <div className="space-y-3">
+              {/* Standard card inputs */}
+              <div className="space-y-2.5">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-300 mb-1">
+                  <label className="block text-[11px] font-medium text-[#94A3B8] mb-1">
                     Card Number
                   </label>
-                  <div className="relative">
-                    <CreditCard className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-                    <input
-                      type="text"
-                      value={cardNumber}
-                      onChange={(e) => setCardNumber(e.target.value)}
-                      className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl pl-9 pr-3 py-2.5 text-xs text-white font-mono focus:outline-none"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    className="w-full bg-[#08090E] border border-white/[0.08] focus:border-white/20 rounded-lg px-3 py-2 text-xs font-mono text-[#EDEDED] focus:outline-none"
+                  />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-300 mb-1">
-                      Expires
+                    <label className="block text-[11px] font-medium text-[#94A3B8] mb-1">
+                      Expiry
                     </label>
                     <input
                       type="text"
                       value={expiry}
                       onChange={(e) => setExpiry(e.target.value)}
-                      className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3 py-2.5 text-xs text-white font-mono focus:outline-none"
+                      className="w-full bg-[#08090E] border border-white/[0.08] focus:border-white/20 rounded-lg px-3 py-2 text-xs font-mono text-[#EDEDED] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-300 mb-1">
-                      CVC / CVV
+                    <label className="block text-[11px] font-medium text-[#94A3B8] mb-1">
+                      CVC
                     </label>
                     <input
                       type="text"
                       value={cvc}
                       onChange={(e) => setCvc(e.target.value)}
-                      className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3 py-2.5 text-xs text-white font-mono focus:outline-none"
+                      className="w-full bg-[#08090E] border border-white/[0.08] focus:border-white/20 rounded-lg px-3 py-2 text-xs font-mono text-[#EDEDED] focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-300 mb-1">
+                    <label className="block text-[11px] font-medium text-[#94A3B8] mb-1">
                       Cardholder Name
                     </label>
                     <input
                       type="text"
                       value={nameOnCard}
                       onChange={(e) => setNameOnCard(e.target.value)}
-                      className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none"
+                      className="w-full bg-[#08090E] border border-white/[0.08] focus:border-white/20 rounded-lg px-3 py-2 text-xs text-[#EDEDED] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-slate-300 mb-1">
-                      UK Postcode
+                    <label className="block text-[11px] font-medium text-[#94A3B8] mb-1">
+                      Postal Code
                     </label>
                     <input
                       type="text"
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
-                      className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3 py-2.5 text-xs text-white font-mono focus:outline-none"
+                      className="w-full bg-[#08090E] border border-white/[0.08] focus:border-white/20 rounded-lg px-3 py-2 text-xs text-[#EDEDED] focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Submit CTA */}
-              <div className="pt-2">
-                <button
-                  type="submit"
-                  disabled={isProcessing}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#BA9528] text-black font-semibold text-xs uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-gold-subtle hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 touch-target-48"
-                >
-                  {isProcessing ? (
-                    <span>Processing Secure Settlement...</span>
-                  ) : (
-                    <>
-                      <span>Authorize Payment of {formatGBPExact(invoice.amountTotal)}</span>
-                      <ArrowRight className="w-4 h-4 text-black" />
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-400 pt-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Protected by Stripe UK SCA &amp; FCA Regulated Banking Gateway</span>
-              </div>
+              <button
+                type="submit"
+                disabled={isProcessing}
+                className="w-full bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors shadow-sm disabled:opacity-50"
+              >
+                {isProcessing ? "Processing..." : `Pay ${formatGBPExact(invoice.amountTotal)}`}
+              </button>
             </form>
           )}
         </div>

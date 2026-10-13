@@ -1,93 +1,79 @@
 "use client";
 
 import React from "react";
-import { Check, X, ShieldCheck, Sparkles } from "lucide-react";
-import { useDemoStore } from "@/lib/store";
+import { Check, X } from "lucide-react";
 
 export default function ComparisonSection() {
-  const { setIsIntakeOpen } = useDemoStore();
-
   const comparisons = [
     {
       feature: "Proactive Tax Planning",
       traditional: "Reactive: looks backward 9 months after your financial year end",
-      apex: "Live quarterly forecasting & strategic director dividend optimization",
+      apex: "Quarterly forecasting & continuous director dividend optimization",
     },
     {
-      feature: "Receipt & Document Ingestion",
-      traditional: "Shoebox of paper or stressful email chasing days before deadlines",
-      apex: "Instant mobile snap dropzone with automated AI OCR categorization",
+      feature: "Document Ingestion",
+      traditional: "Paper shoebox or manual email chasing right at deadline",
+      apex: "Direct mobile snap dropzone with automated OCR data capture",
     },
     {
-      feature: "HMRC Filing & MTD Compliance",
-      traditional: "Rushed submissions prone to HMRC enquiries and late fees",
-      apex: "100% on-time record with electronic gateway & full audit defense",
+      feature: "HMRC Filing & MTD",
+      traditional: "Rushed submissions prone to late filing queries",
+      apex: "Electronic gateway with 100% on-time record and full audit trail",
     },
     {
-      feature: "Specialist Relief Claims (R&D / Full Expensing)",
-      traditional: "Often ignored due to lack of specialist technical capability",
-      apex: "In-house R&D specialists claiming full statutory reliefs legitimately",
+      feature: "Specialist Relief Claims",
+      traditional: "Often bypassed due to lack of technical specialist capability",
+      apex: "Full expensing, Patent Box, and R&D relief evaluated in-house",
     },
     {
-      feature: "Partner Availability & Communication",
-      traditional: "Days to return a phone call; unfamiliar junior staff handle your file",
-      apex: "Dedicated senior chartered partner with direct WhatsApp/Slack line",
+      feature: "Partner Access",
+      traditional: "Junior staff handling files with slow turnaround",
+      apex: "Direct chartered partner access with transparent SLA",
     },
     {
-      feature: "Fee Structure",
-      traditional: "Unpredictable hourly billing and surprise annual audit invoices",
-      apex: "Transparent monthly fixed retainer with all statutory compliance included",
+      feature: "Fee Transparency",
+      traditional: "Unpredictable hourly billing and surprise year-end invoices",
+      apex: "Fixed monthly retainer covering statutory compliance & advice",
     },
   ];
 
   return (
-    <section className="py-20 sm:py-28 bg-[#070A0F] border-b border-[#D4AF37]/15">
+    <section className="py-20 sm:py-28 bg-[#07080C] border-b border-white/[0.08]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs uppercase tracking-widest text-gold-400 font-mono">
-            The Modern Standard
-          </span>
-          <h2 className="font-serif-luxury text-3xl sm:text-5xl font-bold text-white tracking-tight mt-2">
-            Traditional Practice vs. Apex &amp; Co. Strategic OS
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#EDEDED] tracking-tight">
+            Comparison Framework
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-            Why high-growth UK directors and founders switch to our unified advisory model.
+          <p className="text-[#94A3B8] text-sm mt-2 leading-relaxed">
+            How traditional high-street accounting differs from our structured practice model.
           </p>
         </div>
 
-        {/* Comparison Table */}
+        {/* Institutional Table */}
         <div className="overflow-x-auto">
-          <div className="min-w-[680px] bg-[#0B0F17] border border-[#D4AF37]/30 rounded-2xl overflow-hidden shadow-xl">
-            {/* Table Header */}
-            <div className="grid grid-cols-12 bg-[#111827] border-b border-white/10 p-4 text-xs font-semibold uppercase tracking-wider">
-              <div className="col-span-4 text-slate-400">Core Capability</div>
-              <div className="col-span-4 text-rose-300/80 flex items-center gap-1.5">
-                <X className="w-4 h-4 text-rose-400" />
-                <span>Traditional High-Street Firm</span>
-              </div>
-              <div className="col-span-4 text-gold-300 flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-gold-400" />
-                <span>Apex &amp; Co. Architecture</span>
-              </div>
+          <div className="min-w-[640px] bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl overflow-hidden">
+            <div className="grid grid-cols-12 bg-[#0A0C13] border-b border-white/[0.08] p-4 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">
+              <div className="col-span-4">Capability</div>
+              <div className="col-span-4 text-[#64748B]">Traditional Practice</div>
+              <div className="col-span-4 text-[#EDEDED]">Apex &amp; Co. Model</div>
             </div>
 
-            {/* Rows */}
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-white/[0.06]">
               {comparisons.map((row, idx) => (
                 <div
                   key={idx}
-                  className="grid grid-cols-12 p-4 text-xs sm:text-sm items-center hover:bg-white/[0.02] transition-colors"
+                  className="grid grid-cols-12 p-4 text-xs items-center hover:bg-white/[0.01] transition-colors"
                 >
-                  <div className="col-span-4 font-medium text-white pr-4">
+                  <div className="col-span-4 font-medium text-[#EDEDED] pr-4">
                     {row.feature}
                   </div>
-                  <div className="col-span-4 text-slate-400 pr-4 flex items-start gap-2">
-                    <span className="text-rose-500 font-bold">✕</span>
-                    <span className="text-xs text-slate-400">{row.traditional}</span>
+                  <div className="col-span-4 text-[#64748B] pr-4 flex items-start gap-2">
+                    <X className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                    <span>{row.traditional}</span>
                   </div>
-                  <div className="col-span-4 text-slate-200 flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span className="text-xs text-gold-100 font-medium">{row.apex}</span>
+                  <div className="col-span-4 text-[#94A3B8] flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-[#D4AF37] shrink-0 mt-0.5" />
+                    <span className="text-[#EDEDED] font-medium">{row.apex}</span>
                   </div>
                 </div>
               ))}

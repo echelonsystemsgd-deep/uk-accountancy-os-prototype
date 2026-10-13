@@ -8,10 +8,7 @@ import {
   Clock,
   AlertCircle,
   FileWarning,
-  TrendingUp,
-  ArrowUpRight,
-  ShieldAlert,
-  Sparkles,
+  PoundSterling,
 } from "lucide-react";
 
 export default function PartnerMetrics() {
@@ -20,111 +17,80 @@ export default function PartnerMetrics() {
     unbilledWipAmount,
     pendingVatCount,
     missingReceiptsCount,
-    totalBilledCollected,
   } = useDemoStore();
 
   const metrics = [
     {
       title: "Active Ltd Clients",
       value: activeClientsCount.toString(),
-      subtext: "+14 onboarded this quarter",
       icon: Users,
-      trend: "+11% YoY",
-      trendPositive: true,
-      accent: "text-white",
-      badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+      trend: "+12% this quarter",
+      trendType: "positive",
     },
     {
       title: "Unbilled WIP & Hours",
       value: formatGBP(unbilledWipAmount),
-      subtext: "Ready for monthly billing run",
-      icon: Clock,
+      icon: PoundSterling,
       trend: "£2,100 accrued this week",
-      trendPositive: true,
-      accent: "text-gold-300",
-      badgeColor: "bg-[#D4AF37]/20 text-gold-300 border-[#D4AF37]/30",
+      trendType: "positive",
     },
     {
-      title: "Pending VAT Deadlines",
+      title: "Pending VAT Submissions",
       value: `${pendingVatCount} Due in 7 Days`,
-      subtext: "Quarterly MTD submissions",
-      icon: AlertCircle,
-      trend: "Priority processing",
-      trendPositive: false,
-      accent: "text-amber-400",
-      badgeColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      icon: Clock,
+      trend: "MTD window open",
+      trendType: "neutral",
     },
     {
-      title: "Unresolved Missing Receipts",
+      title: "Outstanding Receipts",
       value: missingReceiptsCount.toString(),
-      subtext: "Auto-synced with Client Dropzone",
       icon: FileWarning,
-      trend: missingReceiptsCount > 10 ? "Chasers Active" : "Under Control",
-      trendPositive: missingReceiptsCount <= 10,
-      accent: "text-rose-400",
-      badgeColor: "bg-rose-500/20 text-rose-300 border-rose-500/30",
-      highlight: true,
+      trend: missingReceiptsCount > 10 ? "Chasers active" : "Normal volume",
+      trendType: missingReceiptsCount > 10 ? "warning" : "positive",
     },
   ];
 
   return (
-    <div className="space-y-4">
-      {/* Live sync banner */}
-      <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#0B0F17] border border-[#D4AF37]/30 text-xs">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-slate-300">
-            <strong>Partner Command Center:</strong> Live Practice Radar Active
-          </span>
-        </div>
-        <div className="flex items-center gap-3 text-slate-400 font-mono text-[11px]">
-          <span>Collected Fees: <strong className="text-emerald-400">{formatGBP(totalBilledCollected)}</strong></span>
-          <span className="hidden sm:inline">• 4 Senior Partners Online</span>
-        </div>
-      </div>
-
-      {/* 4 Live KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {metrics.map((m, i) => {
-          const Icon = m.icon;
-          return (
-            <div
-              key={i}
-              className={`bg-[#0B0F17] border rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 relative overflow-hidden ${
-                m.highlight
-                  ? "border-rose-500/40 shadow-[0_0_20px_-3px_rgba(244,63,94,0.15)]"
-                  : "border-[#D4AF37]/25 hover:border-[#D4AF37]/50 shadow-sm"
-              }`}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-semibold text-slate-400 tracking-wider uppercase">
-                    {m.title}
-                  </span>
-                  <div className="p-2 rounded-xl bg-[#111827] border border-white/5 text-gold-400">
-                    <Icon className="w-4 h-4" />
-                  </div>
-                </div>
-
-                <div className={`font-serif-luxury text-2xl sm:text-3xl font-bold tracking-tight ${m.accent}`}>
-                  {m.value}
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
-                <span className="text-[11px] text-slate-400 truncate max-w-[140px]">
-                  {m.subtext}
-                </span>
-                <span
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${m.badgeColor}`}
-                >
-                  {m.trend}
-                </span>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {metrics.map((m, i) => {
+        const Icon = m.icon;
+        return (
+          <div
+            key={i}
+            className="bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl p-5 flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-[#94A3B8]">
+                {m.title}
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-[#0E111A] border border-white/[0.08] flex items-center justify-center text-[#94A3B8]">
+                <Icon className="w-4 h-4" />
               </div>
             </div>
-          );
-        })}
-      </div>
+
+            <div className="mt-4 mb-2">
+              <div className="text-2xl font-bold font-mono text-[#EDEDED] tracking-tight">
+                {m.value}
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between">
+              <span
+                className={`text-[11px] font-medium ${
+                  m.trendType === "positive"
+                    ? "text-emerald-400"
+                    : m.trendType === "warning"
+                    ? "text-rose-400"
+                    : "text-[#64748B]"
+                }`}
+              >
+                {m.trend}
+              </span>
+              <span className="text-[10px] text-[#64748B] font-mono">Live Sync</span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -3,20 +3,7 @@
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { IntakeSubmission } from "@/lib/types";
-import {
-  X,
-  Building,
-  Calendar,
-  CheckCircle2,
-  ArrowRight,
-  ArrowLeft,
-  Sparkles,
-  ShieldCheck,
-  ChevronRight,
-  Clock,
-  Briefcase,
-  FileSpreadsheet,
-} from "lucide-react";
+import { X, Check, ArrowRight, ArrowLeft } from "lucide-react";
 
 export default function IntakeDrawer() {
   const { isIntakeOpen, setIsIntakeOpen, addIntakeClient, setCurrentView } = useDemoStore();
@@ -67,7 +54,7 @@ export default function IntakeDrawer() {
       addIntakeClient(submission);
       setIsSubmitting(false);
       setIsSuccess(true);
-    }, 600);
+    }, 400);
   };
 
   const handleClose = () => {
@@ -75,10 +62,10 @@ export default function IntakeDrawer() {
     setTimeout(() => {
       setStep(1);
       setIsSuccess(false);
-    }, 300);
+    }, 200);
   };
 
-  const handleViewInPartnerHub = () => {
+  const handleViewInPracticeHub = () => {
     handleClose();
     setCurrentView("admin");
   };
@@ -87,37 +74,29 @@ export default function IntakeDrawer() {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
+      onClick={handleClose}
     >
-      {/* Drawer / Modal Container */}
       <div
-        className="w-full sm:max-w-xl bg-[#0B0F17] border-t sm:border border-[#D4AF37]/40 sm:rounded-2xl shadow-2xl max-h-[92vh] flex flex-col overflow-hidden text-white"
+        className="w-full sm:max-w-xl bg-[#0D0F17] border-t sm:border border-white/[0.1] sm:rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_16px_40px_rgba(0,0,0,0.8)] max-h-[90vh] flex flex-col overflow-hidden text-[#EDEDED]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile Swipe Handle bar */}
-        <div className="w-12 h-1 bg-white/20 rounded-full mx-auto mt-3 mb-1 sm:hidden" />
-
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#070A0F]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1E2638] to-[#070A0F] border border-[#D4AF37]/40 flex items-center justify-center">
-              <span className="font-serif-luxury text-sm font-bold text-gold-300">A</span>
-            </div>
-            <div>
-              <h3 className="font-serif-luxury text-base sm:text-lg font-semibold text-white">
-                Book Strategic Consultation
-              </h3>
-              <p className="text-[11px] text-gold-400">
-                UK Limited Company Advisory & Tax Architecture
-              </p>
-            </div>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#0A0C13]">
+          <div>
+            <h3 className="text-sm font-semibold text-[#EDEDED] tracking-tight">
+              Book Strategic Consultation
+            </h3>
+            <p className="text-xs text-[#64748B] mt-0.5">
+              UK Limited Company Advisory &amp; Tax Planning
+            </p>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors touch-target-48 sm:touch-target-auto"
-            aria-label="Close form"
+            className="p-1.5 text-[#64748B] hover:text-[#EDEDED] rounded-lg transition-colors"
+            aria-label="Close dialog"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -125,123 +104,110 @@ export default function IntakeDrawer() {
         <div className="p-6 overflow-y-auto flex-1">
           {isSuccess ? (
             /* Success State */
-            <div className="text-center py-8 space-y-5 animate-in zoom-in-95">
-              <div className="w-16 h-16 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37] flex items-center justify-center mx-auto text-gold-300 shadow-gold-subtle">
-                <CheckCircle2 className="w-8 h-8 text-gold-400" />
+            <div className="text-center py-6 space-y-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto text-emerald-400">
+                <Check className="w-5 h-5" />
               </div>
 
               <div>
-                <span className="text-[11px] uppercase tracking-widest text-gold-400 font-mono">
-                  Consultation Confirmed
-                </span>
-                <h4 className="font-serif-luxury text-2xl font-bold text-white mt-1">
-                  Intake File Created
+                <h4 className="text-base font-semibold text-[#EDEDED]">
+                  Consultation Request Registered
                 </h4>
-                <p className="text-sm text-slate-300 max-w-md mx-auto mt-2 leading-relaxed">
-                  Thank you, <strong className="text-white">{directorName || "Director"}</strong>. Your company file for{" "}
-                  <strong className="text-gold-300">{companyName || "your Limited Company"}</strong> has been registered with our senior tax team.
+                <p className="text-xs text-[#94A3B8] max-w-sm mx-auto mt-1 leading-relaxed">
+                  The client file for <strong className="text-[#EDEDED]">{companyName || "Limited Company"}</strong> has been logged to the Practice Pipeline.
                 </p>
               </div>
 
-              {/* Reactive link badge */}
-              <div className="p-4 rounded-xl bg-[#111827] border border-[#D4AF37]/30 text-left text-xs space-y-2">
-                <div className="flex items-center gap-2 text-gold-300 font-medium">
-                  <Sparkles className="w-4 h-4 text-gold-400" />
-                  <span>Reactive State Synchronized Across Demo:</span>
-                </div>
-                <p className="text-slate-300">
-                  This intake submission has instantly populated into the <strong className="text-white">Partner Command Hub</strong> under the <em>'New Intake'</em> pipeline column.
+              <div className="p-3.5 rounded-lg bg-[#0B0D13] border border-white/[0.08] text-left text-xs space-y-1">
+                <div className="font-medium text-[#EDEDED]">Pipeline Synchronized</div>
+                <p className="text-[#64748B]">
+                  This submission is now visible under <em>New Intake</em> in the Practice Hub.
                 </p>
               </div>
 
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row gap-2">
                 <button
-                  onClick={handleViewInPartnerHub}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs py-3.5 px-4 rounded-xl shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+                  onClick={handleViewInPracticeHub}
+                  className="flex-1 flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors"
                 >
-                  <span>Inspect in Partner Pipeline</span>
-                  <ArrowRight className="w-4 h-4 text-black" />
+                  <span>View in Practice Pipeline</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={handleClose}
-                  className="flex-1 bg-[#111827] border border-white/10 hover:border-white/20 text-slate-200 text-xs py-3.5 px-4 rounded-xl touch-target-48 active:scale-95 transition-all"
+                  className="flex-1 bg-[#131622] border border-white/[0.08] hover:border-white/20 text-[#94A3B8] hover:text-[#EDEDED] text-xs py-2.5 px-4 rounded-lg transition-colors"
                 >
-                  Close Drawer
+                  Close
                 </button>
               </div>
             </div>
           ) : (
-            /* Multi-Step Intake Form */
             <div>
-              {/* Progress Stepper Indicator */}
-              <div className="flex items-center justify-between mb-6">
+              {/* Stepper indicator */}
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/[0.06]">
                 {[
-                  { num: 1, label: "Company Info" },
-                  { num: 2, label: "Turnover & Stack" },
-                  { num: 3, label: "Bottlenecks & Slot" },
+                  { num: 1, label: "Company" },
+                  { num: 2, label: "Scale & Stack" },
+                  { num: 3, label: "Priorities" },
                 ].map((s) => (
                   <div key={s.num} className="flex items-center gap-2">
                     <div
-                      className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold ${
+                      className={`w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold ${
                         step === s.num
-                          ? "bg-gradient-to-r from-[#D4AF37] to-[#BA9528] text-black shadow-gold-subtle"
+                          ? "bg-[#D4AF37] text-black"
                           : step > s.num
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                          : "bg-white/5 text-slate-400 border border-white/10"
+                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          : "bg-white/[0.04] text-[#64748B] border border-white/[0.06]"
                       }`}
                     >
                       {step > s.num ? "✓" : s.num}
                     </div>
-                    <span className="text-[11px] font-medium text-slate-300 hidden sm:inline">
+                    <span className="text-xs text-[#94A3B8] font-medium hidden sm:inline">
                       {s.label}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Step 1: Company Name & Incorporation */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Step 1 */}
                 {step === 1 && (
-                  <div className="space-y-4 animate-in fade-in">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-medium text-gold-300 mb-1.5">
-                        Registered UK Limited Company Name *
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-1">
+                        Registered Company Name *
                       </label>
-                      <div className="relative">
-                        <Building className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                        <input
-                          type="text"
-                          required
-                          value={companyName}
-                          onChange={(e) => setCompanyName(e.target.value)}
-                          placeholder="e.g. Apex Strategic Holdings Ltd"
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
-                        />
-                      </div>
+                      <input
+                        type="text"
+                        required
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="Apex Strategic Holdings Ltd"
+                        className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] placeholder-[#64748B] focus:outline-none transition-colors"
+                      />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                        <label className="block text-xs font-medium text-[#94A3B8] mb-1">
                           Incorporation Year
                         </label>
                         <select
                           value={incorporationYear}
                           onChange={(e) => setIncorporationYear(e.target.value)}
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3 py-3 text-sm text-white focus:outline-none transition-colors"
+                          className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] focus:outline-none transition-colors"
                         >
                           <option value="2024">2024</option>
                           <option value="2023">2023</option>
                           <option value="2022">2022</option>
                           <option value="2021">2021</option>
                           <option value="2020">2020</option>
-                          <option value="2018-2019">2018 – 2019</option>
-                          <option value="Pre-2018">Pre-2018</option>
+                          <option value="Pre-2020">Pre-2020</option>
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                        <label className="block text-xs font-medium text-[#94A3B8] mb-1">
                           Director Full Name *
                         </label>
                         <input
@@ -249,15 +215,15 @@ export default function IntakeDrawer() {
                           required
                           value={directorName}
                           onChange={(e) => setDirectorName(e.target.value)}
-                          placeholder="e.g. Julian Montgomery"
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3.5 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
+                          placeholder="Julian Montgomery"
+                          className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] placeholder-[#64748B] focus:outline-none transition-colors"
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                        <label className="block text-xs font-medium text-[#94A3B8] mb-1">
                           Work Email *
                         </label>
                         <input
@@ -266,13 +232,13 @@ export default function IntakeDrawer() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="director@company.co.uk"
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3.5 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
+                          className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] placeholder-[#64748B] focus:outline-none transition-colors"
                         />
                       </div>
 
                       <div>
-                        <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                          Direct Mobile Number *
+                        <label className="block text-xs font-medium text-[#94A3B8] mb-1">
+                          Mobile Number *
                         </label>
                         <input
                           type="tel"
@@ -280,7 +246,7 @@ export default function IntakeDrawer() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+44 7700 900..."
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl px-3.5 py-3 text-sm text-white placeholder-slate-500 focus:outline-none transition-colors"
+                          className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] placeholder-[#64748B] focus:outline-none transition-colors"
                         />
                       </div>
                     </div>
@@ -297,20 +263,20 @@ export default function IntakeDrawer() {
                           }
                           setStep(2);
                         }}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs py-3.5 px-4 rounded-xl shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+                        className="w-full flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors"
                       >
-                        <span>Continue to Step 2 (Turnover & Stack)</span>
-                        <ArrowRight className="w-4 h-4 text-black" />
+                        <span>Continue</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
                 )}
 
-                {/* Step 2: Turnover Bracket & Current Software */}
+                {/* Step 2 */}
                 {step === 2 && (
-                  <div className="space-y-4 animate-in fade-in">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-medium text-gold-300 mb-2">
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-2">
                         Annual Turnover Bracket *
                       </label>
                       <div className="grid grid-cols-2 gap-2">
@@ -324,22 +290,21 @@ export default function IntakeDrawer() {
                             key={bracket}
                             type="button"
                             onClick={() => setTurnoverBracket(bracket)}
-                            className={`p-3 rounded-xl text-xs font-medium text-left border transition-all touch-target-48 active:scale-95 ${
+                            className={`p-2.5 rounded-lg text-xs font-medium text-left border transition-colors ${
                               turnoverBracket === bracket
-                                ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white shadow-gold-subtle"
-                                : "bg-[#070A0F] border-white/10 text-slate-300 hover:border-white/20"
+                                ? "bg-[#161A26] border-white/25 text-[#EDEDED]"
+                                : "bg-[#08090E] border-white/[0.08] text-[#94A3B8] hover:border-white/15"
                             }`}
                           >
-                            <span className="block font-semibold text-gold-300">{bracket}</span>
-                            <span className="text-[10px] text-slate-400">UK Limited Turnover</span>
+                            {bracket}
                           </button>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-gold-300 mb-2">
-                        Current Bookkeeping & Accounting Software *
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-2">
+                        Current Accounting Software *
                       </label>
                       <div className="grid grid-cols-3 gap-2">
                         {["Xero", "QuickBooks", "FreeAgent", "Spreadsheets", "Sage", "Other"].map(
@@ -348,10 +313,10 @@ export default function IntakeDrawer() {
                               key={sw}
                               type="button"
                               onClick={() => setCurrentSoftware(sw)}
-                              className={`p-2.5 rounded-xl text-xs font-medium text-center border transition-all touch-target-48 active:scale-95 ${
+                              className={`p-2 rounded-lg text-xs font-medium text-center border transition-colors ${
                                 currentSoftware === sw
-                                  ? "bg-[#D4AF37]/20 border-[#D4AF37] text-gold-300 font-semibold"
-                                  : "bg-[#070A0F] border-white/10 text-slate-300 hover:border-white/20"
+                                  ? "bg-[#161A26] border-white/25 text-[#EDEDED]"
+                                  : "bg-[#08090E] border-white/[0.08] text-[#94A3B8] hover:border-white/15"
                               }`}
                             >
                               {sw}
@@ -361,59 +326,59 @@ export default function IntakeDrawer() {
                       </div>
                     </div>
 
-                    <div className="pt-2 flex gap-3">
+                    <div className="pt-2 flex gap-2">
                       <button
                         type="button"
                         onClick={() => setStep(1)}
-                        className="px-4 py-3 rounded-xl bg-[#070A0F] border border-white/10 text-slate-300 text-xs flex items-center gap-1.5 touch-target-48 active:scale-95"
+                        className="px-3 py-2 rounded-lg bg-[#131622] border border-white/[0.08] text-[#94A3B8] text-xs flex items-center gap-1"
                       >
-                        <ArrowLeft className="w-4 h-4" />
+                        <ArrowLeft className="w-3.5 h-3.5" />
                         <span>Back</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => setStep(3)}
-                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs py-3.5 px-4 rounded-xl shadow-gold-subtle touch-target-48 active:scale-95 transition-all"
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors"
                       >
-                        <span>Continue to Final Step</span>
-                        <ArrowRight className="w-4 h-4 text-black" />
+                        <span>Continue</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
                 )}
 
-                {/* Step 3: Core Bottlenecks & Preferred Consultation Time */}
+                {/* Step 3 */}
                 {step === 3 && (
-                  <div className="space-y-4 animate-in fade-in">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-medium text-gold-300 mb-2">
-                        Core Accounting Bottlenecks (Select all that apply)
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-2">
+                        Primary Areas for Review
                       </label>
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         {[
                           "Receipt chasing & disorganized expense records",
                           "Unpredictable Corporation Tax bills at year-end",
                           "Missing R&D tax relief / Capital Allowances",
-                          "Lack of proactive tax planning & director dividend advice",
-                          "Late VAT filings & unhelpful accountant communication",
+                          "Director dividend and remuneration structuring",
+                          "Quarterly VAT submissions & MTD compliance",
                         ].map((issue) => {
                           const isSelected = bottlenecks.includes(issue);
                           return (
                             <div
                               key={issue}
                               onClick={() => toggleBottleneck(issue)}
-                              className={`p-3 rounded-xl text-xs flex items-center justify-between border cursor-pointer transition-all touch-target-48 active:scale-95 ${
+                              className={`p-2.5 rounded-lg text-xs flex items-center justify-between border cursor-pointer transition-colors ${
                                 isSelected
-                                  ? "bg-[#D4AF37]/15 border-[#D4AF37] text-white"
-                                  : "bg-[#070A0F] border-white/10 text-slate-300 hover:border-white/20"
+                                  ? "bg-[#161A26] border-white/25 text-[#EDEDED]"
+                                  : "bg-[#08090E] border-white/[0.08] text-[#94A3B8] hover:border-white/15"
                               }`}
                             >
                               <span>{issue}</span>
                               <div
                                 className={`w-4 h-4 rounded flex items-center justify-center text-[10px] ${
                                   isSelected
-                                    ? "bg-[#D4AF37] text-black font-bold"
-                                    : "border border-white/30"
+                                    ? "bg-[#D4AF37] text-black font-semibold"
+                                    : "border border-white/20"
                                 }`}
                               >
                                 {isSelected ? "✓" : ""}
@@ -425,46 +390,36 @@ export default function IntakeDrawer() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-gold-300 mb-1.5">
-                        Preferred Consultation Slot (30-min Zoom / In-Person Mayfair)
+                      <label className="block text-xs font-medium text-[#94A3B8] mb-1">
+                        Preferred Consultation Time
                       </label>
-                      <div className="relative">
-                        <Clock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-                        <select
-                          value={preferredTime}
-                          onChange={(e) => setPreferredTime(e.target.value)}
-                          className="w-full bg-[#070A0F] border border-white/10 focus:border-[#D4AF37] rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none transition-colors"
-                        >
-                          <option value="Tomorrow Morning (10:00 AM)">Tomorrow Morning (10:00 AM)</option>
-                          <option value="Tomorrow Afternoon (2:00 PM)">Tomorrow Afternoon (2:00 PM)</option>
-                          <option value="Thursday (11:30 AM)">Thursday (11:30 AM)</option>
-                          <option value="Friday (3:00 PM)">Friday (3:00 PM)</option>
-                        </select>
-                      </div>
+                      <select
+                        value={preferredTime}
+                        onChange={(e) => setPreferredTime(e.target.value)}
+                        className="w-full bg-[#08090E] border border-white/[0.1] focus:border-[#D4AF37] rounded-lg px-3 py-2 text-xs text-[#EDEDED] focus:outline-none transition-colors"
+                      >
+                        <option value="Tomorrow Morning (10:00 AM)">Tomorrow Morning (10:00 AM)</option>
+                        <option value="Tomorrow Afternoon (2:00 PM)">Tomorrow Afternoon (2:00 PM)</option>
+                        <option value="Thursday (11:30 AM)">Thursday (11:30 AM)</option>
+                        <option value="Friday (3:00 PM)">Friday (3:00 PM)</option>
+                      </select>
                     </div>
 
-                    <div className="pt-2 flex gap-3">
+                    <div className="pt-2 flex gap-2">
                       <button
                         type="button"
                         onClick={() => setStep(2)}
-                        className="px-4 py-3 rounded-xl bg-[#070A0F] border border-white/10 text-slate-300 text-xs flex items-center gap-1.5 touch-target-48 active:scale-95"
+                        className="px-3 py-2 rounded-lg bg-[#131622] border border-white/[0.08] text-[#94A3B8] text-xs flex items-center gap-1"
                       >
-                        <ArrowLeft className="w-4 h-4" />
+                        <ArrowLeft className="w-3.5 h-3.5" />
                         <span>Back</span>
                       </button>
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#B89628] text-black font-semibold text-xs py-3.5 px-4 rounded-xl shadow-gold-subtle touch-target-48 active:scale-95 transition-all disabled:opacity-50"
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50"
                       >
-                        {isSubmitting ? (
-                          <span>Registering File with Partner...</span>
-                        ) : (
-                          <>
-                            <span>Confirm & Schedule Consultation</span>
-                            <Sparkles className="w-4 h-4 text-black" />
-                          </>
-                        )}
+                        <span>{isSubmitting ? "Submitting..." : "Schedule Consultation"}</span>
                       </button>
                     </div>
                   </div>

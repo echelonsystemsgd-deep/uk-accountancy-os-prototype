@@ -27,7 +27,7 @@ export default function Home() {
   const { currentView } = useDemoStore();
 
   return (
-    <main className="min-h-screen bg-[#070A0F] text-[#F8FAFC] flex flex-col selection:bg-gold-500/30 selection:text-white">
+    <main className="min-h-screen bg-[#07080C] text-[#EDEDED] flex flex-col selection:bg-[#D4AF37]/25 selection:text-white">
       {/* Global Notifications */}
       <ToastContainer />
 

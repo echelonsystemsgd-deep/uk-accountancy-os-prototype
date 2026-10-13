@@ -3,16 +3,7 @@
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { MissingDocRadarItem } from "@/lib/types";
-import {
-  X,
-  Send,
-  MessageSquare,
-  Mail,
-  Sparkles,
-  ShieldCheck,
-  CheckCircle,
-  Copy,
-} from "lucide-react";
+import { X, Send, Copy, MessageSquare, Mail } from "lucide-react";
 
 interface ChaserModalProps {
   item: MissingDocRadarItem;
@@ -25,13 +16,12 @@ export default function ChaserModal({ item, onClose }: ChaserModalProps) {
   const [isSending, setIsSending] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Customized polite HMRC deadline chaser with auto-magic upload link
   const magicLink = `https://portal.apexandco.co.uk/dropzone?auth=${item.clientId}&ref=vat-q3`;
 
-  const whatsappMessage = `Hi ${item.directorName},\n\nHope you're having a productive week. This is Apex & Co. Chartered Accountants.\n\nQuick note regarding ${item.companyName}'s ${item.taxPeriod}: we're finalizing your return and are missing your ${item.documentType}.\n\nTo ensure we beat HMRC's statutory deadline without penalties, could you snap or upload it using your practice link below? It takes 10 seconds:\n${magicLink}\n\nMany thanks,\nSenior Partner Office • Apex & Co.`;
+  const whatsappMessage = `Hi ${item.directorName},\n\nThis is Apex & Co. Chartered Accountants regarding ${item.companyName}'s ${item.taxPeriod}.\n\nTo finalize your submission ahead of the HMRC statutory deadline, please upload the following outstanding item via your portal link:\n• ${item.documentType}\n\nSecure upload link:\n${magicLink}\n\nKind regards,\nPartner Office • Apex & Co.`;
 
-  const emailSubject = `Urgent Document Request: ${item.companyName} (${item.taxPeriod})`;
-  const emailBody = `Dear ${item.directorName},\n\nWe are currently completing your quarterly accounts reconciliation for ${item.companyName}.\n\nWe require the following outstanding item to finalize your submission:\n• ${item.documentType}\n\nYou can securely drop this directly into your dedicated client portal here:\n${magicLink}\n\nKind regards,\nApex & Co. Practice Advisory Team`;
+  const emailSubject = `Document Request: ${item.companyName} (${item.taxPeriod})`;
+  const emailBody = `Dear ${item.directorName},\n\nWe are currently finalizing your quarterly accounts for ${item.companyName}.\n\nWe require the following outstanding item:\n• ${item.documentType}\n\nPlease drop this directly into your secure portal:\n${magicLink}\n\nKind regards,\nApex & Co. Practice Advisory`;
 
   const handleSend = () => {
     setIsSending(true);
@@ -39,7 +29,7 @@ export default function ChaserModal({ item, onClose }: ChaserModalProps) {
       chaseDocument(item.id, channel);
       setIsSending(false);
       onClose();
-    }, 700);
+    }, 400);
   };
 
   const handleCopyLink = () => {
@@ -52,87 +42,82 @@ export default function ChaserModal({ item, onClose }: ChaserModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in"
       onClick={onClose}
     >
       <div
-        className="w-full sm:max-w-xl bg-[#0B0F17] border-t sm:border border-[#D4AF37]/40 sm:rounded-2xl shadow-2xl max-h-[90vh] flex flex-col overflow-hidden text-white"
+        className="w-full sm:max-w-lg bg-[#0D0F17] border-t sm:border border-white/[0.1] sm:rounded-xl shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_16px_40px_rgba(0,0,0,0.8)] overflow-hidden text-[#EDEDED] flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#070A0F]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="font-serif-luxury text-base sm:text-lg font-semibold text-white">
-                1-Click Automated Chaser Dispatch
-              </h3>
-              <p className="text-[11px] text-gold-400">
-                {item.companyName} • {item.taxPeriod}
-              </p>
-            </div>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#0A0C13]">
+          <div>
+            <h3 className="text-sm font-semibold text-[#EDEDED] tracking-tight">
+              Automated Document Chaser
+            </h3>
+            <p className="text-xs text-[#64748B] mt-0.5">
+              {item.companyName} • {item.taxPeriod}
+            </p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
-            aria-label="Close chaser modal"
+            className="p-1.5 text-[#64748B] hover:text-[#EDEDED] rounded-lg transition-colors"
+            aria-label="Close dialog"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto space-y-5">
+        <div className="p-6 overflow-y-auto space-y-4">
           {/* Channel selector */}
           <div>
-            <label className="block text-xs font-semibold text-gold-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-medium text-[#94A3B8] mb-1.5">
               Dispatch Channel
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setChannel("whatsapp")}
-                className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${
+                className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border text-xs font-medium transition-colors ${
                   channel === "whatsapp"
-                    ? "bg-emerald-500/20 border-emerald-500 text-emerald-300 shadow-sm"
-                    : "bg-[#070A0F] border-white/10 text-slate-300 hover:border-white/20"
+                    ? "bg-[#161A26] border-white/25 text-[#EDEDED]"
+                    : "bg-[#08090E] border-white/[0.08] text-[#94A3B8] hover:border-white/15"
                 }`}
               >
-                <MessageSquare className="w-4 h-4 text-emerald-400" />
-                <span>WhatsApp Business API</span>
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>WhatsApp API</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setChannel("email")}
-                className={`flex items-center justify-center gap-2 p-3 rounded-xl border text-xs font-semibold transition-all ${
+                className={`flex items-center justify-center gap-2 p-2.5 rounded-lg border text-xs font-medium transition-colors ${
                   channel === "email"
-                    ? "bg-[#D4AF37]/20 border-[#D4AF37] text-gold-300 shadow-sm"
-                    : "bg-[#070A0F] border-white/10 text-slate-300 hover:border-white/20"
+                    ? "bg-[#161A26] border-white/25 text-[#EDEDED]"
+                    : "bg-[#08090E] border-white/[0.08] text-[#94A3B8] hover:border-white/15"
                 }`}
               >
-                <Mail className="w-4 h-4 text-gold-400" />
-                <span>Executive Email Notice</span>
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email Notice</span>
               </button>
             </div>
           </div>
 
-          {/* Recipient Details */}
-          <div className="p-3.5 rounded-xl bg-[#070A0F] border border-white/10 text-xs space-y-1">
+          {/* Details */}
+          <div className="p-3 rounded-lg bg-[#08090E] border border-white/[0.06] text-xs space-y-1">
             <div className="flex justify-between">
-              <span className="text-slate-400">Recipient Director:</span>
-              <span className="font-semibold text-white">{item.directorName}</span>
+              <span className="text-[#64748B]">Director:</span>
+              <span className="text-[#EDEDED] font-medium">{item.directorName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Contact Route:</span>
-              <span className="font-mono text-gold-300">
+              <span className="text-[#64748B]">Destination:</span>
+              <span className="font-mono text-[#94A3B8]">
                 {channel === "whatsapp" ? item.phone : item.email}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-slate-400">Outstanding Item:</span>
+              <span className="text-[#64748B]">Document:</span>
               <span className="text-rose-400 font-medium">{item.documentType}</span>
             </div>
           </div>
@@ -140,44 +125,38 @@ export default function ChaserModal({ item, onClose }: ChaserModalProps) {
           {/* Message Preview */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-slate-400 tracking-wider uppercase">
-                Ready-to-Send Template
+              <label className="text-xs font-medium text-[#94A3B8]">
+                Template Preview
               </label>
               <button
                 onClick={handleCopyLink}
-                className="text-[11px] text-gold-400 hover:text-white flex items-center gap-1 transition-colors"
+                className="text-[11px] text-[#64748B] hover:text-[#EDEDED] flex items-center gap-1 transition-colors"
               >
                 <Copy className="w-3 h-3" />
-                <span>{copied ? "Copied Link!" : "Copy Portal Link"}</span>
+                <span>{copied ? "Copied Link" : "Copy Magic Link"}</span>
               </button>
             </div>
-            <div className="p-3.5 rounded-xl bg-[#070A0F] border border-white/10 font-mono text-xs text-slate-200 whitespace-pre-wrap leading-relaxed max-h-44 overflow-y-auto">
+            <div className="p-3 rounded-lg bg-[#08090E] border border-white/[0.06] font-mono text-xs text-[#94A3B8] whitespace-pre-wrap leading-relaxed max-h-36 overflow-y-auto">
               {channel === "whatsapp" ? whatsappMessage : `${emailSubject}\n\n${emailBody}`}
             </div>
           </div>
-
-          {/* Compliance note */}
-          <div className="flex items-center gap-2 text-[11px] text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Includes personalized magic auth token. Client requires zero passwords to drop receipts.</span>
-          </div>
         </div>
 
-        {/* Footer actions */}
-        <div className="p-5 border-t border-white/10 bg-[#070A0F] flex gap-3">
+        {/* Footer */}
+        <div className="p-4 border-t border-white/[0.08] bg-[#0A0C13] flex gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-3 rounded-xl bg-[#111827] border border-white/10 text-slate-300 text-xs touch-target-48 active:scale-95"
+            className="px-3 py-2 rounded-lg bg-[#131622] border border-white/[0.08] text-[#94A3B8] text-xs"
           >
             Cancel
           </button>
           <button
             onClick={handleSend}
             disabled={isSending}
-            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] to-[#B89628] text-black font-semibold text-xs py-3.5 px-4 rounded-xl shadow-gold-subtle touch-target-48 active:scale-95 transition-all disabled:opacity-50"
+            className="flex-1 flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
           >
-            <Send className="w-4 h-4 text-black" />
-            <span>{isSending ? "Dispatching via API..." : `Send 1-Click Reminder (${channel.toUpperCase()})`}</span>
+            <Send className="w-3.5 h-3.5" />
+            <span>{isSending ? "Dispatching..." : `Send Chaser (${channel.toUpperCase()})`}</span>
           </button>
         </div>
       </div>

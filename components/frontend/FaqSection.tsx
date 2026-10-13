@@ -10,66 +10,63 @@ export default function FaqSection() {
 
   const faqs = [
     {
-      q: "How difficult is it to switch from my current UK accountant?",
-      a: "The transfer process is completely frictionless. Under ICAEW professional conduct rules, we handle professional clearance directly with your previous accountant, transfer your Xero/QuickBooks records, and notify HMRC and Companies House with zero disruption to your day-to-day operations.",
+      q: "What is the process for transferring from our current accountant?",
+      a: "The handover process is managed directly by our team. Under ICAEW professional conduct guidelines, we request professional clearance, retrieve historical working papers, and transfer your accounting software access with zero operational downtime.",
     },
     {
-      q: "When should we begin Corporation Tax planning before year-end?",
-      a: "Effective tax planning should be conducted at least 60 to 90 days before your accounting reference date. This allows us to legitimately structure capital expenditure write-offs, pension contributions, and director dividend allocations before the statutory books close.",
+      q: "When should Corporation Tax planning commence before year end?",
+      a: "Strategic planning is most effective 60 to 90 days before your accounting reference date. This window allows for legitimate optimization of capital asset expensing, pension contributions, and director dividend allocations before accounts are finalized.",
     },
     {
-      q: "How does the Client Portal Dropzone solve missing receipts?",
-      a: "Our mobile-first dropzone lets directors photograph invoices or forward digital receipts instantly. Our AI engine extracts the merchant, date, VAT rate, and tax deductibility automatically, syncing directly with your Partner Dashboard so month-end closes take hours rather than weeks.",
+      q: "How does the digital document dropzone function for directors?",
+      a: "Directors can upload invoices from desktop or capture receipts on mobile. The system extracts the merchant name, date, and 20% VAT split automatically, flagging tax-deductible items for statutory CT600 preparation.",
     },
     {
-      q: "Are your monthly retainer fees fixed?",
-      a: "Yes. All our retainers are transparent fixed monthly arrangements with no hidden fees for emails or telephone advice. Your retainer includes year-end statutory accounts, CT600 Corporation Tax filing, quarterly VAT returns, confirmation statements, and ongoing tax planning.",
+      q: "Are practice retainers fixed on a monthly basis?",
+      a: "Yes. Retainers are agreed in advance with a transparent monthly fee covering annual statutory accounts, CT600 filing, quarterly VAT submissions, confirmation statements, and ongoing tax advisory.",
     },
     {
-      q: "Are you qualified to submit R&D Tax Relief under the new HMRC merged scheme?",
-      a: "Absolutely. Our chartered tax team specializes in the new merged R&D Expenditure Credit (RDEC) scheme and the SME intensive scheme. We prepare full technical narratives and electronic claim notifications in strict compliance with current HMRC regulations.",
+      q: "Are you qualified to submit R&D relief under current HMRC guidelines?",
+      a: "Yes. Our team prepares claims under the merged R&D Expenditure Credit (RDEC) scheme and SME intensive rules, drafting technical documentation in full compliance with HMRC standards.",
     },
   ];
 
   return (
-    <section className="py-20 sm:py-28 bg-[#0B0F17] border-b border-[#D4AF37]/20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 sm:py-28 bg-[#07080C] border-b border-white/[0.08]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-xs uppercase tracking-widest text-gold-400 font-mono">
-            Direct Answers
-          </span>
-          <h2 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-white tracking-tight mt-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#EDEDED] tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-slate-300 text-sm sm:text-base mt-3">
-            Key insights on switching, statutory compliance, and strategic tax advisory.
+          <p className="text-[#94A3B8] text-sm mt-2">
+            Details regarding transfer, compliance standards, and retainer structure.
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <div
                 key={idx}
-                className="bg-[#070A0F] border border-[#D4AF37]/25 rounded-2xl overflow-hidden transition-all duration-200"
+                className="bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl overflow-hidden transition-colors"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 sm:p-6 text-left touch-target-48 active:scale-[0.99] transition-transform"
+                  className="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors"
                 >
-                  <span className="font-serif-luxury text-base sm:text-lg font-semibold text-white pr-4">
+                  <span className="text-sm font-medium text-[#EDEDED] pr-4">
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`w-5 h-5 text-gold-400 shrink-0 transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
+                    className={`w-4 h-4 text-[#64748B] shrink-0 transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-[#EDEDED]" : ""
                     }`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/5 animate-in fade-in">
-                    {faq.a}
+                  <div className="px-4 sm:px-5 pb-5 pt-0 text-xs text-[#94A3B8] leading-relaxed border-t border-white/[0.04]">
+                    <div className="pt-3">{faq.a}</div>
                   </div>
                 )}
               </div>
@@ -78,14 +75,11 @@ export default function FaqSection() {
         </div>
 
         <div className="mt-12 text-center">
-          <p className="text-xs text-slate-400 mb-4">
-            Have a specific scenario regarding director loans, IR35, or capital restructuring?
-          </p>
           <button
             onClick={() => setIsIntakeOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111827] border border-[#D4AF37]/40 text-gold-300 hover:text-white hover:border-[#D4AF37] text-xs font-semibold transition-all touch-target-48 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0E111A] hover:bg-[#131622] border border-white/[0.1] text-xs font-medium text-[#EDEDED] transition-colors"
           >
-            <span>Discuss with a Chartered Senior Partner</span>
+            <span>Have a specific inquiry? Speak with a Partner</span>
           </button>
         </div>
       </div>
