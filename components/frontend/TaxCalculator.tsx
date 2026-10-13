@@ -11,7 +11,7 @@ export default function TaxCalculator() {
     setCalculatorTurnover,
     calculatorMargin,
     setCalculatorMargin,
-    setIsIntakeOpen,
+    setIsCalendarOpen,
   } = useDemoStore();
 
   // Financial calculations strictly according to current UK HMRC rules
@@ -223,7 +223,7 @@ export default function TaxCalculator() {
             </div>
 
             <button
-              onClick={() => setIsIntakeOpen(true)}
+              onClick={() => setIsCalendarOpen(true)}
               className="w-full flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-3 px-4 rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <span>Book Review Consultation</span>

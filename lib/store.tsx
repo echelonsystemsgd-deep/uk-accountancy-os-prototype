@@ -24,6 +24,10 @@ interface DemoStoreContextType {
   setCurrentView: (view: ViewMode) => void;
   isIntakeOpen: boolean;
   setIsIntakeOpen: (open: boolean) => void;
+  isCalendarOpen: boolean;
+  setIsCalendarOpen: (open: boolean) => void;
+  isWhatsAppOpen: boolean;
+  setIsWhatsAppOpen: (open: boolean) => void;
   calculatorTurnover: number;
   setCalculatorTurnover: (val: number) => void;
   calculatorMargin: number;
@@ -41,6 +45,7 @@ interface DemoStoreContextType {
   removeNotification: (id: string) => void;
   addNotification: (title: string, description: string, type?: "success" | "info" | "warning") => void;
   addIntakeClient: (submission: IntakeSubmission) => void;
+  bookCalendarMeeting: (details: { name: string; email: string; company: string; slot: string; note?: string }) => void;
   moveClientStage: (clientId: string, newStage: PipelineStage) => void;
   chaseDocument: (docId: string, channel: "whatsapp" | "email") => void;
   uploadDocument: (doc: {
@@ -313,6 +318,8 @@ const DemoStoreContext = createContext<DemoStoreContextType | undefined>(undefin
 export function DemoStoreProvider({ children }: { children: ReactNode }) {
   const [currentView, setCurrentView] = useState<ViewMode>("prospect");
   const [isIntakeOpen, setIsIntakeOpen] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [isWhatsAppOpen, setIsWhatsAppOpen] = useState<boolean>(false);
   const [calculatorTurnover, setCalculatorTurnover] = useState<number>(750000);
   const [calculatorMargin, setCalculatorMargin] = useState<number>(25);
 
@@ -380,6 +387,42 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
     addNotification(
       "New Intake Registered in Practice Hub",
       `${submission.companyName} was added to the Partner Pipeline under 'New Intake'.`,
+      "success"
+    );
+  };
+
+  const bookCalendarMeeting = (details: {
+    name: string;
+    email: string;
+    company: string;
+    slot: string;
+    note?: string;
+  }) => {
+    const newClient: ClientRecord = {
+      id: "cl-" + (Date.now() % 10000),
+      companyName: details.company,
+      companyNumber: (15000000 + Math.floor(Math.random() * 999999)).toString(),
+      directorName: details.name,
+      email: details.email,
+      phone: "+44 7700 " + Math.floor(100000 + Math.random() * 900000),
+      annualTurnover: 850000,
+      stage: "new_intake",
+      currentSoftware: "Xero",
+      vatStatus: "Calendar Consultation Confirmed",
+      missingReceiptsCount: 0,
+      lastContact: `Meeting Booked: ${details.slot}`,
+      unbilledWip: 0,
+      notes: `Direct Calendar Slot: ${details.slot}. Primary note: ${details.note || "Strategic tax & Corporation Tax review requested."}`,
+      createdAt: new Date().toISOString().split("T")[0],
+    };
+
+    setClients((prev) => [newClient, ...prev]);
+    setActiveClientsCount((prev) => prev + 1);
+    setDemoStateMutationsCount((prev) => prev + 1);
+
+    addNotification(
+      "Direct Meeting Confirmed",
+      `15-min Strategic Consultation locked for ${details.slot} with ${details.name} (${details.company}). Synced to Practice Pipeline!`,
       "success"
     );
   };
@@ -529,6 +572,10 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
         setCurrentView,
         isIntakeOpen,
         setIsIntakeOpen,
+        isCalendarOpen,
+        setIsCalendarOpen,
+        isWhatsAppOpen,
+        setIsWhatsAppOpen,
         calculatorTurnover,
         setCalculatorTurnover,
         calculatorMargin,
@@ -546,6 +593,7 @@ export function DemoStoreProvider({ children }: { children: ReactNode }) {
         removeNotification,
         addNotification,
         addIntakeClient,
+        bookCalendarMeeting,
         moveClientStage,
         chaseDocument,
         uploadDocument,

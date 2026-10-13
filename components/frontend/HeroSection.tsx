@@ -5,7 +5,7 @@ import { useDemoStore } from "@/lib/store";
 import { ArrowUpRight } from "lucide-react";
 
 export default function HeroSection() {
-  const { setIsIntakeOpen } = useDemoStore();
+  const { setIsCalendarOpen } = useDemoStore();
 
   const scrollToCalculator = () => {
     const el = document.getElementById("tax-calculator-section");
@@ -38,7 +38,7 @@ export default function HeroSection() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-4">
             <button
-              onClick={() => setIsIntakeOpen(true)}
+              onClick={() => setIsCalendarOpen(true)}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-sm py-3 px-6 rounded-lg transition-colors shadow-sm active:scale-95"
             >
               <span>Book Strategic Consultation</span>

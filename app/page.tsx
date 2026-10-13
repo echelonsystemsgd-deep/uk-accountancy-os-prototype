@@ -8,6 +8,8 @@ import FloatingDemoController from "@/components/shared/FloatingDemoController";
 import StickyMobileBar from "@/components/shared/StickyMobileBar";
 import ToastContainer from "@/components/shared/ToastContainer";
 import IntakeDrawer from "@/components/shared/IntakeDrawer";
+import CalendarBookingModal from "@/components/shared/CalendarBookingModal";
+import WhatsAppQuickChat from "@/components/shared/WhatsAppQuickChat";
 
 // Module 1 Components
 import HeroSection from "@/components/frontend/HeroSection";
@@ -15,6 +17,7 @@ import TaxCalculator from "@/components/frontend/TaxCalculator";
 import ServiceGrid from "@/components/frontend/ServiceGrid";
 import CaseStudiesSection from "@/components/frontend/CaseStudiesSection";
 import ComparisonSection from "@/components/frontend/ComparisonSection";
+import TransferTimelineSection from "@/components/frontend/TransferTimelineSection";
 import FaqSection from "@/components/frontend/FaqSection";
 
 // Module 2 Components
@@ -43,6 +46,7 @@ export default function Home() {
             <ServiceGrid />
             <CaseStudiesSection />
             <ComparisonSection />
+            <TransferTimelineSection />
             <FaqSection />
           </div>
         )}
@@ -63,8 +67,14 @@ export default function Home() {
       {/* Global Footer */}
       <Footer />
 
-      {/* Intake Drawer (Mobile Bottom Sheet / Desktop Modal) */}
+      {/* Intake Drawer (Detailed Specification Review) */}
       <IntakeDrawer />
+
+      {/* Instant 60-Second Live Calendar Booking Slide-over / Modal */}
+      <CalendarBookingModal />
+
+      {/* Floating WhatsApp Quick-Chat Action Badge & Live Consultation Dialog */}
+      <WhatsAppQuickChat />
 
       {/* Sticky Mobile Action Bar (Tested on 375px, 390px, 414px) */}
       <StickyMobileBar />

@@ -5,7 +5,7 @@ import { useDemoStore } from "@/lib/store";
 import { ArrowUpRight } from "lucide-react";
 
 export default function StickyMobileBar() {
-  const { currentView, setCurrentView, setIsIntakeOpen } = useDemoStore();
+  const { currentView, setCurrentView, setIsCalendarOpen } = useDemoStore();
 
   const scrollToCalculator = () => {
     if (currentView !== "prospect") {
@@ -31,7 +31,7 @@ export default function StickyMobileBar() {
               Fee Calculator
             </button>
             <button
-              onClick={() => setIsIntakeOpen(true)}
+              onClick={() => setIsCalendarOpen(true)}
               className="flex-1 flex items-center justify-center gap-1 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs rounded-lg py-2.5 px-3 transition-colors touch-target-48"
             >
               <span>Book Strategy</span>

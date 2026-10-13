@@ -6,7 +6,7 @@ import { ViewMode } from "@/lib/types";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 export default function Navbar() {
-  const { currentView, setCurrentView, setIsIntakeOpen } = useDemoStore();
+  const { currentView, setCurrentView, setIsCalendarOpen } = useDemoStore();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems: { id: ViewMode; label: string }[] = [
@@ -59,7 +59,7 @@ export default function Navbar() {
         {/* Right Action: Single Clean Primary CTA */}
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setIsIntakeOpen(true)}
+            onClick={() => setIsCalendarOpen(true)}
             className="hidden sm:inline-flex items-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2 px-4 rounded-lg transition-colors shadow-sm active:scale-95"
           >
             <span>Book Consultation</span>
@@ -104,7 +104,7 @@ export default function Navbar() {
           <div className="pt-2 border-t border-white/[0.06]">
             <button
               onClick={() => {
-                setIsIntakeOpen(true);
+                setIsCalendarOpen(true);
                 setMobileMenuOpen(false);
               }}
               className="w-full flex items-center justify-center gap-1.5 bg-[#D4AF37] hover:bg-[#C5A028] text-black font-semibold text-xs py-2.5 px-4 rounded-lg transition-colors"
