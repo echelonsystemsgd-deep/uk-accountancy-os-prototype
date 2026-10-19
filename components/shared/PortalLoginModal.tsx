@@ -80,7 +80,7 @@ export default function PortalLoginModal() {
 
           {/* Option 2: Client Portal */}
           <div
-            onClick={() => enterClientPortal("dropzone")}
+            onClick={() => enterClientPortal("client_overview")}
             className="p-4 rounded-lg border-2 border-neutral-200 hover:border-emerald-600 hover:bg-emerald-50/40 transition cursor-pointer space-y-2 group"
           >
             <div className="flex items-center justify-between">
@@ -103,7 +103,7 @@ export default function PortalLoginModal() {
               </span>
             </div>
             <p className="text-xs text-neutral-600 pl-11">
-              Passwordless mobile dropzone (375px) for snapping phone photos of mortgage certificates and viewing your encrypted document vault.
+              Personalized Landlord Dashboard, Section 24 Relief Tracker, Mobile Camera Dropzone, Drag & Drop with OCR parsing, and Direct Advisor Messaging.
             </p>
           </div>
         </div>

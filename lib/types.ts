@@ -1,6 +1,15 @@
 export type AppMode = 'landing' | 'accountant' | 'client';
 
-export type ScreenView = 'landing' | 'radar' | 'pipeline' | 'workspace' | 'dropzone' | 'vault' | 'chaser';
+export type ScreenView =
+  | 'landing'
+  | 'radar'
+  | 'pipeline'
+  | 'workspace'
+  | 'chaser'
+  | 'client_overview'
+  | 'dropzone'
+  | 'vault'
+  | 'client_messages';
 
 export type EntityType = 'individual' | 'joint' | 'spv_ltd';
 

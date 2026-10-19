@@ -24,8 +24,10 @@ import PropertyWorkspace from "@/components/admin/PropertyWorkspace";
 import ChaserView from "@/components/admin/ChaserView";
 
 // Dedicated Client Portal Components
+import ClientOverview from "@/components/portal/ClientOverview";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
+import ClientMessages from "@/components/portal/ClientMessages";
 
 export default function Home() {
   const { currentView } = useDemoStore();
@@ -78,6 +80,12 @@ export default function Home() {
         )}
 
         {/* Tier 3: Dedicated Client Portal */}
+        {currentView === "client_overview" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
+            <ClientOverview />
+          </div>
+        )}
+
         {currentView === "dropzone" && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
             <MobileDropzone />
@@ -87,6 +95,12 @@ export default function Home() {
         {currentView === "vault" && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
             <ClientDocumentVault />
+          </div>
+        )}
+
+        {currentView === "client_messages" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
+            <ClientMessages />
           </div>
         )}
       </main>

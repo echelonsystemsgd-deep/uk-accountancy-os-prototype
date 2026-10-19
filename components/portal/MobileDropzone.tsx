@@ -286,7 +286,7 @@ export default function MobileDropzone() {
         </div>
       </div>
 
-      {/* Display Mode: Either 375px Smartphone Frame or Full Responsive */}
+      {/* Display Mode: Either 375px Smartphone Frame or Full Responsive with Drag-and-Drop */}
       {mobileFrameEnabled ? (
         <div className="flex justify-center py-4 bg-neutral-100 rounded-xl border border-neutral-200">
           {/* 375px iPhone Bezel Frame */}
@@ -303,8 +303,68 @@ export default function MobileDropzone() {
           </div>
         </div>
       ) : (
-        <div className="max-w-xl mx-auto rounded-xl overflow-hidden border border-neutral-200 shadow-sm">
-          {DropzoneContent}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-7">
+            <div className="rounded-xl overflow-hidden border border-neutral-200 shadow-sm">
+              {DropzoneContent}
+            </div>
+          </div>
+
+          {/* Desktop/Tablet Drag & Drop Upload Zone with Instant OCR Extraction Simulation */}
+          <div className="lg:col-span-5 space-y-4">
+            <div className="accountant-card p-5 space-y-4 border-2 border-dashed border-primary/30 bg-white">
+              <div className="text-center space-y-2 py-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 mx-auto">
+                  <UploadCloud className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-neutral-900">
+                    Drag & Drop Landlord Documents
+                  </h3>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Supports PDF, JPG, PNG & Scanned TIFFs up to 25MB
+                  </p>
+                </div>
+              </div>
+
+              {pendingDocs.length > 0 && (
+                <div className="space-y-2 pt-2 border-t border-neutral-100">
+                  <span className="text-[11px] font-semibold text-neutral-600 block">
+                    Quick Assign & Run Instant OCR:
+                  </span>
+                  <div className="space-y-1.5">
+                    {pendingDocs.map((doc) => (
+                      <button
+                        key={doc.id}
+                        type="button"
+                        onClick={() => handleSimulatedUpload(doc.id, `scanned_${doc.title.toLowerCase().replace(/\s+/g, "_")}.pdf`)}
+                        className="w-full text-left p-2.5 rounded border border-neutral-200 hover:border-primary hover:bg-neutral-50 text-xs transition flex items-center justify-between"
+                      >
+                        <div className="truncate pr-2">
+                          <span className="font-semibold text-neutral-800 block truncate">{doc.title}</span>
+                          <span className="text-[10px] text-neutral-500">{doc.ownerOrProperty}</span>
+                        </div>
+                        <span className="px-2 py-1 rounded text-[10px] font-bold bg-neutral-100 text-primary shrink-0">
+                          Upload File
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* OCR Technology & Security Assurance Note */}
+              <div className="p-3 rounded-lg bg-neutral-50 border border-neutral-200/80 space-y-1 text-xs text-neutral-600">
+                <div className="flex items-center space-x-1.5 font-semibold text-neutral-800 text-[11px]">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  <span>Automated Section 24 OCR Parsing</span>
+                </div>
+                <p className="text-[11px] leading-relaxed">
+                  Mortgage account numbers and allowable interest figures are extracted automatically, eliminating manual transcription errors for your accountant.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

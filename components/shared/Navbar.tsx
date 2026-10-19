@@ -22,6 +22,7 @@ import {
   ArrowRight,
   LogOut,
   ExternalLink,
+  MessageSquare,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -326,8 +327,10 @@ export default function Navbar() {
 
   // 3. DEDICATED CLIENT PORTAL HEADER
   const clientNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
-    { id: "dropzone", label: "4. Upload Dropzone", icon: <Smartphone className="w-4 h-4" /> },
-    { id: "vault", label: "Encrypted Document Vault", icon: <FolderLock className="w-4 h-4" /> },
+    { id: "client_overview", label: "Overview & Roadmap", icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: "dropzone", label: "Upload Dropzone", icon: <Smartphone className="w-4 h-4" /> },
+    { id: "vault", label: "Document Vault", icon: <FolderLock className="w-4 h-4" /> },
+    { id: "client_messages", label: "Advisor Messages", icon: <MessageSquare className="w-4 h-4" /> },
   ];
 
   return (
