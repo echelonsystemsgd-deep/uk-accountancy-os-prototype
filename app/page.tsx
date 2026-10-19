@@ -5,82 +5,64 @@ import { useDemoStore } from "@/lib/store";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import FloatingDemoController from "@/components/shared/FloatingDemoController";
-import StickyMobileBar from "@/components/shared/StickyMobileBar";
 import ToastContainer from "@/components/shared/ToastContainer";
-import IntakeDrawer from "@/components/shared/IntakeDrawer";
-import CalendarBookingModal from "@/components/shared/CalendarBookingModal";
-import WhatsAppQuickChat from "@/components/shared/WhatsAppQuickChat";
 
-// Module 1 Components
-import HeroSection from "@/components/frontend/HeroSection";
-import TaxCalculator from "@/components/frontend/TaxCalculator";
-import ServiceGrid from "@/components/frontend/ServiceGrid";
-import CaseStudiesSection from "@/components/frontend/CaseStudiesSection";
-import ComparisonSection from "@/components/frontend/ComparisonSection";
-import TransferTimelineSection from "@/components/frontend/TransferTimelineSection";
-import FaqSection from "@/components/frontend/FaqSection";
-
-// Module 2 Components
-import AdminHub from "@/components/admin/AdminHub";
-
-// Module 3 Components
-import ClientPortal from "@/components/portal/ClientPortal";
+// The 5 Demonstrator Screens
+import PartnerRadar from "@/components/admin/PartnerRadar";
+import LandlordPipeline from "@/components/admin/LandlordPipeline";
+import PropertyWorkspace from "@/components/admin/PropertyWorkspace";
+import MobileDropzone from "@/components/portal/MobileDropzone";
+import ChaserView from "@/components/admin/ChaserView";
 
 export default function Home() {
   const { currentView } = useDemoStore();
 
   return (
-    <main className="min-h-screen bg-[#07080C] text-[#EDEDED] flex flex-col selection:bg-[#D4AF37]/25 selection:text-white">
+    <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
       {/* Global Notifications */}
       <ToastContainer />
 
-      {/* Global Header */}
+      {/* Global Header & Navigation */}
       <Navbar />
 
-      {/* Dynamic Module Viewport */}
-      <div className="flex-1">
-        {currentView === "prospect" && (
-          <div className="animate-in fade-in duration-300">
-            <HeroSection />
-            <TaxCalculator />
-            <ServiceGrid />
-            <CaseStudiesSection />
-            <ComparisonSection />
-            <TransferTimelineSection />
-            <FaqSection />
+      {/* Dynamic 5-Screen Demonstration Body */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {currentView === "radar" && (
+          <div className="animate-in fade-in duration-200">
+            <PartnerRadar />
           </div>
         )}
 
-        {currentView === "admin" && (
-          <div className="animate-in fade-in duration-300">
-            <AdminHub />
+        {currentView === "pipeline" && (
+          <div className="animate-in fade-in duration-200">
+            <LandlordPipeline />
           </div>
         )}
 
-        {currentView === "portal" && (
-          <div className="animate-in fade-in duration-300">
-            <ClientPortal />
+        {currentView === "workspace" && (
+          <div className="animate-in fade-in duration-200">
+            <PropertyWorkspace />
           </div>
         )}
-      </div>
+
+        {currentView === "dropzone" && (
+          <div className="animate-in fade-in duration-200">
+            <MobileDropzone />
+          </div>
+        )}
+
+        {currentView === "chaser" && (
+          <div className="animate-in fade-in duration-200">
+            <ChaserView />
+          </div>
+        )}
+      </main>
 
       {/* Global Footer */}
       <Footer />
 
-      {/* Intake Drawer (Detailed Specification Review) */}
-      <IntakeDrawer />
-
-      {/* Instant 60-Second Live Calendar Booking Slide-over / Modal */}
-      <CalendarBookingModal />
-
-      {/* Floating WhatsApp Quick-Chat Action Badge & Live Consultation Dialog */}
-      <WhatsAppQuickChat />
-
-      {/* Sticky Mobile Action Bar (Tested on 375px, 390px, 414px) */}
-      <StickyMobileBar />
-
-      {/* Floating Demo Controller Pill */}
+      {/* Floating Demo Switcher */}
       <FloatingDemoController />
-    </main>
+    </div>
   );
 }

@@ -1,329 +1,287 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
-import { ClientDocument } from "@/lib/types";
-import { formatGBPExact } from "@/lib/utils";
 import {
-  UploadCloud,
   Camera,
-  FileText,
+  UploadCloud,
   CheckCircle2,
-  RefreshCw,
+  AlertTriangle,
+  Lock,
+  Building2,
+  FileText,
+  RotateCcw,
+  Smartphone,
+  ShieldCheck,
+  ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 export default function MobileDropzone() {
-  const { documents, uploadDocument, missingReceiptsCount } = useDemoStore();
-  const [isDragging, setIsDragging] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [lastUploadedDoc, setLastUploadedDoc] = useState<ClientDocument | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const {
+    activeClient,
+    uploadDocument,
+    mobileFrameEnabled,
+    setMobileFrameEnabled,
+    setCurrentView,
+  } = useDemoStore();
 
-  const sampleReceiptPresets = [
-    {
-      fileName: "Virgin_Trains_London_OffPeak.pdf",
-      fileSize: "284 KB",
-      category: "Receipt" as const,
-      source: "web_dropzone" as const,
-      ocrData: {
-        merchant: "Avanti West Coast",
-        date: "12 Oct 2026",
-        amountNet: 148.5,
-        vatAmount: 0.0,
-        amountTotal: 148.5,
-        isTaxDeductible: true,
-        suggestedCategory: "Travel & Subsistence",
-        confidence: 99.8,
-      },
-    },
-    {
-      fileName: "Apple_Store_MacBook_Pro.pdf",
-      fileSize: "1.4 MB",
-      category: "Receipt" as const,
-      source: "mobile_camera" as const,
-      ocrData: {
-        merchant: "Apple Retail UK Limited",
-        date: "11 Oct 2026",
-        amountNet: 2165.83,
-        vatAmount: 433.17,
-        amountTotal: 2599.0,
-        isTaxDeductible: true,
-        suggestedCategory: "Capital Asset (Full Expensing)",
-        confidence: 99.2,
-      },
-    },
-    {
-      fileName: "Fortnum_Mason_Corporate_Box.pdf",
-      fileSize: "512 KB",
-      category: "Receipt" as const,
-      source: "web_dropzone" as const,
-      ocrData: {
-        merchant: "Fortnum & Mason Piccadilly",
-        date: "09 Oct 2026",
-        amountNet: 320.0,
-        vatAmount: 64.0,
-        amountTotal: 384.0,
-        isTaxDeductible: false,
-        suggestedCategory: "Business Entertaining",
-        confidence: 97.5,
-      },
-    },
-  ];
+  const [uploadingDocId, setUploadingDocId] = useState<string | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
 
-  const handleSimulatedUpload = (sourceType: "web_dropzone" | "mobile_camera") => {
-    setIsProcessing(true);
-    const preset =
-      sampleReceiptPresets[Math.floor(Math.random() * sampleReceiptPresets.length)];
-    const docPayload = {
-      ...preset,
-      source: sourceType,
-      fileName:
-        sourceType === "mobile_camera"
-          ? `Receipt_Scan_${Date.now().toString().slice(-4)}.jpg`
-          : preset.fileName,
-    };
+  const pendingDocs = activeClient.documents.filter((d) => d.status === "pending");
+  const verifiedDocs = activeClient.documents.filter((d) => d.status === "verified");
+
+  const handleSimulatedUpload = (docId: string, customTitle: string) => {
+    setUploadingDocId(docId);
+    setUploadProgress(25);
 
     setTimeout(() => {
-      uploadDocument(docPayload);
-      setIsProcessing(false);
-      setLastUploadedDoc({
-        id: "doc-sample-" + Date.now(),
-        fileName: docPayload.fileName,
-        fileSize: docPayload.fileSize,
-        uploadedAt: "Just now",
-        category: docPayload.category,
-        source: docPayload.source,
-        ocrData: docPayload.ocrData,
-      });
-    }, 500);
+      setUploadProgress(65);
+    }, 400);
+
+    setTimeout(() => {
+      setUploadProgress(100);
+      setTimeout(() => {
+        uploadDocument(activeClient.id, docId, customTitle);
+        setUploadingDocId(null);
+        setUploadProgress(0);
+      }, 350);
+    }, 900);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setIsProcessing(true);
-      setTimeout(() => {
-        uploadDocument({
-          fileName: file.name,
-          fileSize: `${Math.round(file.size / 1024)} KB`,
-          category: "Receipt",
-          source: "web_dropzone",
-          ocrData: {
-            merchant: "UK Commercial Supplier",
-            date: "Today",
-            amountNet: 420.0,
-            vatAmount: 84.0,
-            amountTotal: 504.0,
-            isTaxDeductible: true,
-            suggestedCategory: "Operating Expenses",
-            confidence: 98.4,
-          },
-        });
-        setIsProcessing(false);
-      }, 500);
-    }
-  };
+  // The actual mobile dropzone view content
+  const DropzoneContent = (
+    <div className="bg-white min-h-[640px] flex flex-col justify-between text-neutral-900 text-left">
+      {/* Client Header */}
+      <div className="p-4 sm:p-5 border-b border-neutral-100 bg-neutral-50/50">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-7 h-7 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
+              KP
+            </div>
+            <div>
+              <span className="font-bold text-xs text-neutral-900 block leading-tight">
+                Kai Accountants
+              </span>
+              <span className="text-[10px] text-neutral-500">Secure Client Dropzone</span>
+            </div>
+          </div>
+          <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            <Lock className="w-2.5 h-2.5 text-emerald-600" />
+            <span>256-Bit Encrypted</span>
+          </span>
+        </div>
+
+        <div className="mt-2">
+          <h1 className="text-base font-bold text-neutral-900 leading-snug">
+            {activeClient.entityName}
+          </h1>
+          <p className="text-xs text-neutral-600 mt-0.5">
+            Tax Year {activeClient.taxYear} &bull; Assigned: {activeClient.assignedAccountant}
+          </p>
+        </div>
+      </div>
+
+      {/* Main Checklist Body */}
+      <div className="p-4 sm:p-5 space-y-5 flex-1">
+        {/* Context Alert */}
+        {pendingDocs.length > 0 ? (
+          <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
+            <div className="flex items-center space-x-1.5 font-semibold">
+              <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
+              <span>{pendingDocs.length} Document{pendingDocs.length > 1 ? "s" : ""} Needed for Tax Finalization</span>
+            </div>
+            <p className="text-[11px] text-amber-800 leading-relaxed pl-5">
+              Kalpesh Patel is finalizing your Section 24 mortgage relief computation. Please upload or photograph the items below.
+            </p>
+          </div>
+        ) : (
+          <div className="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 space-y-1 text-center">
+            <CheckCircle2 className="w-8 h-8 text-emerald-600 mx-auto" />
+            <h2 className="text-sm font-bold text-emerald-900">All Checklists Complete!</h2>
+            <p className="text-[11px] text-emerald-800">
+              All documents have been verified. Your accountant has been notified to proceed with your filing.
+            </p>
+          </div>
+        )}
+
+        {/* Pending Items List */}
+        {pendingDocs.length > 0 && (
+          <div className="space-y-3">
+            <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+              Outstanding Items ({pendingDocs.length})
+            </h2>
+
+            {pendingDocs.map((doc) => {
+              const isUploading = uploadingDocId === doc.id;
+
+              return (
+                <div
+                  key={doc.id}
+                  className="accountant-card p-4 border border-amber-200 space-y-3 relative overflow-hidden"
+                >
+                  {isUploading && (
+                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 space-y-2">
+                      <div className="w-full bg-neutral-100 rounded-full h-2 overflow-hidden">
+                        <div
+                          className="bg-primary h-full transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-semibold text-neutral-800">
+                        Encrypting & Uploading... {uploadProgress}%
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-sm text-neutral-900">{doc.title}</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-red-100 text-red-800">
+                        Action Required
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-600">{doc.ownerOrProperty}</p>
+                    {doc.notes && (
+                      <p className="text-[11px] text-amber-800 bg-amber-50 p-2 rounded border border-amber-100">
+                        {doc.notes}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Dual Mobile Action Buttons: Camera Snap vs File Picker (Min 44px touch targets) */}
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleSimulatedUpload(
+                          doc.id,
+                          `photo_${doc.title.toLowerCase().replace(/\s+/g, "_")}.jpg`
+                        )
+                      }
+                      className="touch-target-44 flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 active:scale-95 transition shadow-sm"
+                    >
+                      <Camera className="w-4 h-4" />
+                      <span>Take Photo</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleSimulatedUpload(
+                          doc.id,
+                          `file_${doc.title.toLowerCase().replace(/\s+/g, "_")}.pdf`
+                        )
+                      }
+                      className="touch-target-44 flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 active:scale-95 transition"
+                    >
+                      <UploadCloud className="w-4 h-4 text-neutral-600" />
+                      <span>Choose File</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Completed / Verified Documents */}
+        <div className="space-y-2 pt-2 border-t border-neutral-100">
+          <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+            Verified Documents ({verifiedDocs.length})
+          </h2>
+
+          <div className="space-y-1.5">
+            {verifiedDocs.map((doc) => (
+              <div
+                key={doc.id}
+                className="flex items-center justify-between p-2.5 rounded bg-neutral-50 border border-neutral-100 text-xs"
+              >
+                <div className="flex items-center space-x-2 truncate">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <div className="truncate">
+                    <span className="font-medium text-neutral-800 truncate block">
+                      {doc.title}
+                    </span>
+                    <span className="text-[10px] text-neutral-500">
+                      {doc.ownerOrProperty} &bull; {doc.fileSize || "Verified PDF"}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[11px] text-emerald-700 font-semibold shrink-0">
+                  Approved
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Institutional Compliance Notice & Footer */}
+      <div className="p-4 border-t border-neutral-100 bg-neutral-50 text-[11px] text-neutral-500 space-y-1 text-center">
+        <div className="flex items-center justify-center space-x-1 text-neutral-600 font-medium">
+          <ShieldCheck className="w-3.5 h-3.5 text-neutral-500" />
+          <span>ICAEW Practice Assurance Standard</span>
+        </div>
+        <p>
+          Uploaded documents are encrypted and hosted in UK/London private data centers for statutory retention.
+        </p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="bg-[#0D0F17] border border-white/[0.08] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06),0_1px_3px_0_rgba(0,0,0,0.4)] rounded-xl p-5 sm:p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.06] pb-4">
+    <div className="space-y-4">
+      {/* Top Banner Context for Demonstrators */}
+      <div className="accountant-card p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h3 className="text-base font-semibold text-[#EDEDED] tracking-tight">
-            Document Ingestion &amp; Receipts
-          </h3>
-          <p className="text-xs text-[#64748B] mt-0.5">
-            Drop statutory invoices or photograph month-end receipts. Automated OCR extracts VAT and syncs to Practice Hub.
+          <div className="flex items-center space-x-2">
+            <h1 className="text-base font-bold text-neutral-900">
+              Screen 4: Mobile-First Landlord Dropzone (Client View)
+            </h1>
+            <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800">
+              Zero Passwords Required
+            </span>
+          </div>
+          <p className="text-xs text-neutral-600 mt-0.5">
+            This is the frictionless link Marcus opens on his iPhone after clicking a WhatsApp reminder. Uploading an item here immediately updates the Partner Radar in real time.
           </p>
         </div>
 
-        <div className="text-xs font-mono text-[#64748B]">
-          Missing counter: <span className="text-[#EDEDED]">{missingReceiptsCount}</span>
+        <div className="flex items-center space-x-2">
+          <button
+            type="button"
+            onClick={() => setMobileFrameEnabled(!mobileFrameEnabled)}
+            className="px-3 py-1.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1"
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            <span>{mobileFrameEnabled ? "Switch to Responsive View" : "Render in 375px Mobile Frame"}</span>
+          </button>
         </div>
       </div>
 
-      {/* Upload Zone & Mobile Camera Simulator */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {/* Drag and Drop Zone with standard dashed border */}
-        <div
-          onDragOver={(e) => {
-            e.preventDefault();
-            setIsDragging(true);
-          }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setIsDragging(false);
-            handleSimulatedUpload("web_dropzone");
-          }}
-          onClick={() => handleSimulatedUpload("web_dropzone")}
-          className={`md:col-span-8 border-2 border-dashed rounded-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center transition-colors cursor-pointer ${
-            isDragging
-              ? "border-white/30 bg-white/[0.03]"
-              : "border-white/15 hover:border-white/25 bg-[#08090E]"
-          }`}
-        >
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-            accept="image/*,.pdf"
-          />
-
-          {isProcessing ? (
-            <div className="space-y-2 py-4">
-              <RefreshCw className="w-6 h-6 text-[#94A3B8] animate-spin mx-auto" />
-              <div className="text-xs font-medium text-[#EDEDED]">
-                Processing Document OCR...
-              </div>
-              <p className="text-[11px] text-[#64748B] font-mono">
-                Extracting Merchant &amp; VAT Breakdown
-              </p>
+      {/* Display Mode: Either 375px Smartphone Frame or Full Responsive */}
+      {mobileFrameEnabled ? (
+        <div className="flex justify-center py-4 bg-neutral-100 rounded-xl border border-neutral-200">
+          {/* 375px iPhone Bezel Frame */}
+          <div className="w-[375px] rounded-[36px] overflow-hidden border-[8px] border-neutral-800 shadow-2xl bg-white">
+            {/* Phone Speaker & Camera Notch */}
+            <div className="h-5 bg-neutral-800 flex items-center justify-center">
+              <div className="w-16 h-3 bg-neutral-900 rounded-full" />
             </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="w-10 h-10 rounded-lg bg-[#0E111A] border border-white/10 flex items-center justify-center mx-auto text-[#94A3B8]">
-                <UploadCloud className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-[#EDEDED]">
-                  Click or Drag Receipts Here
-                </div>
-                <p className="text-[11px] text-[#64748B] mt-0.5">
-                  Simulate instant receipt upload (PDF, JPG, PNG)
-                </p>
-              </div>
+            {DropzoneContent}
+            {/* Phone Home Bar */}
+            <div className="h-4 bg-white flex items-center justify-center pb-1">
+              <div className="w-28 h-1 bg-neutral-300 rounded-full" />
             </div>
-          )}
-        </div>
-
-        {/* Mobile Camera Option */}
-        <div className="md:col-span-4 bg-[#08090E] border border-white/[0.08] rounded-xl p-4 flex flex-col justify-between space-y-4">
-          <div>
-            <div className="text-xs font-medium text-[#EDEDED]">
-              Mobile Capture
-            </div>
-            <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">
-              Designed for directors capturing fuel, travel, and subsistence receipts on mobile.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <button
-              onClick={() => handleSimulatedUpload("mobile_camera")}
-              disabled={isProcessing}
-              className="w-full flex items-center justify-center gap-2 bg-[#161A26] hover:bg-[#1E2435] border border-white/[0.1] text-[#EDEDED] font-medium text-xs py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
-            >
-              <Camera className="w-3.5 h-3.5" />
-              <span>Simulate Mobile Scan</span>
-            </button>
-
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="w-full text-center text-[11px] text-[#64748B] hover:text-[#EDEDED] py-1 transition-colors"
-            >
-              Browse Local Files
-            </button>
           </div>
         </div>
-      </div>
-
-      {/* OCR Result Spotlight */}
-      {lastUploadedDoc?.ocrData && (
-        <div className="bg-[#08090E] border border-white/[0.08] rounded-lg p-3.5 space-y-2">
-          <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-[#EDEDED]">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Extracted: {lastUploadedDoc.fileName}</span>
-            </div>
-            <span className="text-[10px] font-mono text-[#64748B]">
-              {lastUploadedDoc.ocrData.confidence}% Confidence
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-            <div>
-              <span className="text-[10px] text-[#64748B] block">Merchant:</span>
-              <span className="text-[#EDEDED] font-medium">{lastUploadedDoc.ocrData.merchant}</span>
-            </div>
-            <div>
-              <span className="text-[10px] text-[#64748B] block">Net + VAT:</span>
-              <span className="font-mono text-[#94A3B8]">
-                {formatGBPExact(lastUploadedDoc.ocrData.amountNet)} + {formatGBPExact(lastUploadedDoc.ocrData.vatAmount)}
-              </span>
-            </div>
-            <div>
-              <span className="text-[10px] text-[#64748B] block">Total:</span>
-              <span className="font-mono font-semibold text-[#EDEDED]">
-                {formatGBPExact(lastUploadedDoc.ocrData.amountTotal)}
-              </span>
-            </div>
-            <div>
-              <span className="text-[10px] text-[#64748B] block">Deductibility:</span>
-              <span
-                className={`font-medium ${
-                  lastUploadedDoc.ocrData.isTaxDeductible ? "text-emerald-400" : "text-rose-400"
-                }`}
-              >
-                {lastUploadedDoc.ocrData.isTaxDeductible ? "Tax Deductible" : "Non-Deductible"}
-              </span>
-            </div>
-          </div>
+      ) : (
+        <div className="max-w-xl mx-auto rounded-xl overflow-hidden border border-neutral-200 shadow-sm">
+          {DropzoneContent}
         </div>
       )}
-
-      {/* Document History Table */}
-      <div>
-        <div className="text-xs font-semibold text-[#EDEDED] mb-2">
-          Uploaded Document Vault ({documents.length} Files)
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-[#94A3B8]">
-            <thead className="bg-[#0A0C13] text-[#64748B] font-semibold border-b border-white/[0.08] uppercase tracking-wider text-[10px]">
-              <tr>
-                <th className="p-3">File Name</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Source</th>
-                <th className="p-3">Merchant</th>
-                <th className="p-3">Total</th>
-                <th className="p-3 text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/[0.06]">
-              {documents.map((doc) => (
-                <tr key={doc.id} className="hover:bg-white/[0.01] transition-colors">
-                  <td className="p-3">
-                    <div className="font-medium text-[#EDEDED] flex items-center gap-1.5">
-                      <FileText className="w-3.5 h-3.5 text-[#64748B]" />
-                      <span>{doc.fileName}</span>
-                    </div>
-                    <div className="text-[10px] text-[#64748B] font-mono">
-                      {doc.fileSize} • {doc.uploadedAt}
-                    </div>
-                  </td>
-                  <td className="p-3">{doc.category}</td>
-                  <td className="p-3 font-mono text-[11px] text-[#64748B]">
-                    {doc.source === "mobile_camera" ? "Mobile Scan" : "Dropzone"}
-                  </td>
-                  <td className="p-3 text-[#EDEDED]">
-                    {doc.ocrData ? doc.ocrData.merchant : "—"}
-                  </td>
-                  <td className="p-3 font-mono text-[#EDEDED]">
-                    {doc.ocrData ? formatGBPExact(doc.ocrData.amountTotal) : "—"}
-                  </td>
-                  <td className="p-3 text-right">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                      Verified
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   );
 }

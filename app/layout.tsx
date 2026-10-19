@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { DemoStoreProvider } from "@/lib/store";
+import { DemoProvider } from "@/lib/store";
 
 export const viewport: Viewport = {
-  themeColor: "#070A0F",
+  themeColor: "#0F172A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -11,22 +11,22 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://apexandco-advisory.co.uk"),
-  title: "Apex & Co. Chartered Accountants | Private Client & Corporate Advisory",
+  metadataBase: new URL("https://kptc.co.uk"),
+  title: "Kai Accountants / KP Tax Consultants | UK Property Accountancy Practice OS",
   description:
-    "Premier UK chartered accountants and strategic tax advisors for high-growth limited companies and owner-managed businesses.",
+    "Chartered Tax Advisers and Chartered Accountants specializing in property taxation, Section 24 mortgage interest relief, SPV company purchases, and landlord Self Assessment.",
   keywords: [
-    "UK Chartered Accountants",
-    "Corporation Tax Planning",
-    "ICAEW Chartered",
-    "ACCA Certified",
-    "Making Tax Digital",
-    "R&D Tax Relief",
-    "Mayfair Accountancy",
-    "UK Ltd Company Accounting",
+    "UK Property Accountant",
+    "Section 24 Mortgage Relief",
+    "Landlord Tax Return",
+    "SPV Limited Company Property",
+    "Chartered Tax Adviser CTA",
+    "Chartered Accountant FCA",
+    "Making Tax Digital ITSA",
+    "Buy to Let Accounts",
   ],
-  authors: [{ name: "Mercian Wealth", url: "https://mercianwealth.com" }],
-  creator: "Apex & Co. / Engineered by Mercian Wealth",
+  authors: [{ name: "Mercian Wealth Automation", url: "https://kptc.co.uk" }],
+  creator: "Kai Accountants / KP Tax Consultants",
   icons: {
     icon: "/icon.svg",
     shortcut: "/icon.svg",
@@ -35,26 +35,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://apexandco-advisory.co.uk",
-    title: "Apex & Co. Chartered Accountants | Private Client & Corporate Advisory",
+    url: "https://kptc.co.uk",
+    title: "Kai Accountants / KP Tax Consultants | UK Property Accountancy Practice OS",
     description:
-      "Premier UK chartered accountants and strategic tax advisors for high-growth limited companies and owner-managed businesses.",
-    siteName: "Apex & Co. Chartered Accountants",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Apex & Co. Chartered Accountants & Tax Advisors",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Apex & Co. Chartered Accountants | Private Client & Corporate Advisory",
-    description:
-      "Premier UK chartered accountants and strategic tax advisors for high-growth limited companies and owner-managed businesses.",
-    images: ["/og-image.png"],
+      "Chartered Tax Advisers and Chartered Accountants specializing in property taxation, Section 24 mortgage interest relief, SPV company purchases, and landlord Self Assessment.",
+    siteName: "Kai Accountants / KP Tax Consultants",
   },
 };
 
@@ -64,11 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-GB" className="dark">
-      <body className="min-h-screen bg-[#07080C] text-[#EDEDED] antialiased selection:bg-[#D4AF37]/25 selection:text-white">
-        <DemoStoreProvider>
-          {children}
-        </DemoStoreProvider>
+    <html lang="en-GB">
+      <body className="min-h-screen bg-neutral-50 text-neutral-900 antialiased">
+        <DemoProvider>{children}</DemoProvider>
       </body>
     </html>
   );

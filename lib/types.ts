@@ -1,82 +1,87 @@
-export type ViewMode = 'prospect' | 'portal' | 'admin';
+export type ScreenView = 'radar' | 'pipeline' | 'workspace' | 'dropzone' | 'chaser';
 
-export type PipelineStage = 'new_intake' | 'kyc_pending' | 'engagement_sent' | 'active_client';
+export type EntityType = 'individual' | 'joint' | 'spv_ltd';
 
-export interface ClientRecord {
+export type OnboardingStage = 'intake_submitted' | 'kyc_pending' | 'chasing_docs' | 'review_ready' | 'computation_complete';
+
+export type DocumentStatus = 'pending' | 'uploaded' | 'verified' | 'rejected';
+
+export type DocumentCategory = 'id_aml' | 'tax_record' | 'mortgage' | 'tenancy' | 'expense';
+
+export interface DocumentItem {
   id: string;
-  companyName: string;
-  companyNumber: string;
-  directorName: string;
-  email: string;
-  phone: string;
-  annualTurnover: number;
-  stage: PipelineStage;
-  currentSoftware: 'Xero' | 'QuickBooks' | 'FreeAgent' | 'Spreadsheets' | 'Sage';
-  vatStatus: string;
-  missingReceiptsCount: number;
-  lastContact: string;
-  unbilledWip: number;
-  notes: string;
-  createdAt: string;
+  title: string;
+  category: DocumentCategory;
+  ownerOrProperty: string; // e.g. "Marcus Sterling" or "14 High Street, Cheltenham"
+  status: DocumentStatus;
+  isOverdue: boolean;
+  dueDate: string;
+  notes?: string;
+  fileStoragePath?: string;
+  uploadedAt?: string;
+  fileSize?: string;
 }
 
-export interface MissingDocRadarItem {
+export interface PropertyItem {
+  id: string;
+  address: string;
+  postcode: string;
+  propertyType: 'Residential BTL' | 'HMO' | 'Commercial' | 'Multi-unit';
+  ownershipSplit: string; // e.g. "50/50 Joint" or "100% SPV Ltd"
+  annualRentalIncome: number;
+  mortgageLender?: string;
+  outstandingMortgage?: number;
+}
+
+export interface ClientParty {
+  id: string;
+  fullName: string;
+  role: 'Primary Landlord' | 'Joint Owner (Spouse)' | 'Company Director';
+  email: string;
+  phone: string;
+  utrNumber: string; // 10-digit synthetic UTR
+  nationalInsurance: string;
+  idVerified: boolean;
+  addressVerified: boolean;
+}
+
+export interface LandlordClient {
+  id: string;
+  entityName: string;
+  entityType: EntityType;
+  companyNumber?: string; // If SPV Ltd Co
+  primaryContact: string;
+  email: string;
+  phone: string;
+  taxYear: string; // "2024/25"
+  stage: OnboardingStage;
+  assignedAccountant: 'Kalpesh Patel FCA' | 'Pritpal Chaggar CTA';
+  properties: PropertyItem[];
+  parties: ClientParty[];
+  documents: DocumentItem[];
+  unbilledWip: number;
+  lastChasedAt?: string;
+  chaseCount: number;
+  totalRentalIncome: number;
+}
+
+export interface CommunicationLogItem {
   id: string;
   clientId: string;
-  companyName: string;
-  directorName: string;
-  email: string;
-  phone: string;
-  documentType: string;
-  taxPeriod: string;
-  daysOverdue: number;
-  urgency: 'critical' | 'high' | 'medium';
-  chasedCount: number;
-  lastChasedAt?: string;
+  entityName: string;
+  channel: 'whatsapp' | 'sms' | 'email';
+  recipient: string;
+  messageBody: string;
+  sentAt: string;
+  status: 'delivered' | 'read' | 'queued';
+  triggeredBy: string;
 }
 
-export interface ClientInvoice {
-  id: string;
-  invoiceNumber: string;
-  clientName: string;
-  description: string;
-  issueDate: string;
-  dueDate: string;
-  amountNet: number;
-  vatAmount: number;
-  amountTotal: number;
-  status: 'paid' | 'awaiting_payment';
-  paidAt?: string;
-  paymentMethod?: string;
-}
-
-export interface ClientDocument {
-  id: string;
-  fileName: string;
-  fileSize: string;
-  uploadedAt: string;
-  category: 'Receipt' | 'Sales Invoice' | 'Bank Statement' | 'HMRC Notice' | 'Payroll Record';
-  source: 'web_dropzone' | 'mobile_camera' | 'email_forward';
-  ocrData?: {
-    merchant: string;
-    date: string;
-    amountNet: number;
-    vatAmount: number;
-    amountTotal: number;
-    isTaxDeductible: boolean;
-    suggestedCategory: string;
-    confidence: number;
-  };
-}
-
-export interface IntakeSubmission {
-  companyName: string;
-  incorporationYear: string;
-  directorName: string;
-  email: string;
-  phone: string;
-  turnoverBracket: string;
-  currentSoftware: string;
-  bottlenecks: string[];
-  preferredConsultationTime: string;
+export interface PracticeMetrics {
+  activeLandlordsCount: number;
+  trackedPropertiesCount: number;
+  missingDocumentsCount: number;
+  approachingDeadlinesCount: number;
+  unbilledWipTotal: number;
+  averageCycleDays: number;
 }

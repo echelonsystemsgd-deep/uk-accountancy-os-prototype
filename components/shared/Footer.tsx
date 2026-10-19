@@ -1,105 +1,102 @@
 "use client";
 
 import React from "react";
-import { useDemoStore } from "@/lib/store";
-import { ExternalLink } from "lucide-react";
+import { ShieldCheck, Mail, Phone, MapPin, Building2, CheckCircle2 } from "lucide-react";
 
 export default function Footer() {
-  const { setCurrentView, setIsIntakeOpen } = useDemoStore();
-
   return (
-    <footer className="bg-[#07080C] border-t border-white/[0.08] pt-12 pb-24 sm:pb-12 text-[#94A3B8] text-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/[0.06]">
-          {/* Practice Details */}
-          <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded bg-[#0E111A] border border-white/[0.12] flex items-center justify-center text-[#EDEDED] font-semibold text-xs">
-                A
+    <footer className="bg-white border-t border-neutral-200 mt-16 text-xs text-neutral-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        {/* Practice Overview & Trust Signals */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Col 1: Firm Overview */}
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
+                KP
               </div>
-              <span className="text-sm font-semibold text-[#EDEDED] tracking-tight">
-                Apex &amp; Co. Chartered Accountants
-              </span>
+              <div>
+                <span className="font-bold text-neutral-900 block text-sm">Kai Accountants</span>
+                <span className="text-[11px] text-neutral-500">KP Tax Consultants</span>
+              </div>
             </div>
-            <p className="text-[#64748B] text-xs leading-relaxed max-w-sm">
-              Strategic accounting, Corporation Tax architecture, and compliance for UK limited companies and corporate directors.
+            <p className="text-neutral-600 leading-relaxed text-[11px]">
+              Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising portfolio landlords, property investors, and limited company SPVs on UK tax compliance and legitimate relief.
             </p>
-            <div className="text-[11px] text-[#64748B] pt-1 font-mono">
-              ICAEW Firm No. 902814 • ACCA Practice Assurance • HMRC MTD Ready
-            </div>
           </div>
 
-          {/* Quick Navigation */}
-          <div>
-            <h4 className="text-xs font-semibold text-[#EDEDED] uppercase tracking-wider mb-3">
-              Platform Views
-            </h4>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <button
-                  onClick={() => setCurrentView("prospect")}
-                  className="hover:text-[#EDEDED] transition-colors"
-                >
-                  Public Acquisition Site
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setCurrentView("admin")}
-                  className="hover:text-[#EDEDED] transition-colors"
-                >
-                  Practice Hub Dashboard
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setCurrentView("portal")}
-                  className="hover:text-[#EDEDED] transition-colors"
-                >
-                  Client Dropzone Portal
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => setIsIntakeOpen(true)}
-                  className="text-[#D4AF37] hover:text-[#C5A028] transition-colors"
-                >
-                  Book Consultation
-                </button>
-              </li>
+          {/* Col 2: Core Property Tax Services */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+              Property Tax Advisory
+            </h3>
+            <ul className="space-y-1.5 text-[11px] text-neutral-600">
+              <li>&bull; Section 24 Mortgage Interest Relief</li>
+              <li>&bull; SPV Limited Company Purchases & Transfers</li>
+              <li>&bull; Stamp Duty Land Tax (SDLT) Planning</li>
+              <li>&bull; Landlord Self Assessment & MTD for ITSA</li>
+              <li>&bull; Capital Gains Tax on UK Property Disposals (60-Day Returns)</li>
             </ul>
           </div>
 
-          {/* London Office */}
-          <div>
-            <h4 className="text-xs font-semibold text-[#EDEDED] uppercase tracking-wider mb-3">
-              Office
-            </h4>
-            <div className="text-xs text-[#64748B] space-y-1 leading-relaxed">
-              <p className="text-[#94A3B8]">28 Berkeley Square, Mayfair</p>
-              <p>London, W1J 6EN</p>
-              <p className="pt-2 font-mono">contact@apexandco-advisory.co.uk</p>
+          {/* Col 3: Regulatory & Professional Accreditations */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+              Professional Regulation
+            </h3>
+            <div className="space-y-2 text-[11px] text-neutral-600">
+              <div className="flex items-start space-x-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                <span>
+                  <strong>ICAEW Regulated:</strong> Regulated by the Institute of Chartered Accountants in England & Wales.
+                </span>
+              </div>
+              <div className="flex items-start space-x-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
+                <span>
+                  <strong>CIOT Member:</strong> Chartered Tax Advisers providing specialist tax consultancy.
+                </span>
+              </div>
             </div>
+          </div>
+
+          {/* Col 4: Statutory Placeholders & Contact */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-neutral-900 text-xs uppercase tracking-wider">
+              Practice Information
+            </h3>
+            <ul className="space-y-1.5 text-[11px] text-neutral-600">
+              <li className="flex items-center space-x-2">
+                <Mail className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span>info@kptc.co.uk</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span>+44 (0)20 7946 0192 [Placeholder]</span>
+              </li>
+              <li className="flex items-start space-x-2">
+                <MapPin className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />
+                <span>[Placeholder: Suite 4, High Street, London]</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Building2 className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span>Company No. [Placeholder: 12345678]</span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Mercian Wealth Credit */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#64748B]">
-          <div>
-            © {new Date().getFullYear()} Apex &amp; Co. Advisory Ltd. Reg No. 10984120. Supervised under MLR 2017.
-          </div>
-
-          <div className="flex items-center gap-1">
-            <span>Designed &amp; Engineered by</span>
-            <a
-              href="https://mercianwealth.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#EDEDED] hover:text-[#D4AF37] font-medium underline underline-offset-4 transition-colors inline-flex items-center gap-0.5 ml-1"
-            >
-              <span>Mercian Wealth</span>
-              <ExternalLink className="w-2.5 h-2.5" />
-            </a>
+        {/* Bottom Legal Disclaimer & Copyright */}
+        <div className="pt-6 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center sm:justify-between text-[11px] text-neutral-500 gap-2">
+          <p>
+            &copy; 2026 KP Tax Consultants Ltd / Kai Accountants. All rights reserved.
+          </p>
+          <div className="flex items-center space-x-4">
+            <span>Synthetic Demonstration Prototype</span>
+            <span>&bull;</span>
+            <span>Privacy & Retention Policy</span>
+            <span>&bull;</span>
+            <span>Terms of Engagement</span>
           </div>
         </div>
       </div>
