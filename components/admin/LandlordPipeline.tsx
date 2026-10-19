@@ -108,6 +108,8 @@ export default function LandlordPipeline() {
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
             <input
+              id="pipeline-search-input"
+              aria-label="Search by entity name, owner, or property address"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

@@ -79,7 +79,7 @@ export default function PropertyTaxCalculator() {
             {/* Slider 1: Number of Properties */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <label className="font-semibold text-neutral-900">
+                <label htmlFor="calc-properties-count" className="font-semibold text-neutral-900 cursor-pointer">
                   Number of Buy-to-Let Properties:
                 </label>
                 <span className="font-bold text-primary text-sm num-tabular">
@@ -87,6 +87,8 @@ export default function PropertyTaxCalculator() {
                 </span>
               </div>
               <input
+                id="calc-properties-count"
+                aria-label="Number of Buy-to-Let Properties"
                 type="range"
                 min={1}
                 max={15}
@@ -105,7 +107,7 @@ export default function PropertyTaxCalculator() {
             {/* Slider 2: Gross Annual Rental Income */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <label className="font-semibold text-neutral-900">
+                <label htmlFor="calc-gross-rent" className="font-semibold text-neutral-900 cursor-pointer">
                   Total Gross Annual Rental Income:
                 </label>
                 <span className="font-bold text-primary text-sm num-tabular">
@@ -113,6 +115,8 @@ export default function PropertyTaxCalculator() {
                 </span>
               </div>
               <input
+                id="calc-gross-rent"
+                aria-label="Total Gross Annual Rental Income"
                 type="range"
                 min={15000}
                 max={250000}
@@ -132,7 +136,7 @@ export default function PropertyTaxCalculator() {
             {/* Slider 3: Annual Mortgage Interest */}
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <label className="font-semibold text-neutral-900">
+                <label htmlFor="calc-mortgage-interest" className="font-semibold text-neutral-900 cursor-pointer">
                   Total Annual Mortgage Interest Paid:
                 </label>
                 <span className="font-bold text-primary text-sm num-tabular">
@@ -140,6 +144,8 @@ export default function PropertyTaxCalculator() {
                 </span>
               </div>
               <input
+                id="calc-mortgage-interest"
+                aria-label="Total Annual Mortgage Interest Paid"
                 type="range"
                 min={3000}
                 max={120000}

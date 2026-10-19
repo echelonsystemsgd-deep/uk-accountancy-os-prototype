@@ -1,0 +1,29 @@
+{
+  "name": "KP Tax Consultants Ltd — Practice OS & Client Portal",
+  "short_name": "KP Tax OS",
+  "description": "Chartered Tax Advisers (CTA) & Chartered Accountants (FCA) property tax operating system and client portal.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F172A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -12,9 +12,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kptc.co.uk"),
-  title: "Kai Accountants / KP Tax Consultants | UK Property Tax Specialists",
+  title: "KP Tax Consultants | UK Property Tax Specialists",
   description:
-    "Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising portfolio landlords, SPV limited companies, and buy-to-let investors on Section 24 mortgage relief and Making Tax Digital.",
+    "Chartered Tax Advisers (CTA) & Accountants (FCA) advising UK property portfolio landlords on Section 24 relief, SPV structures & Making Tax Digital.",
+  alternates: {
+    canonical: "https://kptc.co.uk",
+  },
   keywords: [
     "KP Tax Consultants",
     "Kai Accountants",
@@ -32,10 +35,18 @@ export const metadata: Metadata = {
   authors: [{ name: "KP Tax Consultants Ltd", url: "https://kptc.co.uk" }],
   creator: "Kai Accountants / KP Tax Consultants Ltd",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+    ],
     shortcut: "/icon.svg",
-    apple: "/logo.png",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+    ],
   },
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "en_GB",

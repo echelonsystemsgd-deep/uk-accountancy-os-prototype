@@ -18,6 +18,8 @@ export default function Footer() {
               <img
                 src="/logo.png"
                 alt="KP Tax Consultants Official Emblem"
+                width={140}
+                height={40}
                 className="h-10 w-auto object-contain shrink-0"
               />
               <div>
@@ -84,11 +86,22 @@ export default function Footer() {
             <ul className="space-y-1.5 text-[11px] text-neutral-600">
               <li className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <span>info@kptc.co.uk</span>
+                <a href="mailto:info@kptc.co.uk" className="hover:text-primary transition">info@kptc.co.uk</a>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <span>07432 660478</span>
+                <a href="tel:+447432660478" className="hover:text-primary transition font-medium">07432 660478</a>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Smartphone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <a
+                  href="https://wa.me/447432660478?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-emerald-700 hover:text-emerald-800 transition font-semibold"
+                >
+                  Direct WhatsApp Channel
+                </a>
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />
@@ -107,8 +120,10 @@ export default function Footer() {
           <p>
             &copy; 2026 KP Tax Consultants Ltd / Kai Accountants. All rights reserved.
           </p>
-          <div className="flex items-center space-x-4">
-            <span>Synthetic Demonstration Prototype</span>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <a href="/privacy" className="hover:text-neutral-900 transition">Privacy Policy</a>
+            <span>&bull;</span>
+            <a href="/terms" className="hover:text-neutral-900 transition">Terms of Service</a>
             <span>&bull;</span>
             <button
               type="button"

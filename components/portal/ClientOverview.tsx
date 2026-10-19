@@ -294,6 +294,8 @@ export default function ClientOverview() {
               <img
                 src="/team/kalpesh-patel.png"
                 alt="Kalpesh Patel FCA"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full object-cover border border-neutral-300 shadow-sm shrink-0"
               />
               <div>

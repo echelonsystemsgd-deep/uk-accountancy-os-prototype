@@ -113,6 +113,8 @@ export default function LandingHero() {
               <img
                 src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80"
                 alt="Prime UK Buy-to-Let Residential Portfolio Development"
+                width={1000}
+                height={667}
                 className="w-full h-80 sm:h-96 object-cover object-center"
                 loading="eager"
               />

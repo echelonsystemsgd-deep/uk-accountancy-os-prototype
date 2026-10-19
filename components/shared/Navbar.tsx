@@ -23,6 +23,7 @@ import {
   LogOut,
   ExternalLink,
   MessageSquare,
+  Phone,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -83,6 +84,8 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="KP Tax Consultants Official Emblem"
+                width={140}
+                height={48}
                 className="h-10 sm:h-12 w-auto object-contain shrink-0"
               />
               <div className="space-y-0.5">
@@ -140,6 +143,18 @@ export default function Navbar() {
 
             {/* Right Action CTAs (Single Line, Never Wraps) */}
             <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
+              {/* Direct WhatsApp Channel for instant lead response */}
+              <a
+                href="https://wa.me/447432660478?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition inline-flex items-center space-x-1.5 border border-emerald-200"
+                aria-label="Direct WhatsApp Enquiry"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                <span>WhatsApp</span>
+              </a>
+
               {/* Login Button with 2 Options */}
               <button
                 type="button"
@@ -281,6 +296,8 @@ export default function Navbar() {
               <img
                 src="/logo.png"
                 alt="KP Tax Consultants Official Emblem"
+                width={140}
+                height={40}
                 className="h-9 sm:h-10 w-auto object-contain shrink-0"
               />
               <div className="space-y-0.5">
@@ -371,6 +388,8 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="KP Tax Consultants Official Emblem"
+              width={140}
+              height={40}
               className="h-9 sm:h-10 w-auto object-contain shrink-0"
             />
             <div className="space-y-0.5">

@@ -65,6 +65,8 @@ export default function ConsultationModal() {
             <img
               src="/logo.png"
               alt="KP Tax Consultants"
+              width={112}
+              height={32}
               className="h-8 w-auto object-contain shrink-0"
             />
             <div>
@@ -90,8 +92,10 @@ export default function ConsultationModal() {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="font-semibold text-neutral-700 block">Your Full Name *</label>
+              <label htmlFor="intake-full-name" className="font-semibold text-neutral-700 block">Your Full Name *</label>
               <input
+                id="intake-full-name"
+                aria-label="Your Full Name"
                 type="text"
                 required
                 value={fullName}
@@ -102,8 +106,10 @@ export default function ConsultationModal() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-semibold text-neutral-700 block">Email Address *</label>
+              <label htmlFor="intake-email" className="font-semibold text-neutral-700 block">Email Address *</label>
               <input
+                id="intake-email"
+                aria-label="Email Address"
                 type="email"
                 required
                 value={email}
@@ -116,8 +122,10 @@ export default function ConsultationModal() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="font-semibold text-neutral-700 block">UK Mobile Number</label>
+              <label htmlFor="intake-phone" className="font-semibold text-neutral-700 block">UK Mobile Number</label>
               <input
+                id="intake-phone"
+                aria-label="UK Mobile Number"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -127,7 +135,7 @@ export default function ConsultationModal() {
             </div>
 
             <div className="space-y-1">
-              <label className="font-semibold text-neutral-700 block">Current Portfolio Size</label>
+              <label htmlFor="intake-portfolio-size" className="font-semibold text-neutral-700 block">Current Portfolio Size</label>
               <select
                 value={portfolioSize}
                 onChange={(e) => setPortfolioSize(e.target.value)}

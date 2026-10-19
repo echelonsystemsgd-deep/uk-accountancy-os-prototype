@@ -87,6 +87,8 @@ export default function ClientMessages() {
           <img
             src="/team/kalpesh-patel.png"
             alt="Kalpesh Patel FCA"
+            width={48}
+            height={48}
             className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500 shadow-sm shrink-0"
           />
           <div>
@@ -149,6 +151,8 @@ export default function ClientMessages() {
         <form onSubmit={handleSendMessage} className="pt-3 border-t border-neutral-200 space-y-2">
           <div className="flex items-center space-x-2">
             <input
+              id="advisor-chat-input"
+              aria-label={`Type a message to ${activeClient.assignedAccountant}`}
               type="text"
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}

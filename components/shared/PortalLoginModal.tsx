@@ -39,6 +39,8 @@ export default function PortalLoginModal() {
             <img
               src="/logo.png"
               alt="KP Tax Consultants Official Emblem"
+              width={112}
+              height={32}
               className="h-8 w-auto object-contain shrink-0"
             />
             <div>

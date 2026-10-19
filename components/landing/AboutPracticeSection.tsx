@@ -17,6 +17,8 @@ export default function AboutPracticeSection() {
               <img
                 src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80"
                 alt="Chartered Tax Advisory and Statutory Accounting Practice Review"
+                width={800}
+                height={533}
                 className="w-full h-80 sm:h-96 object-cover object-center"
                 loading="lazy"
               />
@@ -55,6 +57,8 @@ export default function AboutPracticeSection() {
                   <img
                     src="/team/pritpal-chaggar.png"
                     alt="Pritpal Chaggar - Chartered Tax Advisor"
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded-full object-cover border-2 border-neutral-200 shadow-sm shrink-0"
                   />
                   <div>
@@ -83,6 +87,8 @@ export default function AboutPracticeSection() {
                   <img
                     src="/team/kalpesh-patel.png"
                     alt="Kalpesh Patel - Chartered Accountant"
+                    width={64}
+                    height={64}
                     className="w-16 h-16 rounded-full object-cover border-2 border-neutral-200 shadow-sm shrink-0"
                   />
                   <div>
