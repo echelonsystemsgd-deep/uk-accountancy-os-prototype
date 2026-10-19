@@ -61,31 +61,31 @@ export default function Navbar() {
     return (
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 sm:h-24">
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
             {/* Practice Branding */}
             <div
               onClick={() => setCurrentView("landing")}
-              className="flex items-center space-x-3.5 cursor-pointer group"
+              className="flex items-center space-x-3 cursor-pointer group shrink-0"
             >
-              <div className="w-11 h-11 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-base tracking-wide shadow-sm group-hover:bg-neutral-800 transition">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm group-hover:bg-neutral-800 transition">
                 KP
               </div>
               <div className="space-y-0.5">
-                <div className="flex items-center space-x-2">
-                  <span className="font-extrabold text-neutral-900 text-lg sm:text-xl tracking-tight leading-none">
+                <div className="flex items-center space-x-1.5 whitespace-nowrap">
+                  <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
                     Kai Accountants
                   </span>
-                  <span className="text-neutral-300 text-sm">/</span>
-                  <span className="text-neutral-600 text-xs sm:text-sm font-semibold">KP Tax Consultants</span>
+                  <span className="text-neutral-300 text-xs">/</span>
+                  <span className="text-neutral-600 text-xs sm:text-xs font-semibold">KP Tax</span>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium">
-                  Chartered UK Property Tax Advisers &bull; ICAEW Regulated
+                <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap hidden sm:block">
+                  Chartered UK Property Tax Advisers &bull; ICAEW
                 </p>
               </div>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium text-neutral-600">
+            {/* Desktop Navigation Links (Single Line, Never Wraps) */}
+            <nav className="hidden xl:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
               <button
                 type="button"
                 onClick={() => handleScrollTo("specialisms")}
@@ -123,13 +123,13 @@ export default function Navbar() {
               </button>
             </nav>
 
-            {/* Right Action CTAs */}
-            <div className="hidden sm:flex items-center space-x-3.5">
+            {/* Right Action CTAs (Single Line, Never Wraps) */}
+            <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
               {/* Login Button with 2 Options */}
               <button
                 type="button"
                 onClick={openLoginModal}
-                className="touch-target-44 btn-tactile px-4 py-2.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-2 border border-neutral-200/80"
+                className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5 border border-neutral-200/80 whitespace-nowrap"
               >
                 <Lock className="w-3.5 h-3.5 text-neutral-500" />
                 <span>Portal Login</span>
@@ -138,10 +138,10 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => openIntakeModal()}
-                className="touch-target-44 btn-tactile px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-2 shadow-sm"
+                className="btn-tactile px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-1.5 shadow-sm whitespace-nowrap"
               >
                 <span>Book Consultation</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
