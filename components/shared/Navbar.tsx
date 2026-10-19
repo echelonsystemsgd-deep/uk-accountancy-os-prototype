@@ -59,77 +59,77 @@ export default function Navbar() {
   // 1. PUBLIC LANDING PAGE HEADER
   if (currentMode === "landing") {
     return (
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-20 sm:h-24">
             {/* Practice Branding */}
             <div
               onClick={() => setCurrentView("landing")}
-              className="flex items-center space-x-3 cursor-pointer"
+              className="flex items-center space-x-3.5 cursor-pointer group"
             >
-              <div className="w-10 h-10 rounded bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide">
+              <div className="w-11 h-11 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-base tracking-wide shadow-sm group-hover:bg-neutral-800 transition">
                 KP
               </div>
-              <div>
+              <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
-                  <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight">
+                  <span className="font-extrabold text-neutral-900 text-lg sm:text-xl tracking-tight leading-none">
                     Kai Accountants
                   </span>
-                  <span className="text-neutral-400 text-xs">/</span>
-                  <span className="text-neutral-600 text-xs font-semibold">KP Tax Consultants</span>
+                  <span className="text-neutral-300 text-sm">/</span>
+                  <span className="text-neutral-600 text-xs sm:text-sm font-semibold">KP Tax Consultants</span>
                 </div>
                 <p className="text-xs text-neutral-500 font-medium">
-                  Chartered UK Property Tax Advisers
+                  Chartered UK Property Tax Advisers &bull; ICAEW Regulated
                 </p>
               </div>
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center space-x-8 text-xs font-medium text-neutral-600">
+            <nav className="hidden lg:flex items-center space-x-8 text-sm font-medium text-neutral-600">
               <button
                 type="button"
                 onClick={() => handleScrollTo("specialisms")}
-                className="hover:text-neutral-900 transition"
+                className="hover:text-primary transition py-1"
               >
                 Property Specialisms
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("tax-calculator")}
-                className="hover:text-neutral-900 transition"
+                className="hover:text-primary transition py-1"
               >
                 Section 24 Calculator
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("mtd-guidance")}
-                className="hover:text-neutral-900 transition"
+                className="hover:text-primary transition py-1"
               >
                 MTD 2026 Mandate
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("about-firm")}
-                className="hover:text-neutral-900 transition"
+                className="hover:text-primary transition py-1"
               >
                 About Our Firm
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("faqs")}
-                className="hover:text-neutral-900 transition"
+                className="hover:text-primary transition py-1"
               >
                 FAQs
               </button>
             </nav>
 
             {/* Right Action CTAs */}
-            <div className="hidden sm:flex items-center space-x-3">
+            <div className="hidden sm:flex items-center space-x-3.5">
               {/* Login Button with 2 Options */}
               <button
                 type="button"
                 onClick={openLoginModal}
-                className="touch-target-44 px-3.5 py-2 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5"
+                className="touch-target-44 btn-tactile px-4 py-2.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-2 border border-neutral-200/80"
               >
                 <Lock className="w-3.5 h-3.5 text-neutral-500" />
                 <span>Portal Login</span>
@@ -138,10 +138,10 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => openIntakeModal()}
-                className="touch-target-44 px-4 py-2 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-1 shadow-sm"
+                className="touch-target-44 btn-tactile px-5 py-2.5 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-2 shadow-sm"
               >
                 <span>Book Consultation</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
@@ -245,61 +245,61 @@ export default function Navbar() {
     ];
 
     return (
-      <header className="sticky top-0 z-40 bg-white border-b border-neutral-200">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             {/* Header Brand */}
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
+            <div className="flex items-center space-x-3.5">
+              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
                 KP
               </div>
-              <div>
-                <div className="flex items-center space-x-1.5">
-                  <span className="font-bold text-neutral-900 text-sm">Kai Accountants</span>
-                  <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider">
+              <div className="space-y-0.5">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider border border-neutral-200">
                     Practice OS
                   </span>
                 </div>
-                <p className="text-[11px] text-neutral-500">Partner: Kalpesh Patel FCA</p>
+                <p className="text-xs text-neutral-500 font-medium">Partner: Kalpesh Patel FCA &bull; Property Practice Lead</p>
               </div>
             </div>
 
             {/* Cross-Portal Switcher Actions */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               <button
                 type="button"
                 onClick={() => enterClientPortal("dropzone")}
-                className="touch-target-44 px-3 py-1.5 rounded text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition inline-flex items-center space-x-1.5"
+                className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition inline-flex items-center space-x-1.5"
                 title="Switch directly to the Landlord Client Portal view"
               >
-                <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
+                <Smartphone className="w-4 h-4 text-emerald-700" />
                 <span className="hidden sm:inline">Switch to Client Portal</span>
-                <span className="sm:hidden">Client</span>
+                <span className="sm:hidden">Client View</span>
               </button>
 
               <button
                 type="button"
                 onClick={exitToLanding}
-                className="touch-target-44 px-3 py-1.5 rounded text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1"
+                className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
                 title="Exit back to the public website"
               >
-                <Globe className="w-3.5 h-3.5 text-neutral-500" />
-                <span className="hidden sm:inline">Public Site</span>
+                <Globe className="w-4 h-4 text-neutral-500" />
+                <span className="hidden sm:inline">Public Website</span>
               </button>
 
               <button
                 type="button"
                 onClick={resetDemoState}
-                className="p-2 rounded text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition"
+                className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
                 title="Reset demo state back to baseline"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-4 h-4" />
               </button>
             </div>
           </div>
 
           {/* Accountant Subtabs */}
-          <nav className="flex space-x-1 overflow-x-auto pb-2 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
+          <nav className="flex space-x-3 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs sm:text-sm">
             {accountantNav.map((item) => {
               const isActive = currentView === item.id;
               return (
@@ -307,10 +307,10 @@ export default function Navbar() {
                   key={item.id}
                   type="button"
                   onClick={() => setCurrentView(item.id)}
-                  className={`touch-target-44 flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-colors ${
+                  className={`touch-target-44 flex items-center space-x-2 px-4 py-2.5 font-medium border-b-2 whitespace-nowrap transition-all ${
                     isActive
-                      ? "border-primary text-primary font-bold"
-                      : "border-transparent text-neutral-600 hover:text-neutral-900"
+                      ? "border-primary text-primary font-bold bg-neutral-50/50"
+                      : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
                   }`}
                 >
                   {item.icon}
@@ -331,72 +331,72 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-neutral-200">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Header Brand */}
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded bg-emerald-700 flex items-center justify-center text-white font-bold text-xs">
+          <div className="flex items-center space-x-3.5">
+            <div className="w-10 h-10 rounded-lg bg-emerald-700 flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
               KP
             </div>
-            <div>
-              <div className="flex items-center space-x-1.5">
-                <span className="font-bold text-neutral-900 text-sm">Kai Accountants</span>
-                <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider">
+            <div className="space-y-0.5">
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider border border-emerald-200">
                   Client Portal
                 </span>
               </div>
-              <p className="text-[11px] text-neutral-500">Account: Marcus & Sarah Sterling</p>
+              <p className="text-xs text-neutral-500 font-medium">Account: Marcus & Sarah Sterling &bull; Section 24 Review</p>
             </div>
           </div>
 
           {/* Cross-Portal Switcher Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             {currentView === "dropzone" && (
               <button
                 type="button"
                 onClick={() => setMobileFrameEnabled(!mobileFrameEnabled)}
-                className="hidden md:inline-flex items-center space-x-1 px-2.5 py-1.5 rounded text-xs font-medium bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition"
+                className="hidden md:inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition"
               >
-                <Smartphone className="w-3.5 h-3.5 text-neutral-600" />
-                <span>{mobileFrameEnabled ? "Full View" : "375px Phone Frame"}</span>
+                <Smartphone className="w-4 h-4 text-neutral-600" />
+                <span>{mobileFrameEnabled ? "Full Responsive" : "375px Phone Bezel"}</span>
               </button>
             )}
 
             <button
               type="button"
               onClick={() => enterAccountantPortal("radar")}
-              className="touch-target-44 px-3 py-1.5 rounded text-xs font-semibold text-primary bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5"
+              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-primary bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
               title="Switch directly to the Accountant Practice OS view"
             >
-              <Briefcase className="w-3.5 h-3.5 text-primary" />
+              <Briefcase className="w-4 h-4 text-primary" />
               <span className="hidden sm:inline">Switch to Accountant Hub</span>
-              <span className="sm:hidden">Staff</span>
+              <span className="sm:hidden">Staff Hub</span>
             </button>
 
             <button
               type="button"
               onClick={exitToLanding}
-              className="touch-target-44 px-3 py-1.5 rounded text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1"
+              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
               title="Exit back to the public website"
             >
-              <Globe className="w-3.5 h-3.5 text-neutral-500" />
-              <span className="hidden sm:inline">Public Site</span>
+              <Globe className="w-4 h-4 text-neutral-500" />
+              <span className="hidden sm:inline">Public Website</span>
             </button>
 
             <button
               type="button"
               onClick={resetDemoState}
-              className="p-2 rounded text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 transition"
+              className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
               title="Reset demo state back to baseline"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Client Subtabs */}
-        <nav className="flex space-x-1 overflow-x-auto pb-2 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
+        <nav className="flex space-x-3 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs sm:text-sm">
           {clientNav.map((item) => {
             const isActive = currentView === item.id;
             return (
@@ -404,16 +404,16 @@ export default function Navbar() {
                 key={item.id}
                 type="button"
                 onClick={() => setCurrentView(item.id)}
-                className={`touch-target-44 flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-colors ${
+                className={`touch-target-44 flex items-center space-x-2 px-4 py-2.5 font-medium border-b-2 whitespace-nowrap transition-all ${
                   isActive
-                    ? "border-emerald-700 text-emerald-800 font-bold"
-                    : "border-transparent text-neutral-600 hover:text-neutral-900"
+                    ? "border-emerald-700 text-emerald-800 font-bold bg-emerald-50/50"
+                    : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
                 }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
                 {item.id === "dropzone" && metrics.missingDocumentsCount > 0 && (
-                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-800">
+                  <span className="ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
                     {metrics.missingDocumentsCount}
                   </span>
                 )}
