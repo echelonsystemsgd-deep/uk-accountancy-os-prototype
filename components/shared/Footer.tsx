@@ -74,7 +74,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 4: Statutory Placeholders & Contact */}
+          {/* Col 4: Verified Statutory Details & Contact */}
           <div className="space-y-2">
             <h3 className="font-semibold text-neutral-900 text-xs uppercase tracking-wider">
               Practice Information
@@ -86,15 +86,15 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <span>+44 (0)20 7946 0192 [Placeholder]</span>
+                <span>07432 660478</span>
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />
-                <span>[Placeholder: Suite 4, High Street, London]</span>
+                <span>7 Bell Yard, London, WC2A 2JR, United Kingdom</span>
               </li>
               <li className="flex items-center space-x-2">
                 <Building2 className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <span>Company No. [Placeholder: 12345678]</span>
+                <span>Company No. 12908850 (KP Tax Consultants Ltd)</span>
               </li>
             </ul>
           </div>
