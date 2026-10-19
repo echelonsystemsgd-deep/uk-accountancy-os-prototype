@@ -36,6 +36,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body.modal-open {
+  overflow: hidden !important;
+  touch-action: none;
+  -webkit-overflow-scrolling: auto;
+}
+
 /* Institutional Card Shell with clean border and subtle elevation */
 .accountant-card {
   background-color: #FFFFFF;

@@ -27,6 +27,17 @@ export default function ConsultationModal() {
     }
   }, [intakeDefaultValues]);
 
+  useEffect(() => {
+    if (isIntakeModalOpen) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isIntakeModalOpen]);
+
   if (!isIntakeModalOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {

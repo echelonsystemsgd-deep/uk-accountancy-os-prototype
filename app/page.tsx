@@ -28,9 +28,11 @@ import ClientOverview from "@/components/portal/ClientOverview";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
 import ClientMessages from "@/components/portal/ClientMessages";
+// Portal Sidebar Component
+import PortalSidebar from "@/components/shared/PortalSidebar";
 
 export default function Home() {
-  const { currentView } = useDemoStore();
+  const { currentMode, currentView } = useDemoStore();
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
@@ -40,10 +42,9 @@ export default function Home() {
       {/* Global Header & Navigation (Dynamically changes by AppMode) */}
       <Navbar />
 
-      {/* Dynamic Viewport */}
-      <main className="flex-1 w-full">
-        {/* Tier 1: Public Acquisition Landing Page */}
-        {currentView === "landing" && (
+      {/* Main Viewport Container: Direct Full Width for Landing; Flex with Permanent Sidebar for Accountant & Client Portals */}
+      {currentMode === "landing" ? (
+        <main className="flex-1 w-full">
           <div className="animate-in fade-in duration-200">
             <LandingHero />
             <PropertyServicesGrid />
@@ -52,58 +53,66 @@ export default function Home() {
             <AboutPracticeSection />
             <PropertyFaqSection />
           </div>
-        )}
+        </main>
+      ) : (
+        <div className="flex-1 w-full max-w-[1600px] mx-auto flex">
+          {/* Permanent Sidebar on Desktop (lg+), Slide-out Drawer on Mobile */}
+          <PortalSidebar />
 
-        {/* Tier 2: Accountant Practice OS */}
-        {currentView === "radar" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <PartnerRadar />
-          </div>
-        )}
+          {/* Main Working View Area */}
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
+            {/* Accountant Practice OS Views */}
+            {currentView === "radar" && (
+              <div className="animate-in fade-in duration-200">
+                <PartnerRadar />
+              </div>
+            )}
 
-        {currentView === "pipeline" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <LandlordPipeline />
-          </div>
-        )}
+            {currentView === "pipeline" && (
+              <div className="animate-in fade-in duration-200">
+                <LandlordPipeline />
+              </div>
+            )}
 
-        {currentView === "workspace" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <PropertyWorkspace />
-          </div>
-        )}
+            {currentView === "workspace" && (
+              <div className="animate-in fade-in duration-200">
+                <PropertyWorkspace />
+              </div>
+            )}
 
-        {currentView === "chaser" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <ChaserView />
-          </div>
-        )}
+            {currentView === "chaser" && (
+              <div className="animate-in fade-in duration-200">
+                <ChaserView />
+              </div>
+            )}
 
-        {/* Tier 3: Dedicated Client Portal */}
-        {currentView === "client_overview" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <ClientOverview />
-          </div>
-        )}
+            {/* Landlord Client Portal Views */}
+            {currentView === "client_overview" && (
+              <div className="animate-in fade-in duration-200">
+                <ClientOverview />
+              </div>
+            )}
 
-        {currentView === "dropzone" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <MobileDropzone />
-          </div>
-        )}
+            {currentView === "dropzone" && (
+              <div className="animate-in fade-in duration-200">
+                <MobileDropzone />
+              </div>
+            )}
 
-        {currentView === "vault" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <ClientDocumentVault />
-          </div>
-        )}
+            {currentView === "vault" && (
+              <div className="animate-in fade-in duration-200">
+                <ClientDocumentVault />
+              </div>
+            )}
 
-        {currentView === "client_messages" && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 animate-in fade-in duration-200">
-            <ClientMessages />
-          </div>
-        )}
-      </main>
+            {currentView === "client_messages" && (
+              <div className="animate-in fade-in duration-200">
+                <ClientMessages />
+              </div>
+            )}
+          </main>
+        </div>
+      )}
 
       {/* Global Footer with Official Regulatory Badges & Placeholders */}
       <Footer />

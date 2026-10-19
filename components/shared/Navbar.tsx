@@ -57,6 +57,18 @@ export default function Navbar() {
     }
   };
 
+  // Control body scroll lock when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [mobileMenuOpen]);
+
   // 1. PUBLIC LANDING PAGE HEADER
   if (currentMode === "landing") {
     return (
@@ -151,73 +163,82 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={openLoginModal}
-                className="px-2.5 py-1.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100"
+                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
               >
                 Login
               </button>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-neutral-600 hover:text-neutral-900"
+                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition"
                 aria-label="Toggle mobile menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Full-Screen Static Mobile Navigation Drawer (Locked Viewport, No Background Scroll) */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-neutral-200 bg-white px-4 pt-3 pb-6 space-y-3 animate-in fade-in duration-150">
-            <div className="flex flex-col space-y-2 text-sm font-medium text-neutral-800">
+          <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-white flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 shadow-2xl">
+            <div className="flex flex-col space-y-3 text-base font-semibold text-neutral-900">
+              <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold mb-1">
+                Navigation
+              </span>
               <button
                 type="button"
                 onClick={() => handleScrollTo("specialisms")}
-                className="text-left py-2 border-b border-neutral-100"
+                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
               >
-                Property Specialisms
+                <span>Property Specialisms</span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("tax-calculator")}
-                className="text-left py-2 border-b border-neutral-100"
+                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
               >
-                Section 24 Calculator
+                <span>Section 24 Calculator</span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("mtd-guidance")}
-                className="text-left py-2 border-b border-neutral-100"
+                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
               >
-                MTD 2026 Mandate
+                <span>MTD 2026 Mandate</span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("about-firm")}
-                className="text-left py-2 border-b border-neutral-100"
+                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
               >
-                About Our Firm
+                <span>About Our Firm</span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
               <button
                 type="button"
                 onClick={() => handleScrollTo("faqs")}
-                className="text-left py-2 border-b border-neutral-100"
+                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
               >
-                FAQs
+                <span>Frequently Asked Questions</span>
+                <ArrowRight className="w-4 h-4 text-neutral-400" />
               </button>
             </div>
 
-            <div className="pt-2 grid grid-cols-2 gap-2">
+            <div className="pt-6 border-t border-neutral-200 space-y-3">
               <button
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   openLoginModal();
                 }}
-                className="w-full py-2.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 text-center"
+                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200 text-center flex items-center justify-center space-x-2"
               >
-                Portal Login
+                <Lock className="w-4 h-4 text-neutral-500" />
+                <span>Portal Sign In (Client or Staff)</span>
               </button>
               <button
                 type="button"
@@ -225,10 +246,14 @@ export default function Navbar() {
                   setMobileMenuOpen(false);
                   openIntakeModal();
                 }}
-                className="w-full py-2.5 rounded text-xs font-semibold text-white bg-primary text-center"
+                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-white bg-primary text-center shadow-md flex items-center justify-center space-x-2"
               >
-                Book Consultation
+                <span>Book Direct Consultation</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
+              <p className="text-[11px] text-neutral-400 text-center pt-1">
+                Chartered Tax Advisers (CTA) &bull; ICAEW Regulated Practice
+              </p>
             </div>
           </div>
         )}
@@ -241,17 +266,17 @@ export default function Navbar() {
     const accountantNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
       { id: "radar", label: "1. Partner Radar", icon: <LayoutDashboard className="w-4 h-4" /> },
       { id: "pipeline", label: "2. Landlord Pipeline", icon: <Users className="w-4 h-4" /> },
-      { id: "workspace", label: "3. Property Workspace", icon: <FolderKanban className="w-4 h-4" /> },
-      { id: "chaser", label: "5. Chaser & Activity Trail", icon: <Send className="w-4 h-4" /> },
+      { id: "workspace", label: "3. Property Hub", icon: <FolderKanban className="w-4 h-4" /> },
+      { id: "chaser", label: "4. Multi-Channel Chaser", icon: <Send className="w-4 h-4" /> },
     ];
 
     return (
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16 sm:h-18">
             {/* Header Brand */}
-            <div className="flex items-center space-x-3.5">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
                 KP
               </div>
               <div className="space-y-0.5">
@@ -261,46 +286,46 @@ export default function Navbar() {
                     Practice OS
                   </span>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium">Partner: Kalpesh Patel FCA &bull; Property Practice Lead</p>
+                <p className="text-xs text-neutral-500 font-medium hidden sm:block">Partner: Kalpesh Patel FCA &bull; Property Practice Lead</p>
               </div>
             </div>
 
             {/* Cross-Portal Switcher Actions */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2.5">
               <button
                 type="button"
-                onClick={() => enterClientPortal("dropzone")}
-                className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition inline-flex items-center space-x-1.5"
+                onClick={() => enterClientPortal("client_overview")}
+                className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
                 title="Switch directly to the Landlord Client Portal view"
               >
-                <Smartphone className="w-4 h-4 text-emerald-700" />
+                <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
                 <span className="hidden sm:inline">Switch to Client Portal</span>
-                <span className="sm:hidden">Client View</span>
+                <span className="sm:hidden">Client</span>
               </button>
 
               <button
                 type="button"
                 onClick={exitToLanding}
-                className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
+                className="btn-tactile px-3 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
                 title="Exit back to the public website"
               >
-                <Globe className="w-4 h-4 text-neutral-500" />
-                <span className="hidden sm:inline">Public Website</span>
+                <Globe className="w-3.5 h-3.5 text-neutral-500" />
+                <span className="hidden sm:inline">Public Site</span>
               </button>
 
               <button
                 type="button"
                 onClick={resetDemoState}
-                className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
+                className="p-2 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
                 title="Reset demo state back to baseline"
               >
-                <RotateCcw className="w-4 h-4" />
+                <RotateCcw className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
 
-          {/* Accountant Subtabs */}
-          <nav className="flex space-x-3 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs sm:text-sm">
+          {/* Accountant Subtabs (Visible on Header as Quick Switcher) */}
+          <nav className="flex space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
             {accountantNav.map((item) => {
               const isActive = currentView === item.id;
               return (
@@ -308,9 +333,9 @@ export default function Navbar() {
                   key={item.id}
                   type="button"
                   onClick={() => setCurrentView(item.id)}
-                  className={`touch-target-44 flex items-center space-x-2 px-4 py-2.5 font-medium border-b-2 whitespace-nowrap transition-all ${
+                  className={`flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-all ${
                     isActive
-                      ? "border-primary text-primary font-bold bg-neutral-50/50"
+                      ? "border-primary text-primary font-bold bg-neutral-50"
                       : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
                   }`}
                 >
@@ -334,12 +359,12 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Header Brand */}
-          <div className="flex items-center space-x-3.5">
-            <div className="w-10 h-10 rounded-lg bg-emerald-700 flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
+          <div className="flex items-center space-x-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-emerald-700 flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
               KP
             </div>
             <div className="space-y-0.5">
@@ -349,19 +374,19 @@ export default function Navbar() {
                   Client Portal
                 </span>
               </div>
-              <p className="text-xs text-neutral-500 font-medium">Account: Marcus & Sarah Sterling &bull; Section 24 Review</p>
+              <p className="text-xs text-neutral-500 font-medium hidden sm:block">Account: Marcus & Sarah Sterling &bull; Section 24 Review</p>
             </div>
           </div>
 
           {/* Cross-Portal Switcher Actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2.5">
             {currentView === "dropzone" && (
               <button
                 type="button"
                 onClick={() => setMobileFrameEnabled(!mobileFrameEnabled)}
-                className="hidden md:inline-flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition"
+                className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition whitespace-nowrap"
               >
-                <Smartphone className="w-4 h-4 text-neutral-600" />
+                <Smartphone className="w-3.5 h-3.5 text-neutral-600" />
                 <span>{mobileFrameEnabled ? "Full Responsive" : "375px Phone Bezel"}</span>
               </button>
             )}
@@ -369,37 +394,37 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => enterAccountantPortal("radar")}
-              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-primary bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
+              className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-primary bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
               title="Switch directly to the Accountant Practice OS view"
             >
-              <Briefcase className="w-4 h-4 text-primary" />
-              <span className="hidden sm:inline">Switch to Accountant Hub</span>
-              <span className="sm:hidden">Staff Hub</span>
+              <Briefcase className="w-3.5 h-3.5 text-primary" />
+              <span className="hidden sm:inline">Switch to Practice OS</span>
+              <span className="sm:hidden">Staff</span>
             </button>
 
             <button
               type="button"
               onClick={exitToLanding}
-              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5"
+              className="btn-tactile px-3 py-2 rounded-lg text-xs font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
               title="Exit back to the public website"
             >
-              <Globe className="w-4 h-4 text-neutral-500" />
-              <span className="hidden sm:inline">Public Website</span>
+              <Globe className="w-3.5 h-3.5 text-neutral-500" />
+              <span className="hidden sm:inline">Public Site</span>
             </button>
 
             <button
               type="button"
               onClick={resetDemoState}
-              className="p-2.5 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
+              className="p-2 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
               title="Reset demo state back to baseline"
             >
-              <RotateCcw className="w-4 h-4" />
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
         {/* Client Subtabs */}
-        <nav className="flex space-x-3 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs sm:text-sm">
+        <nav className="flex space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
           {clientNav.map((item) => {
             const isActive = currentView === item.id;
             return (
@@ -407,16 +432,16 @@ export default function Navbar() {
                 key={item.id}
                 type="button"
                 onClick={() => setCurrentView(item.id)}
-                className={`touch-target-44 flex items-center space-x-2 px-4 py-2.5 font-medium border-b-2 whitespace-nowrap transition-all ${
+                className={`flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-all ${
                   isActive
-                    ? "border-emerald-700 text-emerald-800 font-bold bg-emerald-50/50"
+                    ? "border-emerald-700 text-emerald-800 font-bold bg-emerald-50"
                     : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
                 }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
                 {item.id === "dropzone" && metrics.missingDocumentsCount > 0 && (
-                  <span className="ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
                     {metrics.missingDocumentsCount}
                   </span>
                 )}

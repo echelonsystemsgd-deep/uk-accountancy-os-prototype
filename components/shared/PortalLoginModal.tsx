@@ -17,6 +17,17 @@ export default function PortalLoginModal() {
   const { isLoginModalOpen, closeLoginModal, enterAccountantPortal, enterClientPortal } =
     useDemoStore();
 
+  React.useEffect(() => {
+    if (isLoginModalOpen) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isLoginModalOpen]);
+
   if (!isLoginModalOpen) return null;
 
   return (
