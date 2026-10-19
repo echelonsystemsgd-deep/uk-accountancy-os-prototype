@@ -12,12 +12,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
         {/* Practice Overview & Trust Signals */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Col 1: Firm Overview */}
+          {/* Col 1: Firm Overview with Official Logo */}
           <div className="space-y-3">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
-                KP
-              </div>
+            <div className="flex items-center space-x-2.5">
+              <img
+                src="/logo.png"
+                alt="KP Tax Consultants Official Emblem"
+                className="h-10 w-auto object-contain shrink-0"
+              />
               <div>
                 <span className="font-bold text-neutral-900 block text-sm">Kai Accountants</span>
                 <span className="text-[11px] text-neutral-500">KP Tax Consultants</span>

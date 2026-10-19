@@ -62,9 +62,11 @@ export default function ConsultationModal() {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
-              KP
-            </div>
+            <img
+              src="/logo.png"
+              alt="KP Tax Consultants"
+              className="h-8 w-auto object-contain shrink-0"
+            />
             <div>
               <h2 className="text-base font-bold text-neutral-900 leading-tight">
                 Book Initial Property Tax Consultation

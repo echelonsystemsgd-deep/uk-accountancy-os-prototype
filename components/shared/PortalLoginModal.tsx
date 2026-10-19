@@ -35,10 +35,12 @@ export default function PortalLoginModal() {
       <div className="accountant-card max-w-lg w-full p-6 bg-white space-y-5 shadow-2xl relative">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold text-xs">
-              KP
-            </div>
+          <div className="flex items-center space-x-2.5">
+            <img
+              src="/logo.png"
+              alt="KP Tax Consultants Official Emblem"
+              className="h-8 w-auto object-contain shrink-0"
+            />
             <div>
               <h2 className="text-base font-bold text-neutral-900 leading-tight">
                 Kai Accountants Portal Access

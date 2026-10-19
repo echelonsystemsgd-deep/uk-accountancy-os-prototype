@@ -75,14 +75,16 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
-            {/* Practice Branding */}
+            {/* Practice Branding with Official Logo */}
             <div
               onClick={() => setCurrentView("landing")}
               className="flex items-center space-x-3 cursor-pointer group shrink-0"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm group-hover:bg-neutral-800 transition">
-                KP
-              </div>
+              <img
+                src="/logo.png"
+                alt="KP Tax Consultants Official Emblem"
+                className="h-10 sm:h-12 w-auto object-contain shrink-0"
+              />
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-1.5 whitespace-nowrap">
                   <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
@@ -274,11 +276,13 @@ export default function Navbar() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
-            {/* Header Brand */}
+            {/* Header Brand with Official Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
-                KP
-              </div>
+              <img
+                src="/logo.png"
+                alt="KP Tax Consultants Official Emblem"
+                className="h-9 sm:h-10 w-auto object-contain shrink-0"
+              />
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
                   <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
@@ -362,11 +366,13 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Header Brand */}
+          {/* Header Brand with Official Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-emerald-700 flex items-center justify-center text-white font-bold text-sm tracking-wide shadow-sm">
-              KP
-            </div>
+            <img
+              src="/logo.png"
+              alt="KP Tax Consultants Official Emblem"
+              className="h-9 sm:h-10 w-auto object-contain shrink-0"
+            />
             <div className="space-y-0.5">
               <div className="flex items-center space-x-2">
                 <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
