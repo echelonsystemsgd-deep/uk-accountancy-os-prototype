@@ -36,14 +36,14 @@ export const metadata: Metadata = {
   creator: "Kai Accountants / KP Tax Consultants Ltd",
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon.svg?v=kptc", type: "image/svg+xml" },
+      { url: "/favicon.ico?v=kptc", sizes: "any" },
+      { url: "/logo.png?v=kptc", sizes: "192x192", type: "image/png" },
     ],
-    shortcut: "/icon.svg",
+    shortcut: "/icon.svg?v=kptc",
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/apple-touch-icon.png?v=kptc", sizes: "180x180", type: "image/png" },
+      { url: "/logo.png?v=kptc", sizes: "192x192", type: "image/png" },
     ],
   },
   manifest: "/manifest.json",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     url: "https://kptc.co.uk",
-    title: "Kai Accountants / KP Tax Consultants | UK Property Tax Specialists",
+    title: "KP Tax Consultants | UK Property Tax Specialists",
     description:
       "Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising portfolio landlords, SPV limited companies, and buy-to-let investors on Section 24 mortgage relief and Making Tax Digital.",
     siteName: "KP Tax Consultants Ltd / Kai Accountants",
@@ -123,6 +123,9 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <head>
+        <link rel="icon" href="/icon.svg?v=kptc" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon.ico?v=kptc" sizes="any" />
+        <link rel="apple-touch-icon" href="/logo.png?v=kptc" sizes="192x192" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
