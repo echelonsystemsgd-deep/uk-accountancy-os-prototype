@@ -164,7 +164,7 @@ export default function PropertyTaxCalculator() {
               <button
                 type="button"
                 onClick={() => setIsHigherRate(!isHigherRate)}
-                className={`px-3 py-1.5 rounded text-xs font-semibold transition ${
+                className={`btn-tactile px-3 py-1.5 rounded text-xs font-semibold transition ${
                   isHigherRate
                     ? "bg-primary text-white"
                     : "bg-neutral-200 text-neutral-700"
@@ -248,7 +248,7 @@ export default function PropertyTaxCalculator() {
             <button
               type="button"
               onClick={handleEnquireWithPortfolio}
-              className="w-full touch-target-44 py-3 rounded-md text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-neutral-800 active:scale-95 transition shadow-sm inline-flex items-center justify-center space-x-2"
+              className="w-full touch-target-44 btn-tactile py-3 rounded-md text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-neutral-800 transition shadow-sm inline-flex items-center justify-center space-x-2"
             >
               <span>Enquire With This Portfolio</span>
               <ArrowRight className="w-4 h-4" />

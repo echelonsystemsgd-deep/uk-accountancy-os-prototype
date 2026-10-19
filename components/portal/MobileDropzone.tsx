@@ -28,17 +28,24 @@ export default function MobileDropzone() {
 
   const [uploadingDocId, setUploadingDocId] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isFlashing, setIsFlashing] = useState<boolean>(false);
+  const [recentlyUploadedId, setRecentlyUploadedId] = useState<string | null>(null);
 
   const pendingDocs = activeClient.documents.filter((d) => d.status === "pending");
   const verifiedDocs = activeClient.documents.filter((d) => d.status === "verified");
 
-  const handleSimulatedUpload = (docId: string, customTitle: string) => {
+  const handleSimulatedUpload = (docId: string, customTitle: string, isPhoto = false) => {
+    if (isPhoto) {
+      setIsFlashing(true);
+      setTimeout(() => setIsFlashing(false), 350);
+    }
+
     setUploadingDocId(docId);
-    setUploadProgress(25);
+    setUploadProgress(20);
 
     setTimeout(() => {
       setUploadProgress(65);
-    }, 400);
+    }, 350);
 
     setTimeout(() => {
       setUploadProgress(100);
@@ -46,13 +53,20 @@ export default function MobileDropzone() {
         uploadDocument(activeClient.id, docId, customTitle);
         setUploadingDocId(null);
         setUploadProgress(0);
-      }, 350);
-    }, 900);
+        setRecentlyUploadedId(docId);
+        setTimeout(() => setRecentlyUploadedId(null), 3000);
+      }, 400);
+    }, 850);
   };
 
   // The actual mobile dropzone view content
   const DropzoneContent = (
-    <div className="bg-white min-h-[640px] flex flex-col justify-between text-neutral-900 text-left">
+    <div className="bg-white min-h-[640px] flex flex-col justify-between text-neutral-900 text-left relative overflow-hidden">
+      {/* Simulated Camera Flash Shutter Overlay */}
+      {isFlashing && (
+        <div className="absolute inset-0 bg-white z-50 pointer-events-none animate-shutter" />
+      )}
+
       {/* Client Header */}
       <div className="p-4 sm:p-5 border-b border-neutral-100 bg-neutral-50/50">
         <div className="flex items-center justify-between mb-2">
@@ -122,16 +136,17 @@ export default function MobileDropzone() {
                   className="accountant-card p-4 border border-amber-200 space-y-3 relative overflow-hidden"
                 >
                   {isUploading && (
-                    <div className="absolute inset-0 bg-white/90 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 space-y-2">
-                      <div className="w-full bg-neutral-100 rounded-full h-2 overflow-hidden">
+                    <div className="absolute inset-0 bg-white/95 backdrop-blur-sm z-10 flex flex-col items-center justify-center p-4 space-y-3">
+                      <div className="w-full bg-neutral-100 rounded-full h-2.5 overflow-hidden border border-neutral-200">
                         <div
-                          className="bg-primary h-full transition-all duration-300"
+                          className="bg-primary h-full transition-all duration-300 relative animate-shimmer"
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
-                      <span className="text-xs font-semibold text-neutral-800">
-                        Encrypting & Uploading... {uploadProgress}%
-                      </span>
+                      <div className="flex items-center space-x-1.5 text-xs font-semibold text-neutral-800">
+                        <Lock className="w-3 h-3 text-emerald-600 animate-pulse" />
+                        <span>256-Bit Encrypting & Uploading... {uploadProgress}%</span>
+                      </div>
                     </div>
                   )}
 
@@ -157,10 +172,11 @@ export default function MobileDropzone() {
                       onClick={() =>
                         handleSimulatedUpload(
                           doc.id,
-                          `photo_${doc.title.toLowerCase().replace(/\s+/g, "_")}.jpg`
+                          `photo_${doc.title.toLowerCase().replace(/\s+/g, "_")}.jpg`,
+                          true
                         )
                       }
-                      className="touch-target-44 flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 active:scale-95 transition shadow-sm"
+                      className="touch-target-44 btn-tactile flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition shadow-sm"
                     >
                       <Camera className="w-4 h-4" />
                       <span>Take Photo</span>
@@ -171,10 +187,11 @@ export default function MobileDropzone() {
                       onClick={() =>
                         handleSimulatedUpload(
                           doc.id,
-                          `file_${doc.title.toLowerCase().replace(/\s+/g, "_")}.pdf`
+                          `file_${doc.title.toLowerCase().replace(/\s+/g, "_")}.pdf`,
+                          false
                         )
                       }
-                      className="touch-target-44 flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 active:scale-95 transition"
+                      className="touch-target-44 btn-tactile flex items-center justify-center space-x-1.5 px-3 py-2.5 rounded text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition"
                     >
                       <UploadCloud className="w-4 h-4 text-neutral-600" />
                       <span>Choose File</span>
@@ -193,27 +210,35 @@ export default function MobileDropzone() {
           </h2>
 
           <div className="space-y-1.5">
-            {verifiedDocs.map((doc) => (
-              <div
-                key={doc.id}
-                className="flex items-center justify-between p-2.5 rounded bg-neutral-50 border border-neutral-100 text-xs"
-              >
-                <div className="flex items-center space-x-2 truncate">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <div className="truncate">
-                    <span className="font-medium text-neutral-800 truncate block">
-                      {doc.title}
-                    </span>
-                    <span className="text-[10px] text-neutral-500">
-                      {doc.ownerOrProperty} &bull; {doc.fileSize || "Verified PDF"}
-                    </span>
+            {verifiedDocs.map((doc) => {
+              const isRecent = doc.id === recentlyUploadedId;
+
+              return (
+                <div
+                  key={doc.id}
+                  className={`flex items-center justify-between p-2.5 rounded border text-xs transition-all duration-500 ${
+                    isRecent
+                      ? "bg-emerald-50 border-emerald-300 ring-2 ring-emerald-400 scale-[1.01]"
+                      : "bg-neutral-50 border-neutral-100"
+                  }`}
+                >
+                  <div className="flex items-center space-x-2 truncate">
+                    <CheckCircle2 className={`w-4 h-4 shrink-0 ${isRecent ? "text-emerald-700 animate-bounce" : "text-emerald-600"}`} />
+                    <div className="truncate">
+                      <span className="font-medium text-neutral-800 truncate block">
+                        {doc.title}
+                      </span>
+                      <span className="text-[10px] text-neutral-500">
+                        {doc.ownerOrProperty} &bull; {doc.fileSize || "Verified PDF"}
+                      </span>
+                    </div>
                   </div>
+                  <span className="text-[11px] text-emerald-700 font-semibold shrink-0">
+                    {isRecent ? "Just Received" : "Approved"}
+                  </span>
                 </div>
-                <span className="text-[11px] text-emerald-700 font-semibold shrink-0">
-                  Approved
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

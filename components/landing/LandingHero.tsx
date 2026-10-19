@@ -57,7 +57,7 @@ export default function LandingHero() {
                   const el = document.getElementById("tax-calculator");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="touch-target-44 px-5 py-3 rounded-md text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-neutral-800 active:scale-95 transition shadow-sm inline-flex items-center space-x-2"
+                className="touch-target-44 btn-tactile px-5 py-3 rounded-md text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-neutral-800 transition shadow-sm inline-flex items-center space-x-2"
               >
                 <Calculator className="w-4 h-4" />
                 <span>Calculate Section 24 Relief & Fees</span>
@@ -66,7 +66,7 @@ export default function LandingHero() {
               <button
                 type="button"
                 onClick={() => openIntakeModal()}
-                className="touch-target-44 px-5 py-3 rounded-md text-xs sm:text-sm font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 active:scale-95 transition inline-flex items-center space-x-2"
+                className="touch-target-44 btn-tactile px-5 py-3 rounded-md text-xs sm:text-sm font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-2"
               >
                 <Calendar className="w-4 h-4 text-neutral-600" />
                 <span>Book Initial Consultation</span>
@@ -75,7 +75,7 @@ export default function LandingHero() {
               <button
                 type="button"
                 onClick={openLoginModal}
-                className="touch-target-44 px-3.5 py-3 rounded-md text-xs sm:text-sm font-medium text-neutral-600 hover:text-neutral-900 transition inline-flex items-center space-x-1.5"
+                className="touch-target-44 btn-tactile px-3.5 py-3 rounded-md text-xs sm:text-sm font-medium text-neutral-600 hover:text-neutral-900 transition inline-flex items-center space-x-1.5"
               >
                 <Lock className="w-3.5 h-3.5 text-neutral-500" />
                 <span>Portal Login</span>
@@ -119,7 +119,7 @@ export default function LandingHero() {
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/20 to-transparent" />
 
               {/* Floating Stat Overlay 1 (Top Right) */}
-              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md rounded-lg p-2.5 shadow-lg border border-neutral-200 text-xs space-y-0.5 animate-in fade-in duration-300">
+              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md rounded-lg p-2.5 shadow-lg border border-neutral-200 text-xs space-y-0.5 animate-float-gentle">
                 <div className="flex items-center space-x-1 text-emerald-800 font-bold">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>100% SPV Deductible</span>

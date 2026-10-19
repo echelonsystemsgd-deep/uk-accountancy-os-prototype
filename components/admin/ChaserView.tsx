@@ -29,6 +29,7 @@ export default function ChaserView() {
   } = useDemoStore();
 
   const [channel, setChannel] = useState<"whatsapp" | "sms" | "email">("whatsapp");
+  const [isDispatching, setIsDispatching] = useState<boolean>(false);
 
   // Determine which document is being chased
   const pendingDocs = activeClient.documents.filter((d) => d.status === "pending");
@@ -60,8 +61,13 @@ export default function ChaserView() {
   };
 
   const handleSend = () => {
-    sendChaser(activeClient.id, channel, messageText);
+    setIsDispatching(true);
+    setTimeout(() => {
+      sendChaser(activeClient.id, channel, messageText);
+      setIsDispatching(false);
+    }, 450);
   };
+
 
   return (
     <div className="space-y-6">
@@ -233,10 +239,11 @@ export default function ChaserView() {
               <button
                 type="button"
                 onClick={handleSend}
-                className="touch-target-44 px-5 py-2 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-2 shadow-sm"
+                disabled={isDispatching}
+                className="touch-target-44 btn-tactile px-5 py-2 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-2 shadow-sm disabled:opacity-70"
               >
-                <Send className="w-4 h-4" />
-                <span>Dispatch {channel.toUpperCase()} Nudge Now</span>
+                <Send className={`w-4 h-4 transition-transform duration-300 ${isDispatching ? "translate-x-1 -translate-y-1 text-emerald-400" : ""}`} />
+                <span>{isDispatching ? "Dispatching Tokenized Link..." : `Dispatch ${channel.toUpperCase()} Nudge Now`}</span>
               </button>
             </div>
           </div>
