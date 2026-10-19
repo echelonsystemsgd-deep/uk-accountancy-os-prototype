@@ -89,7 +89,7 @@ flowchart TD
 - **Official Entity Details**:
   - **Company**: KP Tax Consultants Ltd (Company No. 12908850)
   - **Registered Address**: 7 Bell Yard, London, WC2A 2JR, United Kingdom
-  - **Direct Contact**: `+44 7432 660478` | `info@kptc.co.uk`
+  - **Direct Contact**: `+44 7861 690954` (WhatsApp) | `info@kptc.co.uk`
   - **Official Branding**: Vector SVG favicon and geometric 4-square brand emblem.
 
 ---

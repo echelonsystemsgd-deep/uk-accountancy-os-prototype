@@ -85,7 +85,7 @@ export default function RootLayout({
     image: "https://kptc.co.uk/logo.png",
     "@id": "https://kptc.co.uk",
     url: "https://kptc.co.uk",
-    telephone: "07432 660478",
+    telephone: "+44 7861 690954",
     email: "info@kptc.co.uk",
     address: {
       "@type": "PostalAddress",

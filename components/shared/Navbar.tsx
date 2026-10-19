@@ -145,7 +145,7 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
               {/* Direct WhatsApp Channel for instant lead response */}
               <a
-                href="https://wa.me/447432660478?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
+                href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition inline-flex items-center space-x-1.5 border border-emerald-200"
@@ -246,6 +246,15 @@ export default function Navbar() {
             </div>
 
             <div className="pt-6 border-t border-neutral-200 space-y-3">
+              <a
+                href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center flex items-center justify-center space-x-2"
+              >
+                <MessageSquare className="w-4 h-4 text-emerald-600" />
+                <span>Chat on WhatsApp (+44 7861 690954)</span>
+              </a>
               <button
                 type="button"
                 onClick={() => {

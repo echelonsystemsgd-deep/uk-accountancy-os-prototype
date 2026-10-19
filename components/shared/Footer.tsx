@@ -90,17 +90,17 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-2">
                 <Phone className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                <a href="tel:+447432660478" className="hover:text-primary transition font-medium">07432 660478</a>
+                <a href="tel:+447861690954" className="hover:text-primary transition font-medium">07861 690954</a>
               </li>
               <li className="flex items-center space-x-2">
                 <Smartphone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <a
-                  href="https://wa.me/447432660478?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
+                  href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-emerald-700 hover:text-emerald-800 transition font-semibold"
                 >
-                  Direct WhatsApp Channel
+                  WhatsApp: +44 7861 690954
                 </a>
               </li>
               <li className="flex items-start space-x-2">

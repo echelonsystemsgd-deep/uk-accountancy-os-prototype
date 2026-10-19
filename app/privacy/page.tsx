@@ -40,7 +40,7 @@ export default function PrivacyPage() {
           </p>
           <div className="p-3 bg-neutral-50 rounded-lg border border-neutral-200 text-xs space-y-1">
             <p><strong>Registered Address:</strong> 7 Bell Yard, London, WC2A 2JR, United Kingdom</p>
-            <p><strong>Direct Inquiries:</strong> info@kptc.co.uk | 07432 660478</p>
+            <p><strong>Direct Inquiries:</strong> info@kptc.co.uk | +44 7861 690954 (WhatsApp)</p>
           </div>
         </section>
 
