@@ -1,4 +1,6 @@
-export type ScreenView = 'radar' | 'pipeline' | 'workspace' | 'dropzone' | 'chaser';
+export type AppMode = 'landing' | 'accountant' | 'client';
+
+export type ScreenView = 'landing' | 'radar' | 'pipeline' | 'workspace' | 'dropzone' | 'vault' | 'chaser';
 
 export type EntityType = 'individual' | 'joint' | 'spv_ltd';
 
@@ -84,4 +86,15 @@ export interface PracticeMetrics {
   approachingDeadlinesCount: number;
   unbilledWipTotal: number;
   averageCycleDays: number;
+}
+
+export interface IntakeSubmission {
+  fullName: string;
+  email: string;
+  phone: string;
+  portfolioSize: string;
+  entityType: EntityType;
+  annualRent: number;
+  mortgageInterest: number;
+  notes: string;
 }

@@ -3,18 +3,20 @@
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { ScreenView } from "@/lib/types";
-import { RotateCcw, ChevronDown, ChevronUp, Layers } from "lucide-react";
+import { RotateCcw, ChevronDown, ChevronUp, Layers, Globe, Briefcase, Smartphone } from "lucide-react";
 
 export default function FloatingDemoController() {
   const { currentView, setCurrentView, resetDemoState } = useDemoStore();
   const [collapsed, setCollapsed] = useState(false);
 
-  const screens: { id: ScreenView; label: string }[] = [
-    { id: "radar", label: "1. Radar" },
-    { id: "pipeline", label: "2. Pipeline" },
-    { id: "workspace", label: "3. Workspace" },
-    { id: "dropzone", label: "4. Dropzone" },
-    { id: "chaser", label: "5. Chaser" },
+  const viewOptions: { id: ScreenView; label: string; group: string }[] = [
+    { id: "landing", label: "Public Site", group: "Acquisition" },
+    { id: "radar", label: "1. Radar", group: "Accountant Hub" },
+    { id: "pipeline", label: "2. Pipeline", group: "Accountant Hub" },
+    { id: "workspace", label: "3. Workspace", group: "Accountant Hub" },
+    { id: "chaser", label: "5. Chaser", group: "Accountant Hub" },
+    { id: "dropzone", label: "4. Dropzone (375px)", group: "Client Portal" },
+    { id: "vault", label: "Client Vault", group: "Client Portal" },
   ];
 
   return (
@@ -30,30 +32,30 @@ export default function FloatingDemoController() {
         >
           <Layers className="w-3.5 h-3.5 text-primary" />
           <span className="font-semibold text-neutral-800">
-            Screen Switcher
+            View Switcher
           </span>
           <ChevronUp className="w-3.5 h-3.5 text-neutral-500" />
         </button>
       ) : (
         <div className="bg-white border border-neutral-300 shadow-xl rounded-lg p-1.5 flex items-center gap-1">
-          <div className="px-2 py-1 text-[11px] font-bold text-neutral-500 uppercase tracking-wider">
-            Demo:
+          <div className="px-2 py-1 text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+            Switch:
           </div>
 
-          {screens.map((s) => {
-            const isActive = currentView === s.id;
+          {viewOptions.map((v) => {
+            const isActive = currentView === v.id;
             return (
               <button
-                key={s.id}
+                key={v.id}
                 type="button"
-                onClick={() => setCurrentView(s.id)}
-                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
+                onClick={() => setCurrentView(v.id)}
+                className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
                   isActive
                     ? "bg-primary text-white font-semibold"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
                 }`}
               >
-                {s.label}
+                {v.label}
               </button>
             );
           })}

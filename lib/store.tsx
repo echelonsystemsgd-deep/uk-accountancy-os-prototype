@@ -1,11 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
   ScreenView,
   LandlordClient,
   CommunicationLogItem,
   PracticeMetrics,
+  IntakeSubmission,
 } from "./types";
 
 interface ToastNotification {
@@ -28,6 +29,11 @@ interface DemoContextType {
   setMobileFrameEnabled: (enabled: boolean) => void;
   activeChaserDocumentId: string | null;
   setActiveChaserDocumentId: (docId: string | null) => void;
+  isIntakeModalOpen: boolean;
+  intakeDefaultValues: Partial<IntakeSubmission> | null;
+  openIntakeModal: (defaultValues?: Partial<IntakeSubmission>) => void;
+  closeIntakeModal: () => void;
+  addIntakeLead: (submission: IntakeSubmission) => void;
   uploadDocument: (clientId: string, documentId: string, customFileName?: string) => void;
   sendChaser: (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => void;
   resetDemoState: () => void;
@@ -465,18 +471,19 @@ const INITIAL_LOGS: CommunicationLogItem[] = [
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  const [currentView, setCurrentView] = useState<ScreenView>("radar");
+  // Default view starts on the public landing page for new prospects, but can switch anywhere
+  const [currentView, setCurrentView] = useState<ScreenView>("landing");
   const [selectedClientId, setSelectedClientId] = useState<string>("client-sterling");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
   const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>(INITIAL_LOGS);
   const [mobileFrameEnabled, setMobileFrameEnabled] = useState<boolean>(false);
   const [activeChaserDocumentId, setActiveChaserDocumentId] = useState<string | null>("doc-1");
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
+  const [isIntakeModalOpen, setIsIntakeModalOpen] = useState<boolean>(false);
+  const [intakeDefaultValues, setIntakeDefaultValues] = useState<Partial<IntakeSubmission> | null>(null);
 
-  // Find active client
   const activeClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
-  // Calculate live practice metrics
   const missingDocumentsCount = clients.reduce(
     (acc, client) => acc + client.documents.filter((d) => d.status === "pending").length,
     0
@@ -490,7 +497,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const unbilledWipTotal = clients.reduce((acc, client) => acc + client.unbilledWip, 0);
 
   const metrics: PracticeMetrics = {
-    activeLandlordsCount: 42, // Synthetic total portfolio count across firm
+    activeLandlordsCount: 42,
     trackedPropertiesCount: 118,
     missingDocumentsCount: missingDocumentsCount,
     approachingDeadlinesCount: 7,
@@ -510,7 +517,92 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  // Upload document handler: marks document resolved and syncs state
+  const openIntakeModal = (defaultValues?: Partial<IntakeSubmission>) => {
+    if (defaultValues) setIntakeDefaultValues(defaultValues);
+    setIsIntakeModalOpen(true);
+  };
+
+  const closeIntakeModal = () => {
+    setIsIntakeModalOpen(false);
+    setIntakeDefaultValues(null);
+  };
+
+  const addIntakeLead = (submission: IntakeSubmission) => {
+    const newId = `client-${Date.now()}`;
+    const newClient: LandlordClient = {
+      id: newId,
+      entityName: submission.fullName,
+      entityType: submission.entityType,
+      primaryContact: submission.fullName,
+      email: submission.email,
+      phone: submission.phone,
+      taxYear: "2024/25",
+      stage: "intake_submitted",
+      assignedAccountant: "Kalpesh Patel FCA",
+      unbilledWip: 1450,
+      totalRentalIncome: submission.annualRent || 36000,
+      chaseCount: 0,
+      parties: [
+        {
+          id: `party-${Date.now()}`,
+          fullName: submission.fullName,
+          role: "Primary Landlord",
+          email: submission.email,
+          phone: submission.phone,
+          utrNumber: "Pending Registration",
+          nationalInsurance: "Pending Verification",
+          idVerified: false,
+          addressVerified: false,
+        },
+      ],
+      properties: [
+        {
+          id: `prop-${Date.now()}`,
+          address: "1st Portfolio Asset (To be added)",
+          postcode: "Pending",
+          propertyType: "Residential BTL",
+          ownershipSplit: submission.entityType === "spv_ltd" ? "100% SPV Ltd" : "Individual",
+          annualRentalIncome: submission.annualRent || 36000,
+          outstandingMortgage: submission.mortgageInterest * 20 || 150000,
+        },
+      ],
+      documents: [
+        {
+          id: `doc-${Date.now()}-1`,
+          title: "Proof of Identification (Passport / Driving Licence)",
+          category: "id_aml",
+          ownerOrProperty: submission.fullName,
+          status: "pending",
+          isOverdue: false,
+          dueDate: "2026-11-01",
+          notes: "Required for ICAEW statutory Anti-Money Laundering verification",
+        },
+        {
+          id: `doc-${Date.now()}-2`,
+          title: "Mortgage Interest Annual Statement",
+          category: "mortgage",
+          ownerOrProperty: "Primary Rental Property",
+          status: "pending",
+          isOverdue: false,
+          dueDate: "2026-11-05",
+          notes: "Needed to calculate Section 24 deduction",
+        },
+      ],
+    };
+
+    setClients((prev) => [newClient, ...prev]);
+    setSelectedClientId(newId);
+    closeIntakeModal();
+
+    // Switch to accountant pipeline so user sees the new lead instantly
+    setCurrentView("pipeline");
+
+    triggerToast(
+      "New Landlord Enquiry Captured",
+      `${submission.fullName} has been added to the Accountant Pipeline under 'Intake Submitted'. Document checklist generated automatically.`
+    );
+  };
+
   const uploadDocument = (clientId: string, documentId: string, customFileName?: string) => {
     setClients((prev) =>
       prev.map((c) => {
@@ -527,7 +619,6 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
           };
         });
 
-        // Check if all documents are now verified
         const pendingCount = updatedDocs.filter((d) => d.status === "pending").length;
         const updatedStage = pendingCount === 0 ? ("review_ready" as const) : c.stage;
 
@@ -545,7 +636,6 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  // Send chaser handler: logs reminder, updates timestamp
   const sendChaser = (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => {
     const targetClient = clients.find((c) => c.id === clientId) || activeClient;
     const recipient =
@@ -584,7 +674,6 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  // Reset demo state back to pristine baseline
   const resetDemoState = () => {
     setClients(INITIAL_CLIENTS);
     setCommunicationLogs(INITIAL_LOGS);
@@ -612,6 +701,11 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         setMobileFrameEnabled,
         activeChaserDocumentId,
         setActiveChaserDocumentId,
+        isIntakeModalOpen,
+        intakeDefaultValues,
+        openIntakeModal,
+        closeIntakeModal,
+        addIntakeLead,
         uploadDocument,
         sendChaser,
         resetDemoState,
