@@ -17,13 +17,26 @@ Kai Accountants (operating online as KP Tax Consultants at `kptc.co.uk`) is led 
 
 We do not propose selling an abstract "AI overhaul" or a generic marketing redesign. We propose building a high-impact, demonstration prototype focused on the single most painful operational bottleneck in property tax accounting: **Landlord Onboarding & Document Chase Management**.
 
-### Chosen Direction: Concept 2 — Landlord Onboarding & Per-Property Document Chase Radar
-- **The Core Problem:** UK property accountants lose 20% to 35% of their working hours chasing missing paperwork (mortgage interest certificates, completion statements, utility bills, P60s, joint-owner UTRs). With Making Tax Digital for ITSA arriving in April 2026, this chasing burden will transition from an annual January crisis to a quarterly operational drag.
-- **The Solution:** A clean, mobile-first intake and document tracking OS:
-  1. A low-friction landlord enquiry front-door that captures portfolio size (e.g. 1–3 BTLs, HMOs, SPV Ltd Co) and tax objectives upfront.
-  2. A partner command radar tracking missing compliance documents per property and per owner.
-  3. A friction-free, passwordless mobile upload link ("Landlord Dropzone") allowing clients to take phone photos of certificates or upload PDFs in under 30 seconds.
-  4. Context-aware multi-channel document chasers (WhatsApp/Email) that reduce manual follow-ups to a single click.
+### Chosen Direction: Complete 3-Tier Demonstration Architecture
+To ensure the prototype proves competence both to external prospects and internal practice staff, the system implements three tightly integrated tiers:
+1. **Tier 1: Public Acquisition Landing Page (`kptc.co.uk` Redirection):**
+   - High-conviction proposition for UK landlords and property investors.
+   - Fixes the buried property specialism with dedicated pillars (Section 24, SPVs, MTD, 60-day CGT).
+   - Replaces the 5-field static form with an **Interactive Section 24 & SPV Property Tax Calculator**.
+   - Solves the single-line MTD text with a comprehensive **Making Tax Digital 2026/2027 Mandate Guide**.
+   - Includes senior leadership credentials for Pritpal Chaggar (CTA) and Kalpesh Patel (FCA).
+   - Features a **Dual Portal Login Modal** giving instant access to either the Accountant or Client portal.
+2. **Tier 2: Accountant Practice OS (Partner Command Hub):**
+   - Partner Command Radar tracking active portfolios, missing compliance items, and WIP.
+   - Landlord Pipeline Kanban/List with automated document checklist progression.
+   - Per-Property Asset & Per-Person AML Document Workspace.
+   - Multi-Channel Chaser (WhatsApp/SMS/Email) with audit trail.
+   - Instant 1-click switcher to test the Client Portal or return to the Public Website.
+3. **Tier 3: Dedicated Client Portal ("Landlord Dropzone & Vault"):**
+   - 375px mobile camera upload dropzone with zero passwords required.
+   - Live reactive synchronization back to the Partner Radar upon document upload.
+   - Encrypted Document Vault for viewing verified title deeds, ASTs, and tax slips.
+   - Direct switchers to the Accountant Portal or Public Website.
 
 ---
 

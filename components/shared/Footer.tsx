@@ -1,9 +1,12 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, Mail, Phone, MapPin, Building2, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Mail, Phone, MapPin, Building2, CheckCircle2, Lock, Smartphone, Briefcase } from "lucide-react";
+import { useDemoStore } from "@/lib/store";
 
 export default function Footer() {
+  const { openLoginModal, enterAccountantPortal, enterClientPortal } = useDemoStore();
+
   return (
     <footer className="bg-white border-t border-neutral-200 mt-16 text-xs text-neutral-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
@@ -23,6 +26,17 @@ export default function Footer() {
             <p className="text-neutral-600 leading-relaxed text-[11px]">
               Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising portfolio landlords, property investors, and limited company SPVs on UK tax compliance and legitimate relief.
             </p>
+
+            <div className="pt-1 flex items-center space-x-2">
+              <button
+                type="button"
+                onClick={openLoginModal}
+                className="px-2.5 py-1.5 rounded text-[11px] font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1"
+              >
+                <Lock className="w-3 h-3 text-neutral-500" />
+                <span>Portal Sign In</span>
+              </button>
+            </div>
           </div>
 
           {/* Col 2: Core Property Tax Services */}
@@ -94,9 +108,21 @@ export default function Footer() {
           <div className="flex items-center space-x-4">
             <span>Synthetic Demonstration Prototype</span>
             <span>&bull;</span>
-            <span>Privacy & Retention Policy</span>
+            <button
+              type="button"
+              onClick={() => enterAccountantPortal("radar")}
+              className="hover:text-neutral-900 transition"
+            >
+              Accountant Hub
+            </button>
             <span>&bull;</span>
-            <span>Terms of Engagement</span>
+            <button
+              type="button"
+              onClick={() => enterClientPortal("dropzone")}
+              className="hover:text-neutral-900 transition"
+            >
+              Landlord Portal
+            </button>
           </div>
         </div>
       </div>

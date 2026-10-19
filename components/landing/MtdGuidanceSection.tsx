@@ -16,7 +16,7 @@ export default function MtdGuidanceSection() {
   const { openIntakeModal } = useDemoStore();
 
   return (
-    <section className="py-12 sm:py-16 bg-neutral-50 border-b border-neutral-200">
+    <section id="mtd-guidance" className="py-12 sm:py-16 bg-neutral-50 border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="max-w-3xl space-y-2">
           <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-800 bg-neutral-200/80 px-2.5 py-1 rounded w-fit">

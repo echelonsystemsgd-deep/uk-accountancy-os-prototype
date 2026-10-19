@@ -6,12 +6,14 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import FloatingDemoController from "@/components/shared/FloatingDemoController";
 import ToastContainer from "@/components/shared/ToastContainer";
+import PortalLoginModal from "@/components/shared/PortalLoginModal";
 
 // Landing Page Components (Public Acquisition)
 import LandingHero from "@/components/landing/LandingHero";
-import PropertyTaxCalculator from "@/components/landing/PropertyTaxCalculator";
 import PropertyServicesGrid from "@/components/landing/PropertyServicesGrid";
+import PropertyTaxCalculator from "@/components/landing/PropertyTaxCalculator";
 import MtdGuidanceSection from "@/components/landing/MtdGuidanceSection";
+import AboutPracticeSection from "@/components/landing/AboutPracticeSection";
 import PropertyFaqSection from "@/components/landing/PropertyFaqSection";
 import ConsultationModal from "@/components/landing/ConsultationModal";
 
@@ -33,7 +35,7 @@ export default function Home() {
       {/* Global Notifications */}
       <ToastContainer />
 
-      {/* Global Header & Navigation */}
+      {/* Global Header & Navigation (Dynamically changes by AppMode) */}
       <Navbar />
 
       {/* Dynamic Viewport */}
@@ -42,9 +44,10 @@ export default function Home() {
         {currentView === "landing" && (
           <div className="animate-in fade-in duration-200">
             <LandingHero />
-            <PropertyTaxCalculator />
             <PropertyServicesGrid />
+            <PropertyTaxCalculator />
             <MtdGuidanceSection />
+            <AboutPracticeSection />
             <PropertyFaqSection />
           </div>
         )}
@@ -91,7 +94,10 @@ export default function Home() {
       {/* Global Footer with Official Regulatory Badges & Placeholders */}
       <Footer />
 
-      {/* Interactive Consultation Intake Modal */}
+      {/* Modal: Client & Accountant Portal Login Selector */}
+      <PortalLoginModal />
+
+      {/* Modal: Interactive Consultation Intake */}
       <ConsultationModal />
 
       {/* Floating Demo Switcher */}

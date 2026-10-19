@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState } from "react";
 import {
+  AppMode,
   ScreenView,
   LandlordClient,
   CommunicationLogItem,
@@ -17,6 +18,7 @@ interface ToastNotification {
 }
 
 interface DemoContextType {
+  currentMode: AppMode;
   currentView: ScreenView;
   setCurrentView: (view: ScreenView) => void;
   selectedClientId: string;
@@ -33,6 +35,12 @@ interface DemoContextType {
   intakeDefaultValues: Partial<IntakeSubmission> | null;
   openIntakeModal: (defaultValues?: Partial<IntakeSubmission>) => void;
   closeIntakeModal: () => void;
+  isLoginModalOpen: boolean;
+  openLoginModal: () => void;
+  closeLoginModal: () => void;
+  enterAccountantPortal: (targetView?: ScreenView) => void;
+  enterClientPortal: (targetView?: ScreenView) => void;
+  exitToLanding: () => void;
   addIntakeLead: (submission: IntakeSubmission) => void;
   uploadDocument: (clientId: string, documentId: string, customFileName?: string) => void;
   sendChaser: (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => void;
@@ -471,8 +479,7 @@ const INITIAL_LOGS: CommunicationLogItem[] = [
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  // Default view starts on the public landing page for new prospects, but can switch anywhere
-  const [currentView, setCurrentView] = useState<ScreenView>("landing");
+  const [currentView, setCurrentViewInternal] = useState<ScreenView>("landing");
   const [selectedClientId, setSelectedClientId] = useState<string>("client-sterling");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
   const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>(INITIAL_LOGS);
@@ -481,6 +488,15 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
   const [isIntakeModalOpen, setIsIntakeModalOpen] = useState<boolean>(false);
   const [intakeDefaultValues, setIntakeDefaultValues] = useState<Partial<IntakeSubmission> | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  // Derive active application mode
+  const currentMode: AppMode =
+    currentView === "landing"
+      ? "landing"
+      : ["radar", "pipeline", "workspace", "chaser"].includes(currentView)
+      ? "accountant"
+      : "client";
 
   const activeClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
@@ -515,6 +531,41 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const setCurrentView = (view: ScreenView) => {
+    setCurrentViewInternal(view);
+    // Scroll smoothly to top on view changes
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const openLoginModal = () => setIsLoginModalOpen(true);
+  const closeLoginModal = () => setIsLoginModalOpen(false);
+
+  const enterAccountantPortal = (targetView: ScreenView = "radar") => {
+    closeLoginModal();
+    setCurrentView(targetView);
+    triggerToast(
+      "Accountant Portal Active",
+      "Welcome, Kalpesh Patel FCA. Full practice radar and client management unlocked.",
+      "info"
+    );
+  };
+
+  const enterClientPortal = (targetView: ScreenView = "dropzone") => {
+    closeLoginModal();
+    setCurrentView(targetView);
+    triggerToast(
+      "Client Portal Active",
+      "Welcome, Marcus & Sarah Sterling. 2024/25 property tax dropzone active.",
+      "info"
+    );
+  };
+
+  const exitToLanding = () => {
+    setCurrentView("landing");
   };
 
   const openIntakeModal = (defaultValues?: Partial<IntakeSubmission>) => {
@@ -689,6 +740,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   return (
     <DemoContext.Provider
       value={{
+        currentMode,
         currentView,
         setCurrentView,
         selectedClientId,
@@ -705,6 +757,12 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         intakeDefaultValues,
         openIntakeModal,
         closeIntakeModal,
+        isLoginModalOpen,
+        openLoginModal,
+        closeLoginModal,
+        enterAccountantPortal,
+        enterClientPortal,
+        exitToLanding,
         addIntakeLead,
         uploadDocument,
         sendChaser,

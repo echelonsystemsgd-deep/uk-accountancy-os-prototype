@@ -34,7 +34,7 @@ export default function PropertyFaqSection() {
   };
 
   return (
-    <section className="py-12 sm:py-16 bg-white border-b border-neutral-200">
+    <section id="faqs" className="py-12 sm:py-16 bg-white border-b border-neutral-200">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
           <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
