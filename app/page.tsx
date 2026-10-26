@@ -6,6 +6,8 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalLoginModal from "@/components/shared/PortalLoginModal";
+import EnvironmentSwitcherBar from "@/components/shared/EnvironmentSwitcherBar";
+import LiveRoleDock from "@/components/shared/LiveRoleDock";
 
 // Landing Page Components (Public Acquisition)
 import LandingHero from "@/components/landing/LandingHero";
@@ -37,6 +39,9 @@ export default function Home() {
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
       {/* Global Notifications */}
       <ToastContainer />
+
+      {/* Persistent Master Environment Switcher Header */}
+      <EnvironmentSwitcherBar />
 
       {/* Global Header & Navigation (Dynamically changes by AppMode) */}
       <Navbar />
@@ -121,6 +126,9 @@ export default function Home() {
 
       {/* Modal: Interactive Consultation Intake */}
       <ConsultationModal />
+
+      {/* Floating Role & Environment Quick Switcher Dock */}
+      <LiveRoleDock />
     </div>
   );
 }

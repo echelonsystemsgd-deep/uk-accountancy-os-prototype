@@ -13,10 +13,14 @@ import {
   TrendingDown,
   Calendar,
   PoundSterling,
+  Briefcase,
+  Smartphone,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 
 export default function LandingHero() {
-  const { openIntakeModal, openLoginModal } = useDemoStore();
+  const { openIntakeModal, openLoginModal, enterAccountantPortal, enterClientPortal, metrics } = useDemoStore();
 
   return (
     <section className="relative pt-8 pb-16 sm:pb-20 border-b border-neutral-200 bg-white overflow-hidden">
@@ -146,6 +150,106 @@ export default function LandingHero() {
                   <span className="text-[10px] text-neutral-500 block">118 units tracked</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3 Interactive Live Environment Cards (Unmissable Tier Showcase) */}
+        <div className="mt-12 pt-8 border-t border-neutral-200">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary flex items-center">
+                <Zap className="w-3.5 h-3.5 mr-1.5 text-amber-500" />
+                Three Integrated Operating Environments
+              </span>
+              <h2 className="text-lg sm:text-xl font-bold text-neutral-900 tracking-tight">
+                Explore the Complete Operating System
+              </h2>
+            </div>
+            <p className="text-xs text-neutral-500 max-w-sm sm:text-right">
+              Switch freely between external prospect acquisition, partner practice management, and landlord document collection.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Card 1: Public Acquisition */}
+            <div className="p-4 rounded-xl border border-neutral-200 bg-neutral-50/70 hover:bg-neutral-50 transition shadow-xs flex flex-col justify-between space-y-3">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-200">
+                    Tier 1: Acquisition
+                  </span>
+                  <span className="text-[11px] text-neutral-500 font-medium">Public Facing</span>
+                </div>
+                <h3 className="font-bold text-neutral-900 text-sm">
+                  Client Acquisition Front Door
+                </h3>
+                <p className="text-xs text-neutral-600 leading-relaxed">
+                  Interactive Section 24 calculator, MTD 2026 mandate guide, and partner credentials that turn visitors into booked clients.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("tax-calculator");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="w-full py-2 px-3 rounded-lg text-xs font-semibold text-neutral-800 bg-white hover:bg-neutral-100 border border-neutral-300 transition text-center shadow-xs"
+              >
+                Scroll to Calculator ↓
+              </button>
+            </div>
+
+            {/* Card 2: Partner Practice OS */}
+            <div className="p-4 rounded-xl border border-amber-300 bg-gradient-to-br from-amber-50/50 to-white hover:shadow-md transition shadow-xs flex flex-col justify-between space-y-3 ring-1 ring-amber-400/20">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                    Tier 2: Practice OS
+                  </span>
+                  <span className="text-[11px] text-amber-700 font-semibold">{metrics.missingDocumentsCount} items pending</span>
+                </div>
+                <h3 className="font-bold text-neutral-900 text-sm">
+                  Accountant Practice Radar & CRM
+                </h3>
+                <p className="text-xs text-neutral-600 leading-relaxed">
+                  Real-time pipeline kanban, multi-channel WhatsApp chaser, CSV export, and bi-directional Xero & Karbon sync.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => enterAccountantPortal("radar")}
+                className="w-full py-2 px-3 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition text-center shadow-xs inline-flex items-center justify-center space-x-1.5"
+              >
+                <Briefcase className="w-3.5 h-3.5 text-amber-400" />
+                <span>Launch Practice OS →</span>
+              </button>
+            </div>
+
+            {/* Card 3: Landlord Mobile Dropzone */}
+            <div className="p-4 rounded-xl border border-emerald-300 bg-gradient-to-br from-emerald-50/50 to-white hover:shadow-md transition shadow-xs flex flex-col justify-between space-y-3 ring-1 ring-emerald-400/20">
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    Tier 3: Landlord Portal
+                  </span>
+                  <span className="text-[11px] text-emerald-700 font-semibold">Zero Passwords</span>
+                </div>
+                <h3 className="font-bold text-neutral-900 text-sm">
+                  Mobile Dropzone & Encrypted Vault
+                </h3>
+                <p className="text-xs text-neutral-600 leading-relaxed">
+                  375px camera uploader with AI OCR receipt extraction, live 60-second signed document previews, and advisor chat.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => enterClientPortal("dropzone")}
+                className="w-full py-2 px-3 rounded-lg text-xs font-semibold text-white bg-emerald-800 hover:bg-emerald-700 transition text-center shadow-xs inline-flex items-center justify-center space-x-1.5"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-emerald-300" />
+                <span>Launch Landlord Portal →</span>
+              </button>
             </div>
           </div>
         </div>
