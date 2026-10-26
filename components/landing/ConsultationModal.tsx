@@ -40,9 +40,29 @@ export default function ConsultationModal() {
 
   if (!isIntakeModalOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !email) return;
+
+    // Background sync to intake API route
+    try {
+      await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phone: phone || "+44 7700 900812",
+          portfolioSize,
+          entityType,
+          annualRent,
+          mortgageInterest,
+          notes: notes || "Requested property tax portfolio review.",
+        }),
+      });
+    } catch (err) {
+      console.warn("Intake API sync:", err);
+    }
 
     addIntakeLead({
       fullName,

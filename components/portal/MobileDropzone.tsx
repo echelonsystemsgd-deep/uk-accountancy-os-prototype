@@ -34,7 +34,7 @@ export default function MobileDropzone() {
   const pendingDocs = activeClient.documents.filter((d) => d.status === "pending");
   const verifiedDocs = activeClient.documents.filter((d) => d.status === "verified");
 
-  const handleSimulatedUpload = (docId: string, customTitle: string, isPhoto = false) => {
+  const handleSimulatedUpload = async (docId: string, customTitle: string, isPhoto = false) => {
     if (isPhoto) {
       setIsFlashing(true);
       setTimeout(() => setIsFlashing(false), 350);
@@ -42,6 +42,17 @@ export default function MobileDropzone() {
 
     setUploadingDocId(docId);
     setUploadProgress(20);
+
+    // Fire live Phase 2 upload API handler
+    try {
+      const formData = new FormData();
+      formData.append("clientId", activeClient.id);
+      formData.append("documentId", docId);
+      formData.append("category", docId.includes("mortgage") ? "mortgage" : "id_aml");
+      await fetch("/api/upload", { method: "POST", body: formData });
+    } catch (err) {
+      console.warn("Upload API background sync:", err);
+    }
 
     setTimeout(() => {
       setUploadProgress(65);

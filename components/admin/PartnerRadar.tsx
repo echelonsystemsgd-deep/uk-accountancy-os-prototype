@@ -14,10 +14,13 @@ import {
   MessageSquare,
   Mail,
   Calendar,
+  Download,
+  Database,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function PartnerRadar() {
-  const { metrics, clients, setCurrentView, setSelectedClientId, setActiveChaserDocumentId } =
+  const { metrics, clients, setCurrentView, setSelectedClientId, setActiveChaserDocumentId, exportAuditCsv } =
     useDemoStore();
 
   // Find clients with pending/overdue documents
@@ -47,18 +50,34 @@ export default function PartnerRadar() {
   return (
     <div className="space-y-6">
       {/* Page Title & Context */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
-            Partner Practice Radar
-          </h1>
-          <p className="text-xs sm:text-sm text-neutral-600">
+          <div className="flex items-center space-x-2">
+            <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
+              Partner Practice Radar
+            </h1>
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <Database className="w-3 h-3 mr-1 text-emerald-600" />
+              Supabase London (eu-west-2)
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-neutral-600 mt-0.5">
             Real-time onboarding velocity, missing compliance documents, and tax filing deadlines across active portfolios.
           </p>
         </div>
-        <div className="flex items-center space-x-2 text-xs text-neutral-500">
-          <Calendar className="w-4 h-4 text-neutral-400" />
-          <span>Tax Year 2024/25 Active Quarter</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center space-x-1.5 text-xs text-neutral-500 bg-neutral-100 px-2.5 py-1.5 rounded border border-neutral-200">
+            <Calendar className="w-3.5 h-3.5 text-neutral-400" />
+            <span>Tax Year 2024/25 Active Quarter</span>
+          </div>
+          <button
+            onClick={exportAuditCsv}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-neutral-900 text-white hover:bg-neutral-800 transition shadow-xs"
+            title="Download CSV breakdown for Karbon, Xero, or internal compliance"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export Practice Audit (CSV)</span>
+          </button>
         </div>
       </div>
 

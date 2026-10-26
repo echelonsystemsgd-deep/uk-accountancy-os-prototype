@@ -245,13 +245,13 @@ export default function PortalSidebar() {
           </button>
         </div>
 
-        <div className="p-2.5 rounded bg-neutral-100/80 text-[10px] space-y-0.5">
+        <div className="p-2.5 rounded bg-neutral-100/80 text-[10px] space-y-0.5 border border-neutral-200">
           <div className="flex items-center space-x-1 font-semibold text-neutral-700">
             <ShieldCheck className="w-3 h-3 text-emerald-700" />
-            <span>ICAEW Private Cloud</span>
+            <span>Supabase Cloud Active</span>
           </div>
           <p className="text-neutral-500">
-            London Region &bull; 256-bit TLS
+            London (eu-west-2) &bull; AES-256 RLS
           </p>
         </div>
       </div>

@@ -44,6 +44,8 @@ interface DemoContextType {
   addIntakeLead: (submission: IntakeSubmission) => void;
   uploadDocument: (clientId: string, documentId: string, customFileName?: string) => void;
   sendChaser: (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => void;
+  exportAuditCsv: () => void;
+  isCloudSyncActive: boolean;
   resetDemoState: () => void;
   toasts: ToastNotification[];
   removeToast: (id: string) => void;
@@ -725,6 +727,17 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const exportAuditCsv = () => {
+    if (typeof window !== "undefined") {
+      window.location.href = "/api/export?type=csv";
+    }
+    triggerToast(
+      "Practice Audit CSV Exported",
+      "Downloaded full portfolio breakdown, missing compliance items, and WIP totals for Karbon/Xero integration.",
+      "success"
+    );
+  };
+
   const resetDemoState = () => {
     setClients(INITIAL_CLIENTS);
     setCommunicationLogs(INITIAL_LOGS);
@@ -766,6 +779,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         addIntakeLead,
         uploadDocument,
         sendChaser,
+        exportAuditCsv,
+        isCloudSyncActive: true,
         resetDemoState,
         toasts,
         removeToast,

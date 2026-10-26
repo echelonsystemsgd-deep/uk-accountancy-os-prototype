@@ -60,8 +60,23 @@ export default function ChaserView() {
     setMessageText(updated[channel]);
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     setIsDispatching(true);
+    try {
+      await fetch("/api/chaser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientId: activeClient.id,
+          channel,
+          recipient: channel === "email" ? activeClient.email : activeClient.phone,
+          messageBody: messageText,
+          triggeredBy: activeClient.assignedAccountant,
+        }),
+      });
+    } catch (err) {
+      console.warn("Chaser API dispatch error:", err);
+    }
     setTimeout(() => {
       sendChaser(activeClient.id, channel, messageText);
       setIsDispatching(false);

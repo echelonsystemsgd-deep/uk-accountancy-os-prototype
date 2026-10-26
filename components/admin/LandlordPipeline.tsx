@@ -14,10 +14,11 @@ import {
   FolderOpen,
   Send,
   ArrowRight,
+  Download,
 } from "lucide-react";
 
 export default function LandlordPipeline() {
-  const { clients, setSelectedClientId, setCurrentView, setActiveChaserDocumentId } = useDemoStore();
+  const { clients, setSelectedClientId, setCurrentView, setActiveChaserDocumentId, exportAuditCsv } = useDemoStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState<EntityType | "all">("all");
   const [selectedStage, setSelectedStage] = useState<OnboardingStage | "all">("all");
@@ -90,7 +91,7 @@ export default function LandlordPipeline() {
   return (
     <div className="space-y-6">
       {/* Page Title & Context */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
             Landlord Portfolio Pipeline
@@ -99,6 +100,13 @@ export default function LandlordPipeline() {
             Track onboarding progression, document checklists, and compliance readiness across all property clients.
           </p>
         </div>
+        <button
+          onClick={exportAuditCsv}
+          className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-neutral-900 text-white hover:bg-neutral-800 transition shadow-xs self-start sm:self-auto"
+        >
+          <Download className="w-3.5 h-3.5" />
+          <span>Export Audit (CSV)</span>
+        </button>
       </div>
 
       {/* Filter and Search Bar */}
