@@ -117,9 +117,14 @@ export default function Footer() {
 
         {/* Bottom Legal Disclaimer & Copyright */}
         <div className="pt-6 border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center sm:justify-between text-[11px] text-neutral-500 gap-2">
-          <p>
-            &copy; 2026 KP Tax Consultants Ltd / KP Accountants. All rights reserved.
-          </p>
+          <div className="space-y-1">
+            <p>
+              &copy; 2026 KP Tax Consultants Ltd / KP Accountants. Regulated by ICAEW &bull; All rights reserved.
+            </p>
+            <p className="text-[10px] text-neutral-400">
+              High-Performance OS &bull; Systems Architecture & Automation Engineered by <strong>Mercian Wealth</strong> (Berkshire, UK) &bull; Lead Architect: Gurtej Singh
+            </p>
+          </div>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <a href="/privacy" className="hover:text-neutral-900 transition">Privacy Policy</a>
             <span>&bull;</span>
@@ -129,18 +134,10 @@ export default function Footer() {
             <span>&bull;</span>
             <button
               type="button"
-              onClick={() => enterAccountantPortal("radar")}
-              className="hover:text-neutral-900 transition"
+              onClick={openLoginModal}
+              className="hover:text-neutral-900 transition font-medium"
             >
-              Accountant Hub
-            </button>
-            <span>&bull;</span>
-            <button
-              type="button"
-              onClick={() => enterClientPortal("dropzone")}
-              className="hover:text-neutral-900 transition"
-            >
-              Landlord Portal
+              Secure Portal Access
             </button>
           </div>
         </div>

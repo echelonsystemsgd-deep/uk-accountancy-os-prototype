@@ -650,18 +650,11 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("mercian_auth_user");
+        const saved = sessionStorage.getItem("mercian_auth_user");
         if (saved) return JSON.parse(saved);
       } catch (e) {}
     }
-    return {
-      email: "mercianwealthgs@gmail.com",
-      name: "Gurtej Singh",
-      role: "admin",
-      firmName: "Mercian Wealth & Advisory",
-      isAuthenticated: true,
-      lastLogin: "Active Session",
-    };
+    return null; // Require login each time!
   });
 
   // Derive active application mode
@@ -741,6 +734,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       setCurrentUser(adminProfile);
       if (typeof window !== "undefined") {
         try {
+          sessionStorage.setItem("mercian_auth_user", JSON.stringify(adminProfile));
           localStorage.setItem("mercian_auth_user", JSON.stringify(adminProfile));
         } catch (e) {}
       }
@@ -807,31 +801,40 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setCurrentUser(null);
     if (typeof window !== "undefined") {
       try {
+        sessionStorage.removeItem("mercian_auth_user");
         localStorage.removeItem("mercian_auth_user");
       } catch (e) {}
     }
     exitToLanding();
-    triggerToast("Signed Out", "You have securely logged out of Mercian Wealth Practice Cockpit.", "info");
+    triggerToast("Signed Out", "You have securely logged out of Mercian Wealth Practice Cockpit. Login required to re-access.", "info");
   };
 
   const enterAccountantPortal = (targetView: ScreenView = "radar") => {
+    if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "accountant")) {
+      openLoginModal();
+      triggerToast(
+        "Practice Login Required",
+        "Please authenticate with mercianwealthgs@gmail.com to access the Practice Cockpit.",
+        "warning"
+      );
+      return;
+    }
     closeLoginModal();
     setCurrentView(targetView);
-    triggerToast(
-      "Accountant Portal Active",
-      "Welcome, Kalpesh Patel FCA. Full practice radar and client management unlocked.",
-      "info"
-    );
   };
 
   const enterClientPortal = (targetView: ScreenView = "dropzone") => {
+    if (!currentUser) {
+      openLoginModal();
+      triggerToast(
+        "Client Login Required",
+        "Please verify your client credentials to enter the private dropzone.",
+        "warning"
+      );
+      return;
+    }
     closeLoginModal();
     setCurrentView(targetView);
-    triggerToast(
-      "Client Portal Active",
-      "Welcome, Marcus & Sarah Sterling. 2024/25 property tax dropzone active.",
-      "info"
-    );
   };
 
   const exitToLanding = () => {

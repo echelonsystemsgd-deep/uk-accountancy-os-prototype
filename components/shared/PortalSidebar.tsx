@@ -197,44 +197,8 @@ export default function PortalSidebar() {
           </nav>
         </div>
 
-        {/* Cross-Portal Switcher Actions */}
+        {/* Navigation Actions */}
         <div className="pt-2 border-t border-neutral-200 space-y-1.5">
-          <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-2 block mb-1">
-            Environment
-          </span>
-
-          {isAccountant ? (
-            <button
-              type="button"
-              onClick={() => {
-                enterClientPortal("client_overview");
-                setMobileDrawerOpen(false);
-              }}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition"
-            >
-              <div className="flex items-center space-x-2">
-                <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Switch to Client Portal</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                enterAccountantPortal("radar");
-                setMobileDrawerOpen(false);
-              }}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-primary bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 transition"
-            >
-              <div className="flex items-center space-x-2">
-                <Users className="w-3.5 h-3.5 text-primary" />
-                <span>Switch to Practice OS</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          )}
-
           <button
             type="button"
             onClick={() => {
