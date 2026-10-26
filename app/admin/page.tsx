@@ -13,14 +13,16 @@ import ChaserView from "@/components/admin/ChaserView";
 import FinancialStatementsHub from "@/components/admin/FinancialStatementsHub";
 import PracticeInvoicingHub from "@/components/admin/PracticeInvoicingHub";
 import WealthAdvisoryHub from "@/components/admin/WealthAdvisoryHub";
+import OpenBankingHub from "@/components/admin/OpenBankingHub";
 import CreateEntityModal from "@/components/admin/CreateEntityModal";
-import { Lock, ShieldCheck, ArrowRight, Sparkles, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Lock, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function AdminPage() {
   const { currentView, currentUser, loginWithCredentials } = useDemoStore();
 
-  const [email, setEmail] = useState<string>("mercianwealthgs@gmail.com");
-  const [password, setPassword] = useState<string>("Gurtej@2008#");
+  // Inputs are strictly empty - password protected, never prefilled!
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -35,19 +37,13 @@ export default function AdminPage() {
     try {
       const res = await loginWithCredentials(email, password);
       if (!res.success) {
-        setErrorMessage(res.error || "Authentication failed. Check your credentials.");
+        setErrorMessage(res.error || "Authentication failed. Invalid email or password.");
       }
     } catch (err: any) {
       setErrorMessage("Authentication error.");
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleAutofill = () => {
-    setEmail("mercianwealthgs@gmail.com");
-    setPassword("Gurtej@2008#");
-    setErrorMessage(null);
   };
 
   return (
@@ -59,14 +55,18 @@ export default function AdminPage() {
         <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
           <div className="accountant-card max-w-md w-full p-6 sm:p-8 bg-white space-y-6 shadow-xl rounded-2xl border border-neutral-200">
             <div className="text-center space-y-2">
-              <div className="w-12 h-12 mx-auto rounded-xl bg-neutral-900 text-amber-400 flex items-center justify-center font-bold text-xl shadow-md border border-neutral-800">
-                M
-              </div>
+              <img
+                src="/logo.png"
+                alt="KP Tax Consultants Official Emblem"
+                width={140}
+                height={40}
+                className="h-11 w-auto object-contain mx-auto"
+              />
               <h1 className="text-xl font-extrabold text-neutral-900 tracking-tight">
-                Mercian Practice OS Access
+                KP Accountants Practice OS
               </h1>
               <p className="text-xs text-neutral-500">
-                UK Accountancy Cockpit &bull; Secure Partner Authentication Gate
+                UK Practice Cockpit &bull; Secure Partner Authentication Gate
               </p>
             </div>
 
@@ -78,22 +78,6 @@ export default function AdminPage() {
             )}
 
             <form onSubmit={handleLogin} className="space-y-4">
-              <div className="bg-amber-50/70 border border-amber-200/80 rounded-lg p-3 flex items-center justify-between text-xs">
-                <div className="flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span className="text-amber-900 font-medium">
-                    Principal: <strong>Gurtej Singh</strong>
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleAutofill}
-                  className="text-[11px] font-semibold text-amber-800 hover:text-amber-900 underline"
-                >
-                  Quick Autofill
-                </button>
-              </div>
-
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1">
                   Practice Work Email
@@ -103,8 +87,8 @@ export default function AdminPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="mercianwealthgs@gmail.com"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 outline-none font-medium"
+                  placeholder="e.g. name@firm.co.uk"
+                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium"
                 />
               </div>
 
@@ -136,15 +120,15 @@ export default function AdminPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Gurtej@2008#"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 outline-none font-mono"
+                  placeholder="Enter password"
+                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-mono"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
+                className="w-full py-3 px-4 bg-primary hover:bg-neutral-800 text-white font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -172,6 +156,7 @@ export default function AdminPage() {
             {currentView === "pipeline" && <LandlordPipeline />}
             {currentView === "statements" && <FinancialStatementsHub />}
             {currentView === "invoicing" && <PracticeInvoicingHub />}
+            {currentView === "open_banking" && <OpenBankingHub />}
             {currentView === "wealth_advisory" && <WealthAdvisoryHub />}
             {currentView === "workspace" && <PropertyWorkspace />}
             {currentView === "chaser" && <ChaserView />}

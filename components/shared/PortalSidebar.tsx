@@ -28,6 +28,7 @@ import {
   Plus,
   Crown,
   LogOut,
+  Landmark,
 } from "lucide-react";
 
 export default function PortalSidebar() {
@@ -70,10 +71,11 @@ export default function PortalSidebar() {
 
   const accountantLinks: { id: ScreenView; label: string; badge?: string; icon: React.ReactNode }[] = [
     { id: "radar", label: "Partner Practice Radar", icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: "wealth_advisory", label: "Mercian Wealth & Advisory", badge: "IHT / SPV", icon: <Crown className="w-4 h-4 text-amber-500" /> },
     { id: "pipeline", label: "Landlord Pipeline", badge: `${clients.length}`, icon: <Users className="w-4 h-4" /> },
+    { id: "open_banking", label: "Open Banking & HMRC MTD", badge: "Live Feed", icon: <Landmark className="w-4 h-4 text-emerald-600" /> },
     { id: "statements", label: "Financial Statements & P&L", icon: <Scale className="w-4 h-4" /> },
     { id: "invoicing", label: "Practice Invoicing & WIP", badge: `${invoices.filter(i => i.status === "awaiting_payment").length} due`, icon: <PoundSterling className="w-4 h-4" /> },
+    { id: "wealth_advisory", label: "Wealth & Estate Advisory", badge: "IHT / SPV", icon: <Crown className="w-4 h-4 text-amber-500" /> },
     { id: "workspace", label: "Property & Owner Hub", icon: <FolderKanban className="w-4 h-4" /> },
     { id: "chaser", label: "Multi-Channel Chaser", badge: `${metrics.missingDocumentsCount} pending`, icon: <Send className="w-4 h-4" /> },
   ];
@@ -104,10 +106,10 @@ export default function PortalSidebar() {
             )}
             <div className="truncate">
               <span className="font-bold text-xs text-neutral-900 block truncate">
-                {isAccountant ? (currentUser?.name || "Gurtej Singh") : activeClient.primaryContact}
+                {isAccountant ? (currentUser?.name || "Gurtej Singh") : (currentUser?.name || activeClient.primaryContact)}
               </span>
               <span className="text-[11px] text-neutral-500 block truncate">
-                {isAccountant ? (currentUser?.firmName || "Mercian Wealth & Advisory") : activeClient.entityName}
+                {isAccountant ? "KP Tax Consultants Ltd" : (currentUser?.firmName || activeClient.entityName)}
               </span>
             </div>
           </div>

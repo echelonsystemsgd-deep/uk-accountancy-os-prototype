@@ -9,10 +9,25 @@ export type ScreenView =
   | 'statements'
   | 'invoicing'
   | 'wealth_advisory'
+  | 'open_banking'
   | 'client_overview'
   | 'dropzone'
   | 'vault'
   | 'client_messages';
+
+export interface BankTransaction {
+  id: string;
+  date: string;
+  bankName: string;
+  accountNumber: string;
+  description: string;
+  amount: number;
+  type: 'credit' | 'debit';
+  category: 'rental_income' | 'mortgage_interest' | 'repairs' | 'insurance' | 'service_charge' | 'other';
+  propertyAddress: string;
+  status: 'matched' | 'unreconciled' | 'flagged';
+  hmrcCategory: string;
+}
 
 export interface UserProfile {
   email: string;

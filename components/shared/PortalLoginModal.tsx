@@ -11,27 +11,27 @@ import {
   KeyRound,
   Eye,
   EyeOff,
-  Sparkles,
-  CheckCircle2,
   AlertCircle,
   Briefcase,
   Smartphone,
 } from "lucide-react";
 
 export default function PortalLoginModal() {
-  const { isLoginModalOpen, closeLoginModal, loginWithCredentials, enterClientPortal } =
-    useDemoStore();
+  const { isLoginModalOpen, closeLoginModal, loginWithCredentials } = useDemoStore();
 
   const [activeTab, setActiveTab] = useState<"admin" | "client">("admin");
-  const [email, setEmail] = useState<string>("mercianwealthgs@gmail.com");
-  const [password, setPassword] = useState<string>("Gurtej@2008#");
+  // Strictly blank inputs - never pre-filled!
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  // Client tab fields - strictly blank
+  const [clientEmail, setClientEmail] = useState<string>("");
+  const [clientPassword, setClientPassword] = useState<string>("");
+  const [showClientPassword, setShowClientPassword] = useState<boolean>(false);
+
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  // Client tab fields
-  const [clientEmail, setClientEmail] = useState<string>("marcus.sterling@sterlingholdings.co.uk");
-  const [clientPasscode, setClientPasscode] = useState<string>("123456");
 
   React.useEffect(() => {
     if (isLoginModalOpen) {
@@ -55,7 +55,7 @@ export default function PortalLoginModal() {
     try {
       const res = await loginWithCredentials(email, password);
       if (!res.success) {
-        setErrorMessage(res.error || "Authentication failed. Please check credentials.");
+        setErrorMessage(res.error || "Authentication failed. Invalid email or password.");
       }
     } catch (err: any) {
       setErrorMessage("Connection error during authentication.");
@@ -70,9 +70,9 @@ export default function PortalLoginModal() {
     setIsSubmitting(true);
 
     try {
-      const res = await loginWithCredentials(clientEmail, clientPasscode);
+      const res = await loginWithCredentials(clientEmail, clientPassword);
       if (!res.success) {
-        setErrorMessage(res.error || "Client verification failed.");
+        setErrorMessage(res.error || "Client verification failed. Invalid credentials.");
       }
     } catch (err: any) {
       setErrorMessage("Authentication error.");
@@ -81,38 +81,30 @@ export default function PortalLoginModal() {
     }
   };
 
-  const fillAdminCredentials = () => {
-    setEmail("mercianwealthgs@gmail.com");
-    setPassword("Gurtej@2008#");
-    setErrorMessage(null);
-  };
-
-  const fillClientCredentials = () => {
-    setClientEmail("marcus.sterling@sterlingholdings.co.uk");
-    setClientPasscode("123456");
-    setErrorMessage(null);
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/70 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="accountant-card max-w-lg w-full p-6 sm:p-7 bg-white space-y-6 shadow-2xl relative rounded-xl border border-neutral-200">
-        {/* Header */}
+        {/* Header with Official KP Tax Consultants Emblem */}
         <div className="flex items-start justify-between border-b border-neutral-100 pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-neutral-900 text-amber-400 flex items-center justify-center font-bold text-lg shadow-sm border border-neutral-800">
-              M
-            </div>
+            <img
+              src="/logo.png"
+              alt="KP Tax Consultants Official Emblem"
+              width={120}
+              height={36}
+              className="h-9 w-auto object-contain shrink-0"
+            />
             <div>
               <div className="flex items-center space-x-2">
                 <h2 className="text-base font-bold text-neutral-900 tracking-tight">
-                  Mercian Wealth & Advisory
+                  KP Accountants Portal Access
                 </h2>
-                <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 rounded">
-                  PORTAL
+                <span className="px-1.5 py-0.5 text-[10px] font-semibold bg-neutral-100 text-neutral-700 border border-neutral-200 rounded">
+                  SECURE
                 </span>
               </div>
               <p className="text-xs text-neutral-500">
-                UK Chartered Practice OS & Private Client Cockpit
+                Chartered Tax Advisers &bull; ICAEW Regulated Practice
               </p>
             </div>
           </div>
@@ -140,8 +132,8 @@ export default function PortalLoginModal() {
                 : "text-neutral-500 hover:text-neutral-800"
             }`}
           >
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Practice Admin / Partner</span>
+            <Briefcase className="w-3.5 h-3.5 text-primary" />
+            <span>Practice Staff / Partner</span>
           </button>
           <button
             type="button"
@@ -155,8 +147,8 @@ export default function PortalLoginModal() {
                 : "text-neutral-500 hover:text-neutral-800"
             }`}
           >
-            <Smartphone className="w-3.5 h-3.5" />
-            <span>Client Tax Portal</span>
+            <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
+            <span>Landlord Client Portal</span>
           </button>
         </div>
 
@@ -168,45 +160,27 @@ export default function PortalLoginModal() {
           </div>
         )}
 
-        {/* Admin Login Form */}
+        {/* Practice Admin Form */}
         {activeTab === "admin" && (
           <form onSubmit={handleAdminSubmit} className="space-y-4">
-            <div className="bg-amber-50/70 border border-amber-200/80 rounded-lg p-3 flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                <span className="text-amber-900 font-medium">
-                  Configured for: <strong>Gurtej Singh</strong>
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={fillAdminCredentials}
-                className="text-[11px] font-semibold text-amber-800 hover:text-amber-900 underline ml-2"
-              >
-                Autofill
-              </button>
-            </div>
-
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                Admin Work Email
+                Accountant Practice Email
               </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="mercianwealthgs@gmail.com"
-                  className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 outline-none font-medium"
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. name@firm.co.uk"
+                className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium"
+              />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-xs font-semibold text-neutral-700">
-                  Master Password
+                  Password
                 </label>
                 <button
                   type="button"
@@ -226,32 +200,27 @@ export default function PortalLoginModal() {
                   )}
                 </button>
               </div>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
-                  className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-neutral-900 focus:border-neutral-900 outline-none font-mono"
-                />
-              </div>
-              <span className="text-[10px] text-neutral-400 mt-1 block">
-                Master password provided: Gurtej@2008#
-              </span>
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary outline-none font-mono"
+              />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-4 bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-xs rounded-md shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
+              className="w-full py-2.5 px-4 bg-primary hover:bg-neutral-800 text-white font-semibold text-xs rounded-md shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
             >
               {isSubmitting ? (
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   <Lock className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Authenticate Mercian Practice Admin</span>
+                  <span>Sign In to Practice OS</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </>
               )}
@@ -262,22 +231,6 @@ export default function PortalLoginModal() {
         {/* Client Login Form */}
         {activeTab === "client" && (
           <form onSubmit={handleClientSubmit} className="space-y-4">
-            <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-lg p-3 flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span className="text-emerald-900 font-medium">
-                  Landlord Demo: <strong>Marcus Sterling</strong>
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={fillClientCredentials}
-                className="text-[11px] font-semibold text-emerald-800 hover:text-emerald-900 underline ml-2"
-              >
-                Autofill
-              </button>
-            </div>
-
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1">
                 Landlord / Investor Email
@@ -287,21 +240,40 @@ export default function PortalLoginModal() {
                 required
                 value={clientEmail}
                 onChange={(e) => setClientEmail(e.target.value)}
-                placeholder="marcus.sterling@sterlingholdings.co.uk"
+                placeholder="e.g. landlord@example.co.uk"
                 className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                One-Time Secure Passcode / PIN
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-semibold text-neutral-700">
+                  Password / Access Key
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowClientPassword(!showClientPassword)}
+                  className="text-[11px] text-neutral-500 hover:text-neutral-700 flex items-center space-x-1"
+                >
+                  {showClientPassword ? (
+                    <>
+                      <EyeOff className="w-3 h-3" />
+                      <span>Hide</span>
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="w-3 h-3" />
+                      <span>Show</span>
+                    </>
+                  )}
+                </button>
+              </div>
               <input
-                type="password"
+                type={showClientPassword ? "text" : "password"}
                 required
-                value={clientPasscode}
-                onChange={(e) => setClientPasscode(e.target.value)}
-                placeholder="123456"
+                value={clientPassword}
+                onChange={(e) => setClientPassword(e.target.value)}
+                placeholder="Enter password"
                 className="w-full px-3 py-2 text-xs border border-neutral-300 rounded-md focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 outline-none font-mono"
               />
             </div>
@@ -330,7 +302,7 @@ export default function PortalLoginModal() {
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>256-Bit TLS 1.3 Encryption</span>
           </div>
-          <span>UK Sovereign Data (London AWS/Supabase)</span>
+          <span>UK Sovereign Data (London)</span>
         </div>
       </div>
     </div>

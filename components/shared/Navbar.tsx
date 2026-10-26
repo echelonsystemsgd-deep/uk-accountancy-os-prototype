@@ -28,6 +28,7 @@ import {
   PoundSterling,
   Plus,
   Crown,
+  Landmark,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -297,10 +298,11 @@ export default function Navbar() {
   if (currentMode === "accountant") {
     const accountantNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
       { id: "radar", label: "Partner Radar", icon: <LayoutDashboard className="w-4 h-4" /> },
-      { id: "wealth_advisory", label: "Wealth & Advisory", icon: <Crown className="w-4 h-4 text-amber-500" /> },
       { id: "pipeline", label: "Landlord Pipeline", icon: <Users className="w-4 h-4" /> },
+      { id: "open_banking", label: "Open Banking & MTD", icon: <Landmark className="w-4 h-4 text-emerald-600" /> },
       { id: "statements", label: "Statutory Statements", icon: <Scale className="w-4 h-4" /> },
       { id: "invoicing", label: "Practice Invoicing", icon: <PoundSterling className="w-4 h-4" /> },
+      { id: "wealth_advisory", label: "Wealth & Estate", icon: <Crown className="w-4 h-4 text-amber-500" /> },
       { id: "workspace", label: "Property Hub", icon: <FolderKanban className="w-4 h-4" /> },
       { id: "chaser", label: "Chaser Engine", icon: <Send className="w-4 h-4" /> },
     ];
@@ -320,12 +322,12 @@ export default function Navbar() {
               />
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
-                  <span className="font-bold text-neutral-900 text-base sm:text-lg">Mercian Wealth / KP Accountants</span>
+                  <span className="font-bold text-neutral-900 text-base sm:text-lg">KP Accountants</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider border border-neutral-200">
                     Practice OS
                   </span>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium hidden sm:block">Gurtej Singh (Mercian Wealth) &bull; Kalpesh Patel FCA &bull; ICAEW Practice</p>
+                <p className="text-xs text-neutral-500 font-medium hidden sm:block">Kalpesh Patel FCA &bull; Chartered Accountants &bull; ICAEW Regulated</p>
               </div>
             </div>
 

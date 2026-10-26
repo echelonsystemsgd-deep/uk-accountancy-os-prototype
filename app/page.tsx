@@ -24,6 +24,7 @@ import ChaserView from "@/components/admin/ChaserView";
 import FinancialStatementsHub from "@/components/admin/FinancialStatementsHub";
 import PracticeInvoicingHub from "@/components/admin/PracticeInvoicingHub";
 import WealthAdvisoryHub from "@/components/admin/WealthAdvisoryHub";
+import OpenBankingHub from "@/components/admin/OpenBankingHub";
 import CreateEntityModal from "@/components/admin/CreateEntityModal";
 
 // Dedicated Client Portal Components
@@ -86,6 +87,12 @@ export default function Home() {
             {currentView === "wealth_advisory" && (
               <div className="animate-in fade-in duration-200">
                 <WealthAdvisoryHub />
+              </div>
+            )}
+
+            {currentView === "open_banking" && (
+              <div className="animate-in fade-in duration-200">
+                <OpenBankingHub />
               </div>
             )}
 

@@ -78,16 +78,16 @@ interface DemoContextType {
 
 const INITIAL_CLIENTS: LandlordClient[] = [
   {
-    id: "client-mercian",
-    entityName: "Mercian Sovereign Estate Holdings Ltd",
+    id: "client-sovereign",
+    entityName: "Sovereign Estate Holdings Ltd",
     entityType: "spv_ltd",
     companyNumber: "15984210",
     primaryContact: "Gurtej Singh",
-    email: "mercianwealthgs@gmail.com",
+    email: "deepgurtej28@gmail.com",
     phone: "+44 7700 900822",
     taxYear: "2024/25",
     stage: "review_ready",
-    assignedAccountant: "Gurtej Singh | Mercian Wealth & Advisory",
+    assignedAccountant: "Kalpesh Patel FCA",
     unbilledWip: 4800,
     totalRentalIncome: 248000,
     chaseCount: 0,
@@ -97,7 +97,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-gurtej",
         fullName: "Gurtej Singh",
         role: "Managing Director & Principal",
-        email: "mercianwealthgs@gmail.com",
+        email: "deepgurtej28@gmail.com",
         phone: "+44 7700 900822",
         utrNumber: "88204 99182",
         nationalInsurance: "GS 20 08 24 M",
@@ -661,7 +661,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const currentMode: AppMode =
     currentView === "landing"
       ? "landing"
-      : ["radar", "pipeline", "workspace", "chaser", "statements", "invoicing", "wealth_advisory"].includes(currentView)
+      : ["radar", "pipeline", "workspace", "chaser", "statements", "invoicing", "wealth_advisory", "open_banking"].includes(currentView)
       ? "accountant"
       : "client";
 
@@ -718,7 +718,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     const cleanEmail = emailInput.trim().toLowerCase();
     const cleanPass = passwordInput.trim();
 
-    // 1. Admin Login for Mercian Wealth Principal
+    // 1. Admin Login for Practice Lead (Gurtej Singh)
     if (
       cleanEmail === "mercianwealthgs@gmail.com" &&
       cleanPass === "Gurtej@2008#"
@@ -727,28 +727,28 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         email: "mercianwealthgs@gmail.com",
         name: "Gurtej Singh",
         role: "admin",
-        firmName: "Mercian Wealth & Advisory",
+        firmName: "KP Tax Consultants Ltd",
         isAuthenticated: true,
         lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
       };
       setCurrentUser(adminProfile);
       if (typeof window !== "undefined") {
         try {
-          sessionStorage.setItem("mercian_auth_user", JSON.stringify(adminProfile));
-          localStorage.setItem("mercian_auth_user", JSON.stringify(adminProfile));
+          sessionStorage.setItem("kptc_auth_user", JSON.stringify(adminProfile));
+          localStorage.setItem("kptc_auth_user", JSON.stringify(adminProfile));
         } catch (e) {}
       }
       closeLoginModal();
       setCurrentView("radar");
       triggerToast(
-        "Mercian Practice Admin Verified",
-        "Welcome Gurtej Singh. Secure session authenticated with 256-bit TLS.",
+        "Practice Admin Authenticated",
+        "Welcome Gurtej Singh. Full KP Accountants practice radar and tools unlocked.",
         "success"
       );
       return { success: true };
     }
 
-    // 2. Staff / Partner Login
+    // 2. Staff / Partner Login (Kalpesh Patel FCA)
     if (
       (cleanEmail === "kalpesh@kptc.co.uk" || cleanEmail === "admin@kptc.co.uk") &&
       (cleanPass === "Gurtej@2008#" || cleanPass === "admin123")
@@ -757,7 +757,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         email: cleanEmail,
         name: "Kalpesh Patel FCA",
         role: "accountant",
-        firmName: "KP Tax Consultants Ltd / Mercian Partner",
+        firmName: "KP Tax Consultants Ltd",
         isAuthenticated: true,
         lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
       };
@@ -768,33 +768,44 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       return { success: true };
     }
 
-    // 3. Client Portal Login
+    // 3. Client Portal Login (deepgurtej28@gmail.com with Gurtej@2008# or Marcus Sterling)
     if (
-      cleanEmail === "marcus.sterling@sterlingholdings.co.uk" ||
-      cleanEmail === "client@kptc.co.uk" ||
-      cleanPass === "123456"
+      (cleanEmail === "deepgurtej28@gmail.com" && cleanPass === "Gurtej@2008#") ||
+      (cleanEmail === "marcus.sterling@sterlingholdings.co.uk" && (cleanPass === "Gurtej@2008#" || cleanPass === "123456")) ||
+      (cleanEmail === "client@kptc.co.uk" && cleanPass === "Gurtej@2008#")
     ) {
+      const isGurtejClient = cleanEmail === "deepgurtej28@gmail.com";
       const clientProfile: UserProfile = {
-        email: cleanEmail || "marcus.sterling@sterlingholdings.co.uk",
-        name: "Marcus & Sarah Sterling",
+        email: cleanEmail,
+        name: isGurtejClient ? "Gurtej Singh (Portfolio Client)" : "Marcus & Sarah Sterling",
         role: "client",
-        firmName: "Sterling Property Holdings",
+        firmName: isGurtejClient ? "Sovereign Property Portfolio" : "Sterling Property Holdings",
         isAuthenticated: true,
         lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
       };
       setCurrentUser(clientProfile);
+      if (typeof window !== "undefined") {
+        try {
+          sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+          localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+        } catch (e) {}
+      }
       closeLoginModal();
       setCurrentView("dropzone");
-      triggerToast("Client Dropzone Active", "Welcome, Marcus Sterling. 2024/25 tax year dropzone ready.", "info");
+      triggerToast(
+        "Client Dropzone Active",
+        `Welcome ${clientProfile.name}. 2024/25 tax year dropzone ready.`,
+        "info"
+      );
       return { success: true };
     }
 
     triggerToast(
       "Authentication Failed",
-      "Invalid credentials. Please use mercianwealthgs@gmail.com with your master key or click Quick Fill.",
+      "Invalid credentials. Please verify your email and password.",
       "warning"
     );
-    return { success: false, error: "Invalid email or password. Please verify credentials." };
+    return { success: false, error: "Invalid email or password. Please verify your credentials." };
   };
 
   const logout = () => {

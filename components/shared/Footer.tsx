@@ -122,7 +122,7 @@ export default function Footer() {
               &copy; 2026 KP Tax Consultants Ltd / KP Accountants. Regulated by ICAEW &bull; All rights reserved.
             </p>
             <p className="text-[10px] text-neutral-400">
-              High-Performance OS &bull; Systems Architecture & Automation Engineered by <strong>Mercian Wealth</strong> (Berkshire, UK) &bull; Lead Architect: Gurtej Singh
+              Chartered Tax Advisers (CTA) &amp; Chartered Accountants (FCA) &bull; 7 Bell Yard, London, WC2A 2JR
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

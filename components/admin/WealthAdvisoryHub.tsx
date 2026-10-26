@@ -79,7 +79,7 @@ export default function WealthAdvisoryHub() {
           <div className="space-y-2">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 text-xs font-semibold">
               <Crown className="w-3.5 h-3.5 text-amber-400" />
-              <span>Mercian Private Wealth & Tax Cockpit</span>
+              <span>Private Wealth & Estate Tax Cockpit</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
               Wealth Advisory & Estate Architecture
@@ -126,9 +126,9 @@ export default function WealthAdvisoryHub() {
             <div className="text-[11px] text-neutral-300 mt-0.5">BPR, Trusts & RNRB</div>
           </div>
           <div>
-            <div className="text-neutral-400 font-medium">Principal Wealth Advisor</div>
-            <div className="text-base sm:text-lg font-bold text-white mt-1">Gurtej Singh</div>
-            <div className="text-[11px] text-amber-300 mt-0.5">Mercian Wealth & Advisory</div>
+            <div className="text-neutral-400 font-medium">Lead Tax Advisor</div>
+            <div className="text-base sm:text-lg font-bold text-white mt-1">Kalpesh Patel FCA</div>
+            <div className="text-[11px] text-amber-300 mt-0.5">Chartered Tax Advisers (CTA)</div>
           </div>
         </div>
       </div>
@@ -276,7 +276,7 @@ export default function WealthAdvisoryHub() {
               </div>
 
               <div className="p-3 rounded-lg bg-emerald-950/60 border border-emerald-500/30">
-                <span className="text-emerald-300 text-[11px] block">Mercian Structured</span>
+                <span className="text-emerald-300 text-[11px] block">SPV Trust Structured</span>
                 <span className="text-lg font-bold text-emerald-400 mt-1 block">
                   £{Math.round(mitigatedLiability).toLocaleString()}
                 </span>
@@ -424,7 +424,7 @@ export default function WealthAdvisoryHub() {
         <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
           <div>
             <h3 className="text-sm font-bold text-neutral-900">
-              Active Private Client & Family Office Portfolios Under Mercian Advisory
+              Active Private Client & Family Office Portfolios Under Advisory
             </h3>
             <p className="text-xs text-neutral-500">
               Cross-entity tracking of high-net-worth real estate structures
