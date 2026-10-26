@@ -39,10 +39,28 @@ export default function LiveRoleDock() {
                 &bull; Radar KPIs
               </button>
               <button
+                onClick={() => { enterAccountantPortal("wealth_advisory"); setExpanded(false); }}
+                className={`px-2 py-1.5 rounded text-left transition ${currentView === "wealth_advisory" ? "bg-amber-500/20 text-amber-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
+              >
+                &bull; Wealth & Advisory
+              </button>
+              <button
                 onClick={() => { enterAccountantPortal("pipeline"); setExpanded(false); }}
                 className={`px-2 py-1.5 rounded text-left transition ${currentView === "pipeline" ? "bg-amber-500/20 text-amber-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
               >
                 &bull; Pipeline CRM
+              </button>
+              <button
+                onClick={() => { enterAccountantPortal("statements"); setExpanded(false); }}
+                className={`px-2 py-1.5 rounded text-left transition ${currentView === "statements" ? "bg-amber-500/20 text-amber-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
+              >
+                &bull; Statements & P&L
+              </button>
+              <button
+                onClick={() => { enterAccountantPortal("invoicing"); setExpanded(false); }}
+                className={`px-2 py-1.5 rounded text-left transition ${currentView === "invoicing" ? "bg-amber-500/20 text-amber-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
+              >
+                &bull; Invoicing & WIP
               </button>
               <button
                 onClick={() => { enterAccountantPortal("workspace"); setExpanded(false); }}

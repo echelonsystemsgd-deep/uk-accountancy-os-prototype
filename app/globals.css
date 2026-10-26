@@ -162,3 +162,52 @@ body.modal-open {
   background: #94A3B8;
 }
 
+/* =========================================================================
+   AWWWARDS 2026 MOTION & MICRO-INTERACTION SUITE
+   ========================================================================= */
+
+/* Apple & Linear standard easing curve */
+.ease-out-expo {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Micro-interaction Card with subtle lift and glow */
+.awwwards-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.awwwards-card:hover {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.09), 0 0 0 1px rgba(15, 23, 42, 0.05);
+}
+
+/* Ambient Pulse Glow for Radar & Live Indicators */
+@keyframes ambient-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.35);
+  }
+}
+
+.animate-ambient-glow {
+  animation: ambient-glow 3s infinite ease-in-out;
+}
+
+/* Glassmorphism Surface with Border Sheen */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark-glass-panel {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+

@@ -8,6 +8,12 @@ import {
   CommunicationLogItem,
   PracticeMetrics,
   IntakeSubmission,
+  PracticeInvoice,
+  PropertyItem,
+  NewClientInput,
+  NewPropertyInput,
+  NewInvoiceInput,
+  UserProfile,
 } from "./types";
 import { supabase } from "./supabase";
 
@@ -47,13 +53,115 @@ interface DemoContextType {
   sendChaser: (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => void;
   exportAuditCsv: () => void;
   isCloudSyncActive: boolean;
+  invoices: PracticeInvoice[];
+  addNewClient: (input: NewClientInput) => void;
+  addNewProperty: (clientId: string, input: NewPropertyInput) => void;
+  createPracticeInvoice: (input: NewInvoiceInput) => void;
+  settleInvoice: (invoiceId: string) => void;
+  isCreateEntityModalOpen: boolean;
+  openCreateEntityModal: () => void;
+  closeCreateEntityModal: () => void;
+  isCreatePropertyModalOpen: boolean;
+  openCreatePropertyModal: () => void;
+  closeCreatePropertyModal: () => void;
+  isCreateInvoiceModalOpen: boolean;
+  openCreateInvoiceModal: () => void;
+  closeCreateInvoiceModal: () => void;
   resetDemoState: () => void;
   toasts: ToastNotification[];
   removeToast: (id: string) => void;
   triggerToast: (title: string, message: string, type?: "success" | "warning" | "info") => void;
+  currentUser: UserProfile | null;
+  loginWithCredentials: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
 }
 
 const INITIAL_CLIENTS: LandlordClient[] = [
+  {
+    id: "client-mercian",
+    entityName: "Mercian Sovereign Estate Holdings Ltd",
+    entityType: "spv_ltd",
+    companyNumber: "15984210",
+    primaryContact: "Gurtej Singh",
+    email: "mercianwealthgs@gmail.com",
+    phone: "+44 7700 900822",
+    taxYear: "2024/25",
+    stage: "review_ready",
+    assignedAccountant: "Gurtej Singh | Mercian Wealth & Advisory",
+    unbilledWip: 4800,
+    totalRentalIncome: 248000,
+    chaseCount: 0,
+    lastChasedAt: "All records synced",
+    parties: [
+      {
+        id: "p-gurtej",
+        fullName: "Gurtej Singh",
+        role: "Managing Director & Principal",
+        email: "mercianwealthgs@gmail.com",
+        phone: "+44 7700 900822",
+        utrNumber: "88204 99182",
+        nationalInsurance: "GS 20 08 24 M",
+        idVerified: true,
+        addressVerified: true,
+      },
+    ],
+    properties: [
+      {
+        id: "prop-mercian-1",
+        address: "10 Colmore Row, Birmingham Financial District",
+        postcode: "B3 2QD",
+        propertyType: "Commercial",
+        ownershipSplit: "100% SPV Ltd",
+        annualRentalIncome: 120000,
+        mortgageLender: "Investec Private Bank",
+        outstandingMortgage: 850000,
+      },
+      {
+        id: "prop-mercian-2",
+        address: "Mercian Manor, Edgbaston Park",
+        postcode: "B15 2TY",
+        propertyType: "Residential BTL",
+        ownershipSplit: "100% SPV Ltd",
+        annualRentalIncome: 72000,
+        mortgageLender: "Coutts & Co",
+        outstandingMortgage: 540000,
+      },
+      {
+        id: "prop-mercian-3",
+        address: "45 Solihull Parkway, Birmingham Business Park",
+        postcode: "B37 7YN",
+        propertyType: "Multi-unit",
+        ownershipSplit: "100% SPV Ltd",
+        annualRentalIncome: 56000,
+        mortgageLender: "Barclays Corporate",
+        outstandingMortgage: 390000,
+      },
+    ],
+    documents: [
+      {
+        id: "doc-merc-1",
+        title: "Investec Commercial Facility Agreement & Interest Schedule",
+        category: "mortgage",
+        ownerOrProperty: "10 Colmore Row, Birmingham",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2026-10-15",
+        uploadedAt: "2026-10-18",
+        fileSize: "2.4 MB PDF",
+      },
+      {
+        id: "doc-merc-2",
+        title: "Mercian Sovereign Estate Holdings - Confirmation Statement CS01",
+        category: "tax_record",
+        ownerOrProperty: "Mercian Sovereign Estate Holdings Ltd",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2026-10-01",
+        uploadedAt: "2026-10-02",
+        fileSize: "850 KB PDF",
+      },
+    ],
+  },
   {
     id: "client-sterling",
     entityName: "Marcus & Sarah Sterling",
@@ -479,12 +587,56 @@ const INITIAL_LOGS: CommunicationLogItem[] = [
   },
 ];
 
+const INITIAL_INVOICES: PracticeInvoice[] = [
+  {
+    id: "inv-101",
+    invoiceNumber: "KP-2024-089",
+    clientId: "client-sterling",
+    entityName: "Marcus & Sarah Sterling",
+    serviceDescription: "Section 24 Portfolio Restructuring & 2024/25 Self Assessment Computations",
+    netAmount: 1850,
+    vatAmount: 370,
+    totalAmount: 2220,
+    status: "awaiting_payment",
+    issuedDate: "12 Oct 2026",
+    dueDate: "26 Oct 2026",
+  },
+  {
+    id: "inv-102",
+    invoiceNumber: "KP-2024-090",
+    clientId: "client-oakwood",
+    entityName: "Oakwood Property SPV Ltd",
+    serviceDescription: "Statutory Financial Statements (FRS 105), CT600 Corporation Tax & Confirmation Statement",
+    netAmount: 2400,
+    vatAmount: 480,
+    totalAmount: 2880,
+    status: "awaiting_payment",
+    issuedDate: "15 Oct 2026",
+    dueDate: "29 Oct 2026",
+  },
+  {
+    id: "inv-103",
+    invoiceNumber: "KP-2024-085",
+    clientId: "client-kensington",
+    entityName: "Kensington Mews Holdings LLP",
+    serviceDescription: "Partnership Tax Return (SA800) & Annual Bookkeeping Reconciliation",
+    netAmount: 3100,
+    vatAmount: 620,
+    totalAmount: 3720,
+    status: "paid",
+    issuedDate: "01 Oct 2026",
+    dueDate: "15 Oct 2026",
+    paidAt: "10 Oct 2026 via BACS",
+  },
+];
+
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [currentView, setCurrentViewInternal] = useState<ScreenView>("landing");
   const [selectedClientId, setSelectedClientId] = useState<string>("client-sterling");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
+  const [invoices, setInvoices] = useState<PracticeInvoice[]>(INITIAL_INVOICES);
   const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>(INITIAL_LOGS);
   const [mobileFrameEnabled, setMobileFrameEnabled] = useState<boolean>(false);
   const [activeChaserDocumentId, setActiveChaserDocumentId] = useState<string | null>("doc-1");
@@ -492,12 +644,31 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [isIntakeModalOpen, setIsIntakeModalOpen] = useState<boolean>(false);
   const [intakeDefaultValues, setIntakeDefaultValues] = useState<Partial<IntakeSubmission> | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isCreateEntityModalOpen, setIsCreateEntityModalOpen] = useState<boolean>(false);
+  const [isCreatePropertyModalOpen, setIsCreatePropertyModalOpen] = useState<boolean>(false);
+  const [isCreateInvoiceModalOpen, setIsCreateInvoiceModalOpen] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("mercian_auth_user");
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return {
+      email: "mercianwealthgs@gmail.com",
+      name: "Gurtej Singh",
+      role: "admin",
+      firmName: "Mercian Wealth & Advisory",
+      isAuthenticated: true,
+      lastLogin: "Active Session",
+    };
+  });
 
   // Derive active application mode
   const currentMode: AppMode =
     currentView === "landing"
       ? "landing"
-      : ["radar", "pipeline", "workspace", "chaser"].includes(currentView)
+      : ["radar", "pipeline", "workspace", "chaser", "statements", "invoicing", "wealth_advisory"].includes(currentView)
       ? "accountant"
       : "client";
 
@@ -546,6 +717,102 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   const openLoginModal = () => setIsLoginModalOpen(true);
   const closeLoginModal = () => setIsLoginModalOpen(false);
+
+  const loginWithCredentials = async (
+    emailInput: string,
+    passwordInput: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    const cleanEmail = emailInput.trim().toLowerCase();
+    const cleanPass = passwordInput.trim();
+
+    // 1. Admin Login for Mercian Wealth Principal
+    if (
+      cleanEmail === "mercianwealthgs@gmail.com" &&
+      cleanPass === "Gurtej@2008#"
+    ) {
+      const adminProfile: UserProfile = {
+        email: "mercianwealthgs@gmail.com",
+        name: "Gurtej Singh",
+        role: "admin",
+        firmName: "Mercian Wealth & Advisory",
+        isAuthenticated: true,
+        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+      };
+      setCurrentUser(adminProfile);
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem("mercian_auth_user", JSON.stringify(adminProfile));
+        } catch (e) {}
+      }
+      closeLoginModal();
+      setCurrentView("radar");
+      triggerToast(
+        "Mercian Practice Admin Verified",
+        "Welcome Gurtej Singh. Secure session authenticated with 256-bit TLS.",
+        "success"
+      );
+      return { success: true };
+    }
+
+    // 2. Staff / Partner Login
+    if (
+      (cleanEmail === "kalpesh@kptc.co.uk" || cleanEmail === "admin@kptc.co.uk") &&
+      (cleanPass === "Gurtej@2008#" || cleanPass === "admin123")
+    ) {
+      const staffProfile: UserProfile = {
+        email: cleanEmail,
+        name: "Kalpesh Patel FCA",
+        role: "accountant",
+        firmName: "KP Tax Consultants Ltd / Mercian Partner",
+        isAuthenticated: true,
+        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+      };
+      setCurrentUser(staffProfile);
+      closeLoginModal();
+      setCurrentView("radar");
+      triggerToast("Partner Portal Active", "Welcome back, Kalpesh Patel FCA.", "success");
+      return { success: true };
+    }
+
+    // 3. Client Portal Login
+    if (
+      cleanEmail === "marcus.sterling@sterlingholdings.co.uk" ||
+      cleanEmail === "client@kptc.co.uk" ||
+      cleanPass === "123456"
+    ) {
+      const clientProfile: UserProfile = {
+        email: cleanEmail || "marcus.sterling@sterlingholdings.co.uk",
+        name: "Marcus & Sarah Sterling",
+        role: "client",
+        firmName: "Sterling Property Holdings",
+        isAuthenticated: true,
+        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+      };
+      setCurrentUser(clientProfile);
+      closeLoginModal();
+      setCurrentView("dropzone");
+      triggerToast("Client Dropzone Active", "Welcome, Marcus Sterling. 2024/25 tax year dropzone ready.", "info");
+      return { success: true };
+    }
+
+    triggerToast(
+      "Authentication Failed",
+      "Invalid credentials. Please use mercianwealthgs@gmail.com with your master key or click Quick Fill.",
+      "warning"
+    );
+    return { success: false, error: "Invalid email or password. Please verify credentials." };
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("mercian_auth_user");
+      } catch (e) {}
+    }
+    exitToLanding();
+    triggerToast("Signed Out", "You have securely logged out of Mercian Wealth Practice Cockpit.", "info");
+  };
 
   const enterAccountantPortal = (targetView: ScreenView = "radar") => {
     closeLoginModal();
@@ -777,6 +1044,182 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const openCreateEntityModal = () => setIsCreateEntityModalOpen(true);
+  const closeCreateEntityModal = () => setIsCreateEntityModalOpen(false);
+  const openCreatePropertyModal = () => setIsCreatePropertyModalOpen(true);
+  const closeCreatePropertyModal = () => setIsCreatePropertyModalOpen(false);
+  const openCreateInvoiceModal = () => setIsCreateInvoiceModalOpen(true);
+  const closeCreateInvoiceModal = () => setIsCreateInvoiceModalOpen(false);
+
+  const addNewClient = async (input: NewClientInput) => {
+    const newId = `client-${Date.now()}`;
+    const newClient: LandlordClient = {
+      id: newId,
+      entityName: input.entityName,
+      entityType: input.entityType,
+      companyNumber: input.companyNumber,
+      primaryContact: input.primaryContact,
+      email: input.email,
+      phone: input.phone,
+      taxYear: "2024/25",
+      stage: "chasing_docs",
+      assignedAccountant: input.assignedAccountant,
+      unbilledWip: 1850,
+      totalRentalIncome: input.annualRent,
+      chaseCount: 0,
+      parties: [
+        {
+          id: `party-${Date.now()}`,
+          fullName: input.primaryContact,
+          role: input.entityType === "spv_ltd" ? "Company Director" : "Primary Landlord",
+          email: input.email,
+          phone: input.phone,
+          utrNumber: `${Math.floor(10000 + Math.random() * 90000)} ${Math.floor(10000 + Math.random() * 90000)}`,
+          nationalInsurance: "AB 12 34 56 C",
+          idVerified: true,
+          addressVerified: false,
+        },
+      ],
+      properties: [
+        {
+          id: `prop-${Date.now()}`,
+          address: "Primary Registered Asset, London",
+          postcode: "WC2A 2JR",
+          propertyType: "Residential BTL",
+          ownershipSplit: input.entityType === "spv_ltd" ? "100% SPV Ltd" : "Individual",
+          annualRentalIncome: input.annualRent,
+          outstandingMortgage: Math.round(input.annualRent * 6),
+        },
+      ],
+      documents: [
+        {
+          id: `doc-${Date.now()}-1`,
+          title: "Proof of Address (Utility Bill / Council Tax)",
+          category: "id_aml",
+          ownerOrProperty: input.primaryContact,
+          status: "pending",
+          isOverdue: false,
+          dueDate: "2026-11-15",
+          notes: "ICAEW statutory AML verification requirement",
+        },
+        {
+          id: `doc-${Date.now()}-2`,
+          title: "Mortgage Interest Annual Statement",
+          category: "mortgage",
+          ownerOrProperty: "Primary Registered Asset",
+          status: "pending",
+          isOverdue: false,
+          dueDate: "2026-11-20",
+          notes: "Required for Section 24 mortgage interest relief claim",
+        },
+      ],
+    };
+
+    setClients((prev) => [newClient, ...prev]);
+    setSelectedClientId(newId);
+    closeCreateEntityModal();
+
+    // Live sync to Supabase
+    try {
+      await supabase.from("clients").insert([
+        {
+          entity_name: input.entityName,
+          entity_type: input.entityType,
+          company_number: input.companyNumber,
+          primary_email: input.email,
+          primary_phone: input.phone,
+          assigned_accountant: input.assignedAccountant,
+          status: "chasing_docs",
+        },
+      ]);
+    } catch (err) {
+      console.warn("Supabase client creation:", err);
+    }
+
+    triggerToast(
+      "New Client Entity Created",
+      `${input.entityName} successfully added to Practice Registry. Compliance checklist initialized.`,
+      "success"
+    );
+  };
+
+  const addNewProperty = (clientId: string, input: NewPropertyInput) => {
+    const newProp: PropertyItem = {
+      id: `prop-${Date.now()}`,
+      address: input.address,
+      postcode: input.postcode,
+      propertyType: input.propertyType,
+      ownershipSplit: input.ownershipSplit,
+      annualRentalIncome: input.annualRentalIncome,
+      mortgageLender: input.mortgageLender || "Barclays Commercial",
+      outstandingMortgage: input.outstandingMortgage || 200000,
+    };
+
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        return {
+          ...c,
+          properties: [...c.properties, newProp],
+          totalRentalIncome: c.totalRentalIncome + input.annualRentalIncome,
+        };
+      })
+    );
+    closeCreatePropertyModal();
+
+    triggerToast(
+      "Property Asset Added",
+      `${input.address} registered to portfolio schedule. Rental yield recalculated.`,
+      "success"
+    );
+  };
+
+  const createPracticeInvoice = (input: NewInvoiceInput) => {
+    const targetClient = clients.find((c) => c.id === input.clientId) || activeClient;
+    const vat = Math.round(input.netAmount * 0.2);
+    const newInv: PracticeInvoice = {
+      id: `inv-${Date.now()}`,
+      invoiceNumber: `KP-2024-${Math.floor(100 + Math.random() * 900)}`,
+      clientId: targetClient.id,
+      entityName: targetClient.entityName,
+      serviceDescription: input.serviceDescription,
+      netAmount: input.netAmount,
+      vatAmount: vat,
+      totalAmount: input.netAmount + vat,
+      status: "awaiting_payment",
+      issuedDate: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+      dueDate: input.dueDate,
+    };
+
+    setInvoices((prev) => [newInv, ...prev]);
+    closeCreateInvoiceModal();
+
+    triggerToast(
+      "VAT Fee Note Issued",
+      `Invoice ${newInv.invoiceNumber} for £${newInv.totalAmount.toLocaleString()} generated for ${targetClient.entityName}.`,
+      "success"
+    );
+  };
+
+  const settleInvoice = (invoiceId: string) => {
+    setInvoices((prev) =>
+      prev.map((inv) => {
+        if (inv.id !== invoiceId) return inv;
+        return {
+          ...inv,
+          status: "paid" as const,
+          paidAt: `Today at ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })} via BACS`,
+        };
+      })
+    );
+
+    triggerToast(
+      "Fee Note Settled",
+      "Payment reconciled. Practice Collected Revenue increased and WIP ledger updated.",
+      "success"
+    );
+  };
+
   const exportAuditCsv = () => {
     if (typeof window !== "undefined") {
       window.location.href = "/api/export?type=csv";
@@ -831,10 +1274,27 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         sendChaser,
         exportAuditCsv,
         isCloudSyncActive: true,
+        invoices,
+        addNewClient,
+        addNewProperty,
+        createPracticeInvoice,
+        settleInvoice,
+        isCreateEntityModalOpen,
+        openCreateEntityModal,
+        closeCreateEntityModal,
+        isCreatePropertyModalOpen,
+        openCreatePropertyModal,
+        closeCreatePropertyModal,
+        isCreateInvoiceModalOpen,
+        openCreateInvoiceModal,
+        closeCreateInvoiceModal,
         resetDemoState,
         toasts,
         removeToast,
         triggerToast,
+        currentUser,
+        loginWithCredentials,
+        logout,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { useDemoStore } from "@/lib/store";
 import { Globe, Briefcase, Smartphone, Database, CheckCircle2 } from "lucide-react";
 
 export default function EnvironmentSwitcherBar() {
-  const { currentMode, currentView, setCurrentView, enterAccountantPortal, enterClientPortal, exitToLanding, metrics } = useDemoStore();
+  const { currentMode, currentView, setCurrentView, enterAccountantPortal, enterClientPortal, exitToLanding, metrics, currentUser } = useDemoStore();
 
   return (
     <div className="w-full bg-slate-950 text-slate-200 border-b border-slate-800 text-xs px-3 sm:px-6 py-2 sticky top-0 z-[60] shadow-md">
@@ -13,15 +13,15 @@ export default function EnvironmentSwitcherBar() {
         {/* Status indicator */}
         <div className="flex items-center space-x-2 shrink-0">
           <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
           </span>
           <span className="font-bold tracking-tight text-white uppercase text-[10px] sm:text-xs">
-            KP Tax OS Live System
+            Mercian Wealth & KP Practice OS
           </span>
           <span className="hidden sm:inline text-slate-500">&bull;</span>
-          <span className="hidden sm:inline text-slate-400 text-[11px]">
-            Supabase London eu-west-2 Active
+          <span className="hidden sm:inline text-amber-300/90 text-[11px] font-medium">
+            {currentUser?.name || "Gurtej Singh"} ({currentUser?.email || "mercianwealthgs@gmail.com"})
           </span>
         </div>
 

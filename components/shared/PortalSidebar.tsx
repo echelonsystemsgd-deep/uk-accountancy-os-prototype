@@ -23,6 +23,11 @@ import {
   CheckCircle2,
   ArrowRight,
   TrendingUp,
+  Scale,
+  PoundSterling,
+  Plus,
+  Crown,
+  LogOut,
 } from "lucide-react";
 
 export default function PortalSidebar() {
@@ -32,12 +37,16 @@ export default function PortalSidebar() {
     setCurrentView,
     activeClient,
     clients,
+    invoices,
     setSelectedClientId,
     metrics,
+    openCreateEntityModal,
     resetDemoState,
     enterAccountantPortal,
     enterClientPortal,
     exitToLanding,
+    currentUser,
+    logout,
   } = useDemoStore();
 
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -61,7 +70,10 @@ export default function PortalSidebar() {
 
   const accountantLinks: { id: ScreenView; label: string; badge?: string; icon: React.ReactNode }[] = [
     { id: "radar", label: "Partner Practice Radar", icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: "wealth_advisory", label: "Mercian Wealth & Advisory", badge: "IHT / SPV", icon: <Crown className="w-4 h-4 text-amber-500" /> },
     { id: "pipeline", label: "Landlord Pipeline", badge: `${clients.length}`, icon: <Users className="w-4 h-4" /> },
+    { id: "statements", label: "Financial Statements & P&L", icon: <Scale className="w-4 h-4" /> },
+    { id: "invoicing", label: "Practice Invoicing & WIP", badge: `${invoices.filter(i => i.status === "awaiting_payment").length} due`, icon: <PoundSterling className="w-4 h-4" /> },
     { id: "workspace", label: "Property & Owner Hub", icon: <FolderKanban className="w-4 h-4" /> },
     { id: "chaser", label: "Multi-Channel Chaser", badge: `${metrics.missingDocumentsCount} pending`, icon: <Send className="w-4 h-4" /> },
   ];
@@ -82,13 +94,9 @@ export default function PortalSidebar() {
         <div className="p-3.5 rounded-xl border border-neutral-200 bg-neutral-50 space-y-2.5">
           <div className="flex items-center space-x-3">
             {isAccountant ? (
-              <img
-                src="/team/kalpesh-patel.png"
-                alt="Kalpesh Patel FCA"
-                width={40}
-                height={40}
-                className="w-10 h-10 rounded-full object-cover border-2 border-primary shrink-0 shadow-xs"
-              />
+              <div className="w-10 h-10 rounded-full bg-neutral-900 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 border border-amber-400/40 shadow-xs">
+                {currentUser?.name ? currentUser.name.split(" ").map(n => n[0]).join("") : "GS"}
+              </div>
             ) : (
               <div className="w-10 h-10 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                 MS
@@ -96,10 +104,10 @@ export default function PortalSidebar() {
             )}
             <div className="truncate">
               <span className="font-bold text-xs text-neutral-900 block truncate">
-                {isAccountant ? "Kalpesh Patel FCA" : activeClient.primaryContact}
+                {isAccountant ? (currentUser?.name || "Gurtej Singh") : activeClient.primaryContact}
               </span>
               <span className="text-[11px] text-neutral-500 block truncate">
-                {isAccountant ? "Partner & CTA Lead" : activeClient.entityName}
+                {isAccountant ? (currentUser?.firmName || "Mercian Wealth & Advisory") : activeClient.entityName}
               </span>
             </div>
           </div>
@@ -131,6 +139,16 @@ export default function PortalSidebar() {
                 </option>
               ))}
             </select>
+
+            {/* Quick Creation Trigger */}
+            <button
+              type="button"
+              onClick={openCreateEntityModal}
+              className="w-full mt-2 py-2 px-3 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition flex items-center justify-center space-x-1.5 shadow-xs"
+            >
+              <Plus className="w-3.5 h-3.5 text-amber-400" />
+              <span>+ New Client / Invoice / Asset</span>
+            </button>
           </div>
         )}
 
@@ -227,6 +245,18 @@ export default function PortalSidebar() {
           >
             <Globe className="w-3.5 h-3.5 text-neutral-400" />
             <span>Public Website</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              logout();
+              setMobileDrawerOpen(false);
+            }}
+            className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50 transition border border-red-100"
+          >
+            <LogOut className="w-3.5 h-3.5 text-red-500" />
+            <span>Sign Out Session</span>
           </button>
         </div>
       </div>

@@ -23,6 +23,10 @@ import PartnerRadar from "@/components/admin/PartnerRadar";
 import LandlordPipeline from "@/components/admin/LandlordPipeline";
 import PropertyWorkspace from "@/components/admin/PropertyWorkspace";
 import ChaserView from "@/components/admin/ChaserView";
+import FinancialStatementsHub from "@/components/admin/FinancialStatementsHub";
+import PracticeInvoicingHub from "@/components/admin/PracticeInvoicingHub";
+import WealthAdvisoryHub from "@/components/admin/WealthAdvisoryHub";
+import CreateEntityModal from "@/components/admin/CreateEntityModal";
 
 // Dedicated Client Portal Components
 import ClientOverview from "@/components/portal/ClientOverview";
@@ -78,6 +82,24 @@ export default function Home() {
               </div>
             )}
 
+            {currentView === "statements" && (
+              <div className="animate-in fade-in duration-200">
+                <FinancialStatementsHub />
+              </div>
+            )}
+
+            {currentView === "wealth_advisory" && (
+              <div className="animate-in fade-in duration-200">
+                <WealthAdvisoryHub />
+              </div>
+            )}
+
+            {currentView === "invoicing" && (
+              <div className="animate-in fade-in duration-200">
+                <PracticeInvoicingHub />
+              </div>
+            )}
+
             {currentView === "workspace" && (
               <div className="animate-in fade-in duration-200">
                 <PropertyWorkspace />
@@ -126,6 +148,9 @@ export default function Home() {
 
       {/* Modal: Interactive Consultation Intake */}
       <ConsultationModal />
+
+      {/* Modal: Practice Creation Wizard (New Client, Property, Fee Note) */}
+      <CreateEntityModal />
 
       {/* Floating Role & Environment Quick Switcher Dock */}
       <LiveRoleDock />

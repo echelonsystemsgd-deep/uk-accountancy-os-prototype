@@ -6,10 +6,23 @@ export type ScreenView =
   | 'pipeline'
   | 'workspace'
   | 'chaser'
+  | 'statements'
+  | 'invoicing'
+  | 'wealth_advisory'
   | 'client_overview'
   | 'dropzone'
   | 'vault'
   | 'client_messages';
+
+export interface UserProfile {
+  email: string;
+  name: string;
+  role: 'admin' | 'accountant' | 'client';
+  firmName: string;
+  avatarUrl?: string;
+  isAuthenticated: boolean;
+  lastLogin?: string;
+}
 
 export type EntityType = 'individual' | 'joint' | 'spv_ltd';
 
@@ -47,7 +60,7 @@ export interface PropertyItem {
 export interface ClientParty {
   id: string;
   fullName: string;
-  role: 'Primary Landlord' | 'Joint Owner (Spouse)' | 'Company Director';
+  role: 'Primary Landlord' | 'Joint Owner (Spouse)' | 'Company Director' | 'Managing Director & Principal' | string;
   email: string;
   phone: string;
   utrNumber: string; // 10-digit HMRC UTR
@@ -66,7 +79,7 @@ export interface LandlordClient {
   phone: string;
   taxYear: string; // "2024/25"
   stage: OnboardingStage;
-  assignedAccountant: 'Kalpesh Patel FCA' | 'Pritpal Chaggar CTA';
+  assignedAccountant: 'Gurtej Singh | Mercian Wealth & Advisory' | 'Kalpesh Patel FCA' | 'Pritpal Chaggar CTA' | string;
   properties: PropertyItem[];
   parties: ClientParty[];
   documents: DocumentItem[];
@@ -106,4 +119,72 @@ export interface IntakeSubmission {
   annualRent: number;
   mortgageInterest: number;
   notes: string;
+}
+
+export interface PracticeInvoice {
+  id: string;
+  invoiceNumber: string;
+  clientId: string;
+  entityName: string;
+  serviceDescription: string;
+  netAmount: number;
+  vatAmount: number;
+  totalAmount: number;
+  status: 'awaiting_payment' | 'paid';
+  issuedDate: string;
+  dueDate: string;
+  paidAt?: string;
+}
+
+export interface ProfitAndLossStatement {
+  turnover: number;
+  costOfSales: number;
+  grossProfit: number;
+  lettingFees: number;
+  insuranceAndCompliance: number;
+  repairsAndMaintenance: number;
+  mortgageInterest: number;
+  operatingProfit: number;
+  corporationTaxEstimated: number;
+  netRetainedProfit: number;
+}
+
+export interface BalanceSheetStatement {
+  tangibleFixedAssets: number;
+  cashAtBank: number;
+  debtorsAndPrepayments: number;
+  totalCurrentAssets: number;
+  creditorsDueWithinOneYear: number;
+  mortgageLoansLongTerm: number;
+  netAssets: number;
+  calledUpShareCapital: number;
+  profitAndLossReserves: number;
+}
+
+export interface NewClientInput {
+  entityName: string;
+  entityType: EntityType;
+  companyNumber?: string;
+  primaryContact: string;
+  email: string;
+  phone: string;
+  annualRent: number;
+  assignedAccountant: 'Kalpesh Patel FCA' | 'Pritpal Chaggar CTA';
+}
+
+export interface NewPropertyInput {
+  address: string;
+  postcode: string;
+  propertyType: 'Residential BTL' | 'HMO' | 'Commercial' | 'Multi-unit';
+  ownershipSplit: string;
+  annualRentalIncome: number;
+  mortgageLender?: string;
+  outstandingMortgage?: number;
+}
+
+export interface NewInvoiceInput {
+  clientId: string;
+  serviceDescription: string;
+  netAmount: number;
+  dueDate: string;
 }
