@@ -50,7 +50,7 @@ export interface ClientParty {
   role: 'Primary Landlord' | 'Joint Owner (Spouse)' | 'Company Director';
   email: string;
   phone: string;
-  utrNumber: string; // 10-digit synthetic UTR
+  utrNumber: string; // 10-digit HMRC UTR
   nationalInsurance: string;
   idVerified: boolean;
   addressVerified: boolean;

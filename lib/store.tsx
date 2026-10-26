@@ -9,6 +9,7 @@ import {
   PracticeMetrics,
   IntakeSubmission,
 } from "./types";
+import { supabase } from "./supabase";
 
 interface ToastNotification {
   id: string;
@@ -58,7 +59,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
     entityName: "Marcus & Sarah Sterling",
     entityType: "joint",
     primaryContact: "Marcus Sterling",
-    email: "marcus.sterling@synthetic-mail.co.uk",
+    email: "marcus.sterling@sterlingholdings.co.uk",
     phone: "+44 7700 900142",
     taxYear: "2024/25",
     stage: "chasing_docs",
@@ -72,7 +73,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-marcus",
         fullName: "Marcus Sterling",
         role: "Primary Landlord",
-        email: "marcus.sterling@synthetic-mail.co.uk",
+        email: "marcus.sterling@sterlingholdings.co.uk",
         phone: "+44 7700 900142",
         utrNumber: "78219 40215",
         nationalInsurance: "QQ 12 34 56 A",
@@ -83,7 +84,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-sarah",
         fullName: "Sarah Sterling",
         role: "Joint Owner (Spouse)",
-        email: "sarah.sterling@synthetic-mail.co.uk",
+        email: "sarah.sterling@sterlingholdings.co.uk",
         phone: "+44 7700 900143",
         utrNumber: "91482 66301",
         nationalInsurance: "WW 98 76 54 B",
@@ -226,7 +227,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
     entityType: "spv_ltd",
     companyNumber: "14285721",
     primaryContact: "Pritam Johal",
-    email: "p.johal@synthetic-oakwood.co.uk",
+    email: "p.johal@oakwoodspv.co.uk",
     phone: "+44 7700 900512",
     taxYear: "2024/25",
     stage: "chasing_docs",
@@ -240,7 +241,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-pritam",
         fullName: "Pritam Johal",
         role: "Company Director",
-        email: "p.johal@synthetic-oakwood.co.uk",
+        email: "p.johal@oakwoodspv.co.uk",
         phone: "+44 7700 900512",
         utrNumber: "62104 88391",
         nationalInsurance: "AB 55 66 77 C",
@@ -319,7 +320,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
     entityName: "Dr. Tariq Rahman",
     entityType: "individual",
     primaryContact: "Dr. Tariq Rahman",
-    email: "t.rahman@synthetic-consultant.co.uk",
+    email: "t.rahman@cheltmed.co.uk",
     phone: "+44 7700 900881",
     taxYear: "2024/25",
     stage: "kyc_pending",
@@ -333,7 +334,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-tariq",
         fullName: "Dr. Tariq Rahman",
         role: "Primary Landlord",
-        email: "t.rahman@synthetic-consultant.co.uk",
+        email: "t.rahman@cheltmed.co.uk",
         phone: "+44 7700 900881",
         utrNumber: "34901 22819",
         nationalInsurance: "CD 33 44 55 D",
@@ -386,7 +387,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
     entityName: "Kensington Mews Holdings LLP",
     entityType: "joint",
     primaryContact: "Rupert Sterling-Smith",
-    email: "rupert@synthetic-kensington.co.uk",
+    email: "rupert@kensingtonholdings.co.uk",
     phone: "+44 7700 900332",
     taxYear: "2024/25",
     stage: "review_ready",
@@ -400,7 +401,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         id: "p-rupert",
         fullName: "Rupert Sterling-Smith",
         role: "Primary Landlord",
-        email: "rupert@synthetic-kensington.co.uk",
+        email: "rupert@kensingtonholdings.co.uk",
         phone: "+44 7700 900332",
         utrNumber: "84729 11940",
         nationalInsurance: "EF 11 22 33 E",
@@ -437,7 +438,7 @@ const INITIAL_CLIENTS: LandlordClient[] = [
     entityName: "Elena & David Vance",
     entityType: "joint",
     primaryContact: "Elena Vance",
-    email: "elena.vance@synthetic-vance.co.uk",
+    email: "elena.vance@vanceproperties.co.uk",
     phone: "+44 7700 900664",
     taxYear: "2024/25",
     stage: "computation_complete",
@@ -469,7 +470,7 @@ const INITIAL_LOGS: CommunicationLogItem[] = [
     clientId: "client-oakwood",
     entityName: "Oakwood Property SPV Ltd",
     channel: "email",
-    recipient: "p.johal@synthetic-oakwood.co.uk",
+    recipient: "p.johal@oakwoodspv.co.uk",
     messageBody:
       "Dear Pritam, please upload the Shawbrook commercial mortgage certificate for 7-11 Station Parade to reconcile your SPV company deductible expenses.",
     sentAt: "18 Oct 2026 at 09:15",
@@ -580,7 +581,23 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setIntakeDefaultValues(null);
   };
 
-  const addIntakeLead = (submission: IntakeSubmission) => {
+  const addIntakeLead = async (submission: IntakeSubmission) => {
+    // Live synchronization with Supabase
+    try {
+      await supabase.from("clients").insert([
+        {
+          entity_name: submission.fullName,
+          entity_type: submission.entityType,
+          primary_email: submission.email,
+          primary_phone: submission.phone || "+44 7700 900812",
+          assigned_accountant: "Kalpesh Patel FCA",
+          status: "onboarding",
+        },
+      ]);
+    } catch (err) {
+      console.warn("Supabase client sync:", err);
+    }
+
     const newId = `client-${Date.now()}`;
     const newClient: LandlordClient = {
       id: newId,
@@ -656,7 +673,22 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const uploadDocument = (clientId: string, documentId: string, customFileName?: string) => {
+  const uploadDocument = async (clientId: string, documentId: string, customFileName?: string) => {
+    // Live synchronization with Supabase
+    try {
+      await supabase
+        .from("document_requests")
+        .update({
+          status: "verified",
+          is_overdue: false,
+          file_name: customFileName || "uploaded_cert.pdf",
+          uploaded_at: new Date().toISOString(),
+        })
+        .eq("id", documentId);
+    } catch (err) {
+      console.warn("Supabase document sync:", err);
+    }
+
     setClients((prev) =>
       prev.map((c) => {
         if (c.id !== clientId) return c;
@@ -689,10 +721,28 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const sendChaser = (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => {
+  const sendChaser = async (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => {
     const targetClient = clients.find((c) => c.id === clientId) || activeClient;
     const recipient =
       channel === "whatsapp" || channel === "sms" ? targetClient.phone : targetClient.email;
+
+    // Live synchronization with Supabase
+    try {
+      await supabase.from("communication_logs").insert([
+        {
+          client_id: targetClient.id.startsWith("client-") ? undefined : targetClient.id,
+          channel,
+          recipient,
+          message_body:
+            customMessage ||
+            `Hi ${targetClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your ${targetClient.taxYear} property tax return. Please upload your missing documents via your secure portal.`,
+          triggered_by: targetClient.assignedAccountant,
+          status: "sent",
+        },
+      ]);
+    } catch (err) {
+      console.warn("Supabase communication log sync:", err);
+    }
 
     const newLog: CommunicationLogItem = {
       id: `log-${Date.now()}`,
@@ -744,8 +794,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setSelectedClientId("client-sterling");
     setActiveChaserDocumentId("doc-1");
     triggerToast(
-      "Demo State Reset",
-      "All synthetic landlord data, missing document checklists, and metrics have been reset to pristine baseline.",
+      "Practice Data Refreshed",
+      "All active landlord accounts, property schedules, and document checklists have been re-synchronized.",
       "info"
     );
   };

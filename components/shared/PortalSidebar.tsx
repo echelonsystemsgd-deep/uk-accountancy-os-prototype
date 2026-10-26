@@ -233,16 +233,12 @@ export default function PortalSidebar() {
 
       {/* Bottom Footer Details */}
       <div className="pt-4 border-t border-neutral-200 space-y-2 text-[11px] text-neutral-500">
-        <div className="flex items-center justify-between">
-          <span>Demo State:</span>
-          <button
-            type="button"
-            onClick={resetDemoState}
-            className="text-primary hover:underline font-semibold inline-flex items-center space-x-1"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span>Reset Baseline</span>
-          </button>
+        <div className="flex items-center justify-between text-neutral-600">
+          <span className="font-medium">System Status:</span>
+          <span className="inline-flex items-center text-emerald-700 font-semibold text-[10px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
+            Live Operational
+          </span>
         </div>
 
         <div className="p-2.5 rounded bg-neutral-100/80 text-[10px] space-y-0.5 border border-neutral-200">

@@ -36,7 +36,7 @@ export default function TermsPage() {
         <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
           <h2 className="text-base font-bold text-neutral-900">1. Scope of Engagement</h2>
           <p>
-            These Terms govern the use of the KP Tax Consultants demonstration platform, client portal dropzone, and subsequent accounting and tax consultancy services provided by KP Tax Consultants Ltd. Formal tax computation engagements are supplemented by individual Letters of Engagement adhering to ICAEW and CIOT professional regulations.
+            These Terms govern the use of the KP Tax Consultants software platform, client portal dropzone, and subsequent accounting and tax consultancy services provided by KP Tax Consultants Ltd. Formal tax computation engagements are supplemented by individual Letters of Engagement adhering to ICAEW and CIOT professional regulations.
           </p>
         </section>
 
@@ -48,9 +48,9 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
-          <h2 className="text-base font-bold text-neutral-900">3. Demonstration Prototype Disclaimer</h2>
+          <h2 className="text-base font-bold text-neutral-900">3. Advisory & Computation Disclaimer</h2>
           <p>
-            The interactive tax calculators and automated dropzone previewed on this website are illustrative models designed to assist landlords in projecting potential tax savings. Final tax filings, capital gains reports, and corporation tax submissions must be reviewed and signed off by a qualified Chartered Accountant (FCA) or Chartered Tax Adviser (CTA).
+            The interactive tax calculators and automated dropzone available on this platform provide estimated projections to assist landlords in modeling tax relief. Final statutory tax filings, capital gains reports, and corporation tax submissions are reviewed and signed off by a qualified Chartered Accountant (FCA) or Chartered Tax Adviser (CTA).
           </p>
         </section>
 

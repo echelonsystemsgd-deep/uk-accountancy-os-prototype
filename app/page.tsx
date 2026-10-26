@@ -4,7 +4,6 @@ import React from "react";
 import { useDemoStore } from "@/lib/store";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
-import FloatingDemoController from "@/components/shared/FloatingDemoController";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalLoginModal from "@/components/shared/PortalLoginModal";
 
@@ -122,9 +121,6 @@ export default function Home() {
 
       {/* Modal: Interactive Consultation Intake */}
       <ConsultationModal />
-
-      {/* Floating Demo Switcher */}
-      <FloatingDemoController />
     </div>
   );
 }

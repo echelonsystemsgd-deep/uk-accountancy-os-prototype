@@ -90,7 +90,7 @@ export default function ChaserView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
-            Screen 5: Multi-Channel Chaser & Audit Trail
+            Multi-Channel Chaser & Audit Trail
           </h1>
           <p className="text-xs sm:text-sm text-neutral-600">
             Dispatch contextual document requests via WhatsApp, SMS, or Email with pre-filled Section 24 tax relief messaging.
@@ -236,7 +236,7 @@ export default function ChaserView() {
                 className="w-full p-3 text-xs border border-neutral-200 rounded font-sans leading-relaxed focus:outline-none focus:ring-1 focus:ring-primary text-neutral-900 bg-white"
               />
               <p className="text-[11px] text-neutral-500">
-                Includes automated tokenized link leading straight to Marcus's Screen 4 Dropzone.
+                Includes automated tokenized link leading straight to the client's mobile Dropzone.
               </p>
             </div>
 

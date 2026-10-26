@@ -342,15 +342,6 @@ export default function Navbar() {
                 <Globe className="w-3.5 h-3.5 text-neutral-500" />
                 <span className="hidden sm:inline">Public Site</span>
               </button>
-
-              <button
-                type="button"
-                onClick={resetDemoState}
-                className="p-2 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
-                title="Reset demo state back to baseline"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-              </button>
             </div>
           </div>
 
@@ -444,15 +435,6 @@ export default function Navbar() {
             >
               <Globe className="w-3.5 h-3.5 text-neutral-500" />
               <span className="hidden sm:inline">Public Site</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={resetDemoState}
-              className="p-2 rounded-lg text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 border border-transparent hover:border-neutral-200 transition"
-              title="Reset demo state back to baseline"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

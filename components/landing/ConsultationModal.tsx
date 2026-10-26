@@ -134,7 +134,7 @@ export default function ConsultationModal() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="d.sterling@synthetic-mail.co.uk"
+                placeholder="david.sterling@sterlingholdings.co.uk"
                 className="w-full px-3 py-2 text-xs border border-neutral-200 rounded focus:outline-none focus:ring-1 focus:ring-primary text-neutral-900 bg-white"
               />
             </div>
