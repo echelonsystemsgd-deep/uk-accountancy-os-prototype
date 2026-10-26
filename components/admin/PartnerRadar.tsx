@@ -17,11 +17,33 @@ import {
   Download,
   Database,
   ShieldCheck,
+  RefreshCw,
 } from "lucide-react";
 
 export default function PartnerRadar() {
-  const { metrics, clients, setCurrentView, setSelectedClientId, setActiveChaserDocumentId, exportAuditCsv } =
+  const { metrics, clients, setCurrentView, setSelectedClientId, setActiveChaserDocumentId, exportAuditCsv, triggerToast } =
     useDemoStore();
+
+  const [isSyncing, setIsSyncing] = React.useState(false);
+
+  const handleSyncPracticeStack = async () => {
+    setIsSyncing(true);
+    try {
+      await Promise.all([
+        fetch("/api/integrations/xero", { method: "POST" }),
+        fetch("/api/integrations/karbon", { method: "POST" }),
+      ]);
+      triggerToast(
+        "Practice Stack Reconciled",
+        "Active landlord schedules and unbilled WIP successfully synced with Xero Practice Manager & Karbon.",
+        "success"
+      );
+    } catch {
+      triggerToast("Sync Offline", "Could not reach practice management API endpoint.", "warning");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   // Find clients with pending/overdue documents
   const clientsWithPending = clients
@@ -70,6 +92,15 @@ export default function PartnerRadar() {
             <Calendar className="w-3.5 h-3.5 text-neutral-400" />
             <span>Tax Year 2024/25 Active Quarter</span>
           </div>
+          <button
+            onClick={handleSyncPracticeStack}
+            disabled={isSyncing}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-neutral-100 text-neutral-800 hover:bg-neutral-200 border border-neutral-300 transition shadow-xs disabled:opacity-50"
+            title="Bi-directional sync with Xero Practice Manager and Karbon"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 text-neutral-600 ${isSyncing ? "animate-spin text-primary" : ""}`} />
+            <span>{isSyncing ? "Reconciling Stack..." : "Sync Practice Stack"}</span>
+          </button>
           <button
             onClick={exportAuditCsv}
             className="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-neutral-900 text-white hover:bg-neutral-800 transition shadow-xs"

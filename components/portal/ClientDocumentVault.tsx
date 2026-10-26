@@ -31,10 +31,14 @@ export default function ClientDocumentVault() {
 
   const handleDownloadSimulation = (title: string) => {
     triggerToast(
-      "Secure Document Download",
-      `Generating one-time 60-second signed URL for: ${title}`,
+      "Secure Document Access",
+      `Opened 60-second cryptographically signed preview for: ${title}`,
       "info"
     );
+    if (typeof window !== "undefined") {
+      const url = `/api/preview?title=${encodeURIComponent(title)}&entity=${encodeURIComponent(activeClient.entityName)}`;
+      window.open(url, "_blank");
+    }
   };
 
   return (

@@ -125,6 +125,8 @@ export default function Footer() {
             <span>&bull;</span>
             <a href="/terms" className="hover:text-neutral-900 transition">Terms of Service</a>
             <span>&bull;</span>
+            <a href="/dpa" className="hover:text-neutral-900 transition">Data Processing Addendum (DPA)</a>
+            <span>&bull;</span>
             <button
               type="button"
               onClick={() => enterAccountantPortal("radar")}
