@@ -91,7 +91,7 @@ export default function Navbar() {
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-1.5 whitespace-nowrap">
                   <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
-                    Kai Accountants
+                    KP Accountants
                   </span>
                   <span className="text-neutral-300 text-xs">/</span>
                   <span className="text-neutral-600 text-xs sm:text-xs font-semibold">KP Tax</span>
@@ -311,7 +311,7 @@ export default function Navbar() {
               />
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
-                  <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
+                  <span className="font-bold text-neutral-900 text-base sm:text-lg">KP Accountants</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider border border-neutral-200">
                     Practice OS
                   </span>
@@ -403,7 +403,7 @@ export default function Navbar() {
             />
             <div className="space-y-0.5">
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-neutral-900 text-base sm:text-lg">Kai Accountants</span>
+                <span className="font-bold text-neutral-900 text-base sm:text-lg">KP Accountants</span>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider border border-emerald-200">
                   Client Portal
                 </span>

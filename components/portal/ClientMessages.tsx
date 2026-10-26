@@ -29,7 +29,7 @@ export default function ClientMessages() {
       id: "msg-1",
       sender: "accountant",
       senderName: activeClient.assignedAccountant,
-      text: `Hi ${activeClient.primaryContact.split(" ")[0]}, welcome to your Kai Accountants client portal! We are currently assembling your ${activeClient.taxYear} tax file. To ensure we claim the maximum allowable finance costs under Section 24 rules, please upload the year-end mortgage interest certificates for your properties.`,
+      text: `Hi ${activeClient.primaryContact.split(" ")[0]}, welcome to your KP Accountants client portal! We are currently assembling your ${activeClient.taxYear} tax file. To ensure we claim the maximum allowable finance costs under Section 24 rules, please upload the year-end mortgage interest certificates for your properties.`,
       timestamp: "Yesterday, 14:20",
     },
     {
@@ -101,7 +101,7 @@ export default function ClientMessages() {
               </span>
             </div>
             <p className="text-xs text-neutral-600">
-              Assigned Partner: <strong>{activeClient.assignedAccountant}</strong> &bull; Kai Accountants / KP Tax
+              Assigned Partner: <strong>{activeClient.assignedAccountant}</strong> &bull; KP Accountants / KP Tax
             </p>
           </div>
         </div>

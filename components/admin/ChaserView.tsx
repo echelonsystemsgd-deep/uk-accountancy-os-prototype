@@ -37,9 +37,9 @@ export default function ChaserView() {
     activeClient.documents.find((d) => d.id === activeChaserDocumentId) || pendingDocs[0];
 
   const defaultTemplates = {
-    whatsapp: `Hi ${activeClient.primaryContact.split(" ")[0]}, Kalpesh here from Kai Accountants. We are finalizing your ${activeClient.taxYear} property tax return to apply your Section 24 mortgage relief. We just need your ${selectedDoc?.title || "missing certificate"} for ${selectedDoc?.ownerOrProperty || "your portfolio"}. You can snap a photo directly using your secure upload link: https://kptc-portal.uk/d/ms-7281. Thank you!`,
-    sms: `Kai Accountants: Hi ${activeClient.primaryContact.split(" ")[0]}, we need your ${selectedDoc?.title || "mortgage certificate"} to finalize your property tax computation. Please upload photo: https://kptc-portal.uk/d/ms-7281`,
-    email: `Dear ${activeClient.primaryContact},\n\nWe are currently preparing the statutory accounts and ${activeClient.taxYear} tax computation for ${activeClient.entityName}.\n\nTo ensure all eligible mortgage interest deductions and finance costs are claimed against your rental profit under Section 24 rules, we require the following outstanding document:\n\n• ${selectedDoc?.title || "Mortgage Certificate"} (${selectedDoc?.ownerOrProperty})\n\nPlease upload a digital copy or phone photo via your encrypted client dropzone:\nhttps://kptc-portal.uk/d/ms-7281\n\nKind regards,\n${activeClient.assignedAccountant}\nKai Accountants / KP Tax Consultants`,
+    whatsapp: `Hi ${activeClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your ${activeClient.taxYear} property tax return to apply your Section 24 mortgage relief. We just need your ${selectedDoc?.title || "missing certificate"} for ${selectedDoc?.ownerOrProperty || "your portfolio"}. You can snap a photo directly using your secure upload link: https://kptc-portal.uk/d/ms-7281. Thank you!`,
+    sms: `KP Accountants: Hi ${activeClient.primaryContact.split(" ")[0]}, we need your ${selectedDoc?.title || "mortgage certificate"} to finalize your property tax computation. Please upload photo: https://kptc-portal.uk/d/ms-7281`,
+    email: `Dear ${activeClient.primaryContact},\n\nWe are currently preparing the statutory accounts and ${activeClient.taxYear} tax computation for ${activeClient.entityName}.\n\nTo ensure all eligible mortgage interest deductions and finance costs are claimed against your rental profit under Section 24 rules, we require the following outstanding document:\n\n• ${selectedDoc?.title || "Mortgage Certificate"} (${selectedDoc?.ownerOrProperty})\n\nPlease upload a digital copy or phone photo via your encrypted client dropzone:\nhttps://kptc-portal.uk/d/ms-7281\n\nKind regards,\n${activeClient.assignedAccountant}\nKP Accountants / KP Tax Consultants`,
   };
 
   const [messageText, setMessageText] = useState(defaultTemplates[channel]);
@@ -55,7 +55,7 @@ export default function ChaserView() {
     const newDoc = activeClient.documents.find((d) => d.id === docId);
     const updated = {
       ...defaultTemplates,
-      whatsapp: `Hi ${activeClient.primaryContact.split(" ")[0]}, Kalpesh here from Kai Accountants. We are finalizing your ${activeClient.taxYear} property tax return to apply your Section 24 mortgage relief. We just need your ${newDoc?.title || "missing certificate"} for ${newDoc?.ownerOrProperty || "your portfolio"}. You can snap a photo directly using your secure upload link: https://kptc-portal.uk/d/ms-7281. Thank you!`,
+      whatsapp: `Hi ${activeClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your ${activeClient.taxYear} property tax return to apply your Section 24 mortgage relief. We just need your ${newDoc?.title || "missing certificate"} for ${newDoc?.ownerOrProperty || "your portfolio"}. You can snap a photo directly using your secure upload link: https://kptc-portal.uk/d/ms-7281. Thank you!`,
     };
     setMessageText(updated[channel]);
   };

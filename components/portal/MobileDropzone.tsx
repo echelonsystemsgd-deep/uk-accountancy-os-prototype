@@ -76,7 +76,7 @@ export default function MobileDropzone() {
             </div>
             <div>
               <span className="font-bold text-xs text-neutral-900 block leading-tight">
-                Kai Accountants
+                KP Accountants
               </span>
               <span className="text-[10px] text-neutral-500">Secure Client Dropzone</span>
             </div>

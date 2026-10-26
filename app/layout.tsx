@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   keywords: [
     "KP Tax Consultants",
-    "Kai Accountants",
+    "KP Accountants",
     "UK Property Accountant",
     "Section 24 Mortgage Relief",
     "Buy to Let Accounts",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "7 Bell Yard London Accountants",
   ],
   authors: [{ name: "KP Tax Consultants Ltd", url: "https://kptc.co.uk" }],
-  creator: "Kai Accountants / KP Tax Consultants Ltd",
+  creator: "KP Accountants / KP Tax Consultants Ltd",
   icons: {
     icon: [
       { url: "/icon.svg?v=kptc", type: "image/svg+xml" },
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     title: "KP Tax Consultants | UK Property Tax Specialists",
     description:
       "Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising portfolio landlords, SPV limited companies, and buy-to-let investors on Section 24 mortgage relief and Making Tax Digital.",
-    siteName: "KP Tax Consultants Ltd / Kai Accountants",
+    siteName: "KP Tax Consultants Ltd / KP Accountants",
     images: [
       {
         url: "/logo.png",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Kai Accountants / KP Tax Consultants | UK Property Tax Specialists",
+    title: "KP Accountants / KP Tax Consultants | UK Property Tax Specialists",
     description:
       "Chartered Tax Advisers (CTA) and Chartered Accountants (FCA) advising UK property portfolio landlords on Section 24 mortgage relief and SPV structures.",
     images: ["/logo.png"],
@@ -81,7 +81,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AccountingService",
-    name: "KP Tax Consultants Ltd / Kai Accountants",
+    name: "KP Tax Consultants Ltd / KP Accountants",
     image: "https://kptc.co.uk/logo.png",
     "@id": "https://kptc.co.uk",
     url: "https://kptc.co.uk",

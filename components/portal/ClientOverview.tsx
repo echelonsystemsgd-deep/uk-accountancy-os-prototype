@@ -303,7 +303,7 @@ export default function ClientOverview() {
                   {activeClient.assignedAccountant}
                 </span>
                 <span className="text-[10px] text-neutral-500 block">
-                  Lead Property Accountant &bull; Kai Accountants
+                  Lead Property Accountant &bull; KP Accountants
                 </span>
                 <span className="inline-flex items-center space-x-1 text-[10px] font-semibold text-emerald-700 mt-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

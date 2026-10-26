@@ -45,7 +45,7 @@ export default function PortalLoginModal() {
             />
             <div>
               <h2 className="text-base font-bold text-neutral-900 leading-tight">
-                Kai Accountants Portal Access
+                KP Accountants Portal Access
               </h2>
               <p className="text-xs text-neutral-500">
                 Choose your portal environment:

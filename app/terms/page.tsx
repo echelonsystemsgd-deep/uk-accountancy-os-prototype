@@ -5,7 +5,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Engagement & Service | KP Tax Consultants Ltd",
-  description: "Standard terms of business and platform engagement for KP Tax Consultants Ltd / Kai Accountants.",
+  description: "Standard terms of business and platform engagement for KP Tax Consultants Ltd / KP Accountants.",
 };
 
 export default function TermsPage() {

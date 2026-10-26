@@ -5,7 +5,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy & Data Protection Policy | KP Tax Consultants Ltd",
-  description: "UK GDPR and Data Protection compliance notice for KP Tax Consultants Ltd / Kai Accountants clients.",
+  description: "UK GDPR and Data Protection compliance notice for KP Tax Consultants Ltd / KP Accountants clients.",
 };
 
 export default function PrivacyPage() {
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
         <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
           <h2 className="text-base font-bold text-neutral-900">1. Data Controller Information</h2>
           <p>
-            KP Tax Consultants Ltd (trading as Kai Accountants / KP Tax Consultants) is registered with the Information Commissioner&apos;s Office (ICO). We act as a Data Controller in respect of personal, financial, and corporate data collected through this demonstration portal and our professional accounting engagements.
+            KP Tax Consultants Ltd (trading as KP Accountants / KP Tax Consultants) is registered with the Information Commissioner&apos;s Office (ICO). We act as a Data Controller in respect of personal, financial, and corporate data collected through this demonstration portal and our professional accounting engagements.
           </p>
           <div className="p-3 bg-neutral-50 rounded-lg border border-neutral-200 text-xs space-y-1">
             <p><strong>Registered Address:</strong> 7 Bell Yard, London, WC2A 2JR, United Kingdom</p>

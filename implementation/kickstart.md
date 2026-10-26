@@ -1,5 +1,5 @@
 # Strategic Implementation Plan & Architecture: "Kickstart"
-**Target Client:** Kai Accountants / KP Tax Consultants ([kptc.co.uk](https://www.kptc.co.uk/))  
+**Target Client:** KP Accountants / KP Tax Consultants ([kptc.co.uk](https://www.kptc.co.uk/))  
 **Specialism:** UK Property Tax, Landlords, SPVs, Rental Income, Self Assessment, Corporation Tax  
 **Author:** Mercian Wealth Automation ("Systems for Accountants")  
 **Status:** Brainstorming & Planning Only — Awaiting Client & Partner Approval  
@@ -10,7 +10,7 @@
 ## 1. Summary & Chosen Concept
 
 ### Executive Summary
-Kai Accountants (operating online as KP Tax Consultants at `kptc.co.uk`) is led by qualified chartered professionals (ATT, CTA, FCA) with technical capability in complex tax advisory. However, their digital footprint under-represents their strengths:
+KP Accountants (operating online as KP Tax Consultants at `kptc.co.uk`) is led by qualified chartered professionals (ATT, CTA, FCA) with technical capability in complex tax advisory. However, their digital footprint under-represents their strengths:
 - Their property specialism is buried as one generic bullet point among six unrelated sectors.
 - Prospect enquiry is constrained to an unguided 5-field form with zero response commitments.
 - Post-enquiry operations rely on manual chasing of disjointed documents (mortgage statements, P60s, title deeds, tenancy agreements) across multiple property owners and SPVs.
@@ -88,7 +88,7 @@ flowchart TD
   - Cuts onboarding turnaround from 4 weeks to 48 hours.
   - Replaces manual email/WhatsApp back-and-forth with automated, structured checklists tailored per property and per owner.
   - Provides a single partner view of all missing documents across the practice.
-- **Why Chosen:** It offers the **biggest prize and fastest payoff with realistic scope**. It immediately proves to Kai Accountants that we understand their day-to-day operational frustration. Seeing a real-time radar with 1-click WhatsApp chasers connected to a mobile photo uploader makes the future feel immediately tangible.
+- **Why Chosen:** It offers the **biggest prize and fastest payoff with realistic scope**. It immediately proves to KP Accountants that we understand their day-to-day operational frustration. Seeing a real-time radar with 1-click WhatsApp chasers connected to a mobile photo uploader makes the future feel immediately tangible.
 
 ### Concept 3: Year-Round MTD ITSA Quarterly Compliance Hub
 - **Single Bottleneck Removed:** The panic of January tax season by enforcing continuous quarterly digital record submissions for property income.
@@ -172,7 +172,7 @@ sequenceDiagram
 - **Features:**
   - Channel selector: *WhatsApp Business*, *SMS*, *Email*.
   - Auto-generated template:
-    > *"Hi Marcus, Kalpesh here from Kai Accountants. We are finalizing your 2024/25 property tax return to ensure your mortgage interest deductions are applied. We just need your NatWest certificate for 14 High Street. You can snap a photo directly here: [secure link]. Thank you!"*
+    > *"Hi Marcus, Kalpesh here from KP Accountants. We are finalizing your 2024/25 property tax return to ensure your mortgage interest deductions are applied. We just need your NatWest certificate for 14 High Street. You can snap a photo directly here: [secure link]. Thank you!"*
   - Simulated "Send Now" button which triggers a success toast and updates the activity log timestamp in real time.
 
 ---
@@ -257,7 +257,7 @@ Random hexadecimal values are strictly forbidden. The palette uses an authoritat
 - **Charts:** Maximum 2 charts on the dashboard. Used strictly to display operational turnaround time and checklist completion rates.
 - **Icons:** Standardized Lucide icons for all metric cards and document types (e.g. `FileText`, `AlertCircle`, `CheckCircle2`, `Clock`, `Smartphone`, `Building2`).
 - **Footer:** Must contain realistic British corporate placeholders:
-  > *"Kai Accountants / KP Tax Consultants is the trading name of KP Tax Consultants Ltd. Registered in England & Wales (Company No. [Placeholder: 12345678]). Registered Office: [Placeholder: Suite 4, High Street, London]. Regulated for a range of investment business activities by the Institute of Chartered Accountants in England and Wales."*
+  > *"KP Accountants / KP Tax Consultants is the trading name of KP Tax Consultants Ltd. Registered in England & Wales (Company No. [Placeholder: 12345678]). Registered Office: [Placeholder: Suite 4, High Street, London]. Regulated for a range of investment business activities by the Institute of Chartered Accountants in England and Wales."*
 
 ---
 
@@ -491,7 +491,7 @@ All practice copy must use **"we"** (collective practice voice), projecting inst
 ### Answer Engine Optimization (AEO) Blueprint for kptc.co.uk
 Modern property investors do not browse ten pages of a directory; they query AI search engines (Perplexity, ChatGPT, Claude) with specific prompts: *"Best accountant in the UK for moving 4 buy-to-lets into an SPV"* or *"How does Section 24 affect higher rate landlords in 2026?"*
 
-To ensure Kai Accountants is surfaced as the authoritative answer:
+To ensure KP Accountants is surfaced as the authoritative answer:
 1. **Structured FAQ Schema:** Implement Schema.org `FAQPage` addressing high-intent queries:
    - *Should I buy investment property in my own name or through an SPV Limited Company?*
    - *How do I calculate mortgage interest tax credit under Section 24?*
@@ -522,7 +522,7 @@ gantt
 ```
 
 ### Phase 1: The Prototype (Demonstrating Direction & Gaining Buy-In)
-- **Goal:** Prove competence, remove technical uncertainty, and show Kai Accountants exactly how their onboarding operations will look and feel.
+- **Goal:** Prove competence, remove technical uncertainty, and show KP Accountants exactly how their onboarding operations will look and feel.
 - **Scope Limits:** 5 interactive screens, synthetic mock database, simulated WhatsApp/email triggers, zero live client data, zero production bank connections.
 - **Milestone P1:** Interactive Next.js design system with shadcn/ui components and tailored property styling.
 - **Milestone P2:** Partner Command Dashboard and Landlord Pipeline populated with realistic synthetic landlord cases.
@@ -540,7 +540,7 @@ gantt
 
 ---
 
-## 11. Open Questions for Kai Accountants
+## 11. Open Questions for KP Accountants
 
 Before any commercial scope or production build can be defined, the following questions must be answered by the partners:
 
@@ -548,7 +548,7 @@ Before any commercial scope or production build can be defined, the following qu
 2. **Client Volume & Communication Preferences:** What is the active volume of property clients (individual landlords vs SPV companies), and what percentage of them prefer WhatsApp over email for providing documents?
 3. **The Current Onboarding Bottle:** What is the single most common reason a landlord's tax return is delayed in December/January (e.g. missing mortgage statements, missing letting agent statements, or delayed joint-owner information)?
 4. **MTD Readiness Strategy:** How is the firm planning to handle clients impacted by MTD for ITSA in April 2026? Will the firm mandate cloud software like Xero/Hammock, or offer a managed quarterly bookkeeping service?
-5. **Brand Positioning:** Does the firm intend to formally rebrand toward "Kai Accountants" or remain publicly positioned as "KP TAX Consultants"?
+5. **Brand Positioning:** Does the firm intend to formally operate as "KP Accountants" alongside "KP Tax Consultants"?
 
 ---
 
@@ -567,4 +567,4 @@ In proposing this prototype, we have identified key strategic and delivery risks
 
 ---
 
-*This Kickstart document serves as the strategic blueprint for Mercian Wealth Automation's prototype demonstration for Kai Accountants / KP Tax Consultants. Next step: Client review and approval.*
+*This Kickstart document serves as the strategic blueprint for Mercian Wealth Automation's prototype demonstration for KP Accountants / KP Tax Consultants. Next step: Client review and approval.*

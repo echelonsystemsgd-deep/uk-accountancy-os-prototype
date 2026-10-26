@@ -457,7 +457,7 @@ const INITIAL_LOGS: CommunicationLogItem[] = [
     channel: "whatsapp",
     recipient: "+44 7700 900142 (Marcus)",
     messageBody:
-      "Hi Marcus, Kalpesh here from Kai Accountants. We are finalizing your 2024/25 property tax return. We still need your NatWest mortgage certificate for 14 High Street. You can snap a photo directly using your secure link: https://kptc-portal.uk/d/ms-7281",
+      "Hi Marcus, Kalpesh here from KP Accountants. We are finalizing your 2024/25 property tax return. We still need your NatWest mortgage certificate for 14 High Street. You can snap a photo directly using your secure link: https://kptc-portal.uk/d/ms-7281",
     sentAt: "Yesterday at 14:32",
     status: "read",
     triggeredBy: "Kalpesh Patel FCA",
@@ -700,7 +700,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       recipient,
       messageBody:
         customMessage ||
-        `Hi ${targetClient.primaryContact.split(" ")[0]}, Kalpesh here from Kai Accountants. We are finalizing your 2024/25 property tax return. Please upload your missing documents via your secure portal.`,
+        `Hi ${targetClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your 2024/25 property tax return. Please upload your missing documents via your secure portal.`,
       sentAt: "Just now",
       status: "delivered",
       triggeredBy: targetClient.assignedAccountant,
