@@ -23,16 +23,17 @@ export default function FinancialStatementsHub() {
   const [activeTab, setActiveTab] = useState<"pnl" | "balance_sheet" | "ct600" | "dividend">("pnl");
 
   // Dynamic calculations based on active client's rental income
+  const isSinghFamily = activeClient.id === "client-singh-family";
   const grossTurnover = activeClient.totalRentalIncome;
-  const agentFees = Math.round(grossTurnover * 0.10); // 10% letting management
-  const insuranceAndCompliance = Math.round(activeClient.properties.length * 850);
-  const maintenanceRepairs = Math.round(grossTurnover * 0.08); // 8% maintenance
-  const mortgageInterestTotal = activeClient.properties.reduce(
+  const agentFees = isSinghFamily ? 120.00 : Math.round(grossTurnover * 0.10); // OpenRent Fee
+  const maintenanceRepairs = isSinghFamily ? 5000.00 : Math.round(grossTurnover * 0.08); // Bathroom Refurbishment
+  const insuranceAndCompliance = isSinghFamily ? 4080.38 : Math.round(activeClient.properties.length * 850); // Service charge £3,752.88 + Ground rent £294 + Council tax £33.50
+  const mortgageInterestTotal = isSinghFamily ? 6330.72 : activeClient.properties.reduce(
     (acc, p) => acc + (p.outstandingMortgage ? Math.round(p.outstandingMortgage * 0.052) : 0),
     0
   );
 
-  const totalAllowableExpenses = agentFees + insuranceAndCompliance + maintenanceRepairs;
+  const totalAllowableExpenses = isSinghFamily ? 9200.38 : (agentFees + insuranceAndCompliance + maintenanceRepairs);
   const operatingProfitBeforeFinance = grossTurnover - totalAllowableExpenses;
 
   // SPV Corporation Tax vs Individual Section 24 Rules
