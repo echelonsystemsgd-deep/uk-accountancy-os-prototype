@@ -14,6 +14,8 @@ import {
   NewPropertyInput,
   NewInvoiceInput,
   UserProfile,
+  PropertyBillItem,
+  NewBillInput,
 } from "./types";
 import { supabase } from "./supabase";
 
@@ -46,7 +48,7 @@ interface DemoContextType {
   openLoginModal: () => void;
   closeLoginModal: () => void;
   enterAccountantPortal: (targetView?: ScreenView) => void;
-  enterClientPortal: (targetView?: ScreenView) => void;
+  enterClientPortal: (targetView?: ScreenView, clientId?: string) => void;
   exitToLanding: () => void;
   addIntakeLead: (submission: IntakeSubmission) => void;
   uploadDocument: (clientId: string, documentId: string, customFileName?: string) => void;
@@ -58,6 +60,8 @@ interface DemoContextType {
   addNewProperty: (clientId: string, input: NewPropertyInput) => void;
   createPracticeInvoice: (input: NewInvoiceInput) => void;
   settleInvoice: (invoiceId: string) => void;
+  addNewBill: (clientId: string, input: NewBillInput) => void;
+  deleteBill: (clientId: string, billId: string) => void;
   isCreateEntityModalOpen: boolean;
   openCreateEntityModal: () => void;
   closeCreateEntityModal: () => void;
@@ -74,7 +78,7 @@ interface DemoContextType {
   currentUser: UserProfile | null;
   loginWithCredentials: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   loginAsPartnerDemo: () => void;
-  loginAsClientDemo: () => void;
+  loginAsClientDemo: (clientId?: string) => void;
   logout: () => void;
   isMobileSidebarOpen: boolean;
   setMobileSidebarOpen: (open: boolean) => void;
@@ -204,6 +208,116 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         uploadedAt: "2026-10-27",
         fileSize: "850 KB PDF",
         notes: "Section 24 restricted finance cost (20% basic rate tax reducer applies)",
+      },
+    ],
+    bills: [
+      {
+        id: "bill-singh-1",
+        title: "OpenRent Tenancy Fee",
+        category: "letting_fees",
+        vendorOrRecipient: "OpenRent Ltd",
+        amount: 120.00,
+        frequency: "annual",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-05-15",
+        paidDate: "2026-05-15",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "openrent_tenancy_statement_120.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Allowable Letting Fees & Commissions (SA105 Box 24)",
+      },
+      {
+        id: "bill-singh-2",
+        title: "Bathroom Refurbishment Contractor Invoice",
+        category: "maintenance_repairs",
+        vendorOrRecipient: "Prime Property Renovations Ltd",
+        amount: 5000.00,
+        frequency: "one_off",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-07-20",
+        paidDate: "2026-07-22",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "bathroom_refurb_invoice_5000.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Repairs, Maintenance & Like-for-Like Replacements (SA105 Box 25)",
+      },
+      {
+        id: "bill-singh-3",
+        title: "Freeholder Annual Ground Rent",
+        category: "ground_rent",
+        vendorOrRecipient: "Metropolitan Freeholds Ltd",
+        amount: 294.00,
+        frequency: "annual",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-06-01",
+        paidDate: "2026-06-01",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "ground_rent_receipt_294.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Rents, Rates, Insurance & Ground Charges (SA105 Box 26)",
+      },
+      {
+        id: "bill-singh-4",
+        title: "Block Managing Agent Service Charge",
+        category: "service_charge",
+        vendorOrRecipient: "FirstPort Property Services",
+        amount: 3752.88,
+        frequency: "annual",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-04-10",
+        paidDate: "2026-04-12",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "service_charge_annual_schedule_3752.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Communal Maintenance & Block Management (SA105 Box 26)",
+      },
+      {
+        id: "bill-singh-5",
+        title: "Local Authority Council Tax (April Void Period)",
+        category: "utilities_council_tax",
+        vendorOrRecipient: "City Council Revenues Dept",
+        amount: 33.50,
+        frequency: "one_off",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-04-28",
+        paidDate: "2026-04-28",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "council_tax_void_notice_33.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Void Period Rates & Water Charges (SA105 Box 26)",
+      },
+      {
+        id: "bill-singh-6",
+        title: "Residential Mortgage Finance Costs (Section 24)",
+        category: "mortgage_interest",
+        vendorOrRecipient: "BTL Mortgage Lender",
+        amount: 6330.72,
+        frequency: "monthly",
+        isAllowableExpense: false,
+        isSection24Restricted: true,
+        propertyAddress: "Residential Buy-to-Let Property, UK",
+        dueDate: "2026-10-01",
+        paidDate: "2026-10-01",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "annual_mortgage_certificate_6330.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Section 24 Residential Finance Costs (SA105 Box 44 - 20% Tax Reducer = £1,266.14)",
       },
     ],
   },
@@ -764,7 +878,7 @@ const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [currentView, setCurrentViewInternal] = useState<ScreenView>("landing");
-  const [selectedClientId, setSelectedClientId] = useState<string>("client-sterling");
+  const [selectedClientId, setSelectedClientIdInternal] = useState<string>("client-singh-family");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
   const [invoices, setInvoices] = useState<PracticeInvoice[]>(INITIAL_INVOICES);
   const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>(INITIAL_LOGS);
@@ -844,6 +958,35 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     // Scroll smoothly to top on view changes
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const setSelectedClientId = (id: string) => {
+    setSelectedClientIdInternal(id);
+    const target = clients.find((c) => c.id === id);
+    if (target) {
+      if (currentMode === "client" || currentUser?.role === "client") {
+        const clientProfile: UserProfile = {
+          email: target.email,
+          name: target.primaryContact,
+          role: "client",
+          firmName: target.entityName,
+          isAuthenticated: true,
+          lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+        };
+        setCurrentUser(clientProfile);
+        if (typeof window !== "undefined") {
+          try {
+            sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+            localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+          } catch (e) {}
+        }
+      }
+      triggerToast(
+        "Active Portfolio Loaded",
+        `Switched to ${target.entityName} (${target.primaryContact}). Assigned to ${target.assignedAccountant}.`,
+        "info"
+      );
     }
   };
 
@@ -972,15 +1115,17 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const loginAsClientDemo = () => {
+  const loginAsClientDemo = (clientId: string = "client-singh-family") => {
+    const target = clients.find((c) => c.id === clientId) || clients[0];
     const clientProfile: UserProfile = {
-      email: "marcus.sterling@sterlingholdings.co.uk",
-      name: "Marcus & Sarah Sterling",
+      email: target.email,
+      name: target.primaryContact,
       role: "client",
-      firmName: "Sterling Property Holdings",
+      firmName: target.entityName,
       isAuthenticated: true,
       lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
     };
+    setSelectedClientIdInternal(target.id);
     setCurrentUser(clientProfile);
     if (typeof window !== "undefined") {
       try {
@@ -989,10 +1134,10 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       } catch (e) {}
     }
     closeLoginModal();
-    setCurrentView("dropzone");
+    setCurrentView("client_overview");
     triggerToast(
       "Landlord Prototype Active",
-      "Welcome Marcus Sterling. 2024/25 tax year dropzone ready.",
+      `Welcome ${target.primaryContact}. 2024/25 tax records ready for ${target.entityName}.`,
       "info"
     );
   };
@@ -1023,9 +1168,13 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setCurrentView(targetView);
   };
 
-  const enterClientPortal = (targetView: ScreenView = "dropzone") => {
+  const enterClientPortal = (targetView: ScreenView = "client_overview", clientId?: string) => {
+    const targetId = clientId || selectedClientId;
+    const target = clients.find((c) => c.id === targetId) || clients[0];
     if (!currentUser || currentUser.role !== "client") {
-      loginAsClientDemo();
+      loginAsClientDemo(targetId);
+    } else if (clientId && clientId !== selectedClientId) {
+      setSelectedClientId(clientId);
     }
     closeLoginModal();
     setCurrentView(targetView);
@@ -1417,6 +1566,59 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const addNewBill = (clientId: string, input: NewBillInput) => {
+    const newBill: PropertyBillItem = {
+      id: `bill-${Date.now()}`,
+      title: input.title,
+      category: input.category,
+      vendorOrRecipient: input.vendorOrRecipient,
+      amount: input.amount,
+      frequency: input.frequency,
+      isAllowableExpense: !input.isSection24Restricted,
+      isSection24Restricted: input.isSection24Restricted,
+      propertyAddress: input.propertyAddress,
+      dueDate: input.dueDate,
+      paidDate: input.status === "paid" ? new Date().toISOString().split("T")[0] : undefined,
+      status: input.status,
+      receiptAttached: true,
+      receiptName: `${input.title.toLowerCase().replace(/[^a-z0-9]/g, "_")}_voucher.pdf`,
+      taxYear: "2024/25",
+      hmrcBoxNote: input.isSection24Restricted
+        ? "Section 24 Residential Finance Costs (Box 44)"
+        : "Allowable Property Expenses (Box 24-29)",
+    };
+
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        const currentBills = c.bills || [];
+        return {
+          ...c,
+          bills: [newBill, ...currentBills],
+        };
+      })
+    );
+
+    triggerToast(
+      "Bill & Expense Logged",
+      `Added £${input.amount.toFixed(2)} for ${input.title}. Categorized for HMRC Self-Assessment.`,
+      "success"
+    );
+  };
+
+  const deleteBill = (clientId: string, billId: string) => {
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        return {
+          ...c,
+          bills: (c.bills || []).filter((b) => b.id !== billId),
+        };
+      })
+    );
+    triggerToast("Bill Removed", "Expense item deleted from portfolio ledger.", "info");
+  };
+
   const exportAuditCsv = () => {
     if (typeof window !== "undefined") {
       window.location.href = "/api/export?type=csv";
@@ -1476,6 +1678,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         addNewProperty,
         createPracticeInvoice,
         settleInvoice,
+        addNewBill,
+        deleteBill,
         isCreateEntityModalOpen,
         openCreateEntityModal,
         closeCreateEntityModal,

@@ -165,22 +165,30 @@ export default function PortalLoginModal() {
           <p className="text-[11px] text-amber-800/90 leading-relaxed">
             Partners and staff can bypass manual password entry to immediately evaluate the 8 Practice OS modules and client vault.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-0.5">
             <button
               type="button"
               onClick={loginAsPartnerDemo}
-              className="w-full py-2 px-3 rounded-lg bg-neutral-900 text-amber-300 hover:bg-neutral-800 font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition active:scale-95"
+              className="w-full py-2 px-2.5 rounded-lg bg-neutral-900 text-amber-300 hover:bg-neutral-800 font-bold text-[11px] flex items-center justify-center space-x-1 shadow-sm transition active:scale-95"
             >
-              <Briefcase className="w-3.5 h-3.5 text-amber-400" />
-              <span>⚡ Enter as Partner (Kalpesh Patel FCA)</span>
+              <Briefcase className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>⚡ Partner (Kalpesh Patel FCA)</span>
             </button>
             <button
               type="button"
-              onClick={loginAsClientDemo}
-              className="w-full py-2 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition active:scale-95"
+              onClick={() => loginAsClientDemo("client-singh-family")}
+              className="w-full py-2 px-2.5 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-[11px] flex items-center justify-center space-x-1 shadow-sm transition active:scale-95"
             >
-              <Smartphone className="w-3.5 h-3.5 text-emerald-300" />
-              <span>⚡ Enter as Landlord Client</span>
+              <Smartphone className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+              <span>⚡ Mum & Dad (£16.8k BTL)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => loginAsClientDemo("client-sterling")}
+              className="w-full py-2 px-2.5 rounded-lg bg-slate-800 text-white hover:bg-slate-700 font-bold text-[11px] flex items-center justify-center space-x-1 shadow-sm transition active:scale-95"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+              <span>⚡ Marcus Sterling</span>
             </button>
           </div>
         </div>

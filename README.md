@@ -15,15 +15,45 @@ This platform unifies three core environments:
 
 ---
 
-## 🚀 Prototype Review Mode for KPTC Accountants
+## 🚀 Prototype Review Mode & Multi-Client Switching
 
-For partner evaluation and stakeholder reviews, the platform includes a **1-click frictionless Prototype Mode**:
+For partner evaluation and stakeholder reviews, the platform includes a **1-click frictionless Prototype Mode** with dynamic, bidirectional client switching:
 - **Master Cockpit Switcher (`EnvironmentSwitcherBar`)**: Persistent top header enabling immediate 1-tap switching between:
   1. *1. Public Practice Portal* (`kptc.co.uk` storefront, Section 24 calculator, MTD guidance)
-  2. *2. Partner Practice OS* (Kalpesh Patel FCA, Senior Partner Cockpit)
-  3. *3. Landlord Dropzone & Vault* (Marcus Sterling, High Net Worth Landlord)
-- **1-Click Partner Demo Access**: In `PortalLoginModal`, `/admin`, and `/portal`, reviewers can bypass manual password entry with a single tap on `⚡ Enter as Partner (Kalpesh Patel FCA)` or `⚡ Enter as Landlord Client`.
+  2. *2. Partner Practice OS* (Senior Partner Cockpit, Kalpesh Patel FCA & Pritpal Chaggar CTA)
+  3. *3. Landlord Dropzone & Vault* (Singh Family BTL / Marcus Sterling)
+- **Active Client Switching in BOTH Modes (`PortalSidebar`)**:
+  - Available across Practice OS and the Landlord Client Portal with **0 refresh lag**.
+  - Selecting another portfolio immediately updates:
+    - Sidebar Active Portfolio Summary Card (structure, gross rent, assigned accountant, missing docs count).
+    - Header account name and primary contact profile badge.
+    - Statutory P&L and Balance Sheet recalculations in `FinancialStatementsHub`.
+    - Document checklist, OCR dropzone, and encrypted vault records.
+    - Contextual advisor messaging thread in `ClientMessages`.
+  - In Practice OS: selecting a client while on global views (`radar`, `pipeline`) automatically transitions to the client's `Property & Owner Hub` (`workspace`) so the screen changes visibly and instantaneously.
+- **1-Click Prototype Demo Access**: In `PortalLoginModal`, `/admin`, and `/portal`, reviewers can bypass manual password entry with a single tap on:
+  - `⚡ Enter as Partner (Kalpesh Patel FCA)`
+  - `⚡ Mum & Dad (Singh Family BTL - £16.8k Rental, Pritpal Chaggar CTA)`
+  - `⚡ Marcus & Sarah Sterling (Sterling Property Holdings)`
 - **Live Role Quick Dock (`LiveRoleDock`)**: Floating quick-view navigator allowing instant jumps to any of the 8 Practice OS tools or 4 Client Portal modules.
+
+---
+
+## 📊 Embedded Real Case Study: Singh Family Residential BTL (Parents)
+
+Directly modeled on actual 2024/25 landlord tax records assigned to **Pritpal Chaggar CTA**:
+- **Gross Rental Income**: £16,800.00 (£1,400.00 / month)
+- **Allowable Property Expenses (£9,200.38 Total)**:
+  - OpenRent Letting Management Fee: £120.00
+  - Bathroom Refurbishment Contractor Invoice (Like-for-like repairs): £5,000.00
+  - Freeholder Ground Rent: £294.00
+  - Block Managing Agent Service Charge: £3,752.88
+  - Local Authority Council Tax (April Void Period): £33.50
+- **Net Operating Profit Before Finance Costs**: £7,599.62
+- **Residential Finance Costs (Section 24 Restricted)**:
+  - Annual Mortgage Interest: £6,330.72
+  - Section 24 Basic Rate Tax Reducer (20%): £1,266.14
+- **Encrypted Vault Storage**: All 6 statutory documents and invoices are catalogued with 256-bit signed preview URLs.
 
 ---
 
@@ -67,6 +97,8 @@ flowchart TD
         O["Interactive Mobile Dropzone & OCR"]
         P["Encrypted Document Vault"]
         Q["Direct Advisor Messaging Thread"]
+        R["Property Bill & Outgoings Hub (Printable Monthly Cashflow)"]
+        S["Universal User Next-Step Guidance Engine"]
     end
 
     Public <--> ProtoMode
@@ -97,6 +129,15 @@ flowchart TD
 - Automated multi-channel follow-ups (WhatsApp, SMS, Email) with pre-filled advisory templates.
 - One-click CSV audit export for Xero Practice Manager and Karbon reconciliation.
 
+#### 5. Landlord Property Bill & Outgoings Hub (Printable Cashflow)
+- **Notion-Style Expense & Outgoings Hub**: Replaces paper binders with an integrated, printable monthly bill tracker.
+- **HMRC Statutory Tax Splitting**: Automatically distinguishes 100% allowable property expenses (OpenRent letting fees, contractor bathroom refurbishment, ground rent, service charge, council tax void) from restricted Section 24 finance costs (mortgage payments).
+- **1-Click Printable Statement (`window.print`)**: Tailored `@media print` layout producing clean, audit-ready monthly physical statements for landlord records.
+- **Dynamic New Bill Logging**: Landlords and advisors can log ad-hoc contractor expenses with receipt attachments directly mapped to SA105 / CT600 boxes.
+
+#### 6. Universal User Next-Step Guidance Engine (`UserNextStepBar`)
+- Eliminates cognitive load across the entire platform by providing unambiguous next-action prompts (`Step 1 of 3: ...`) with statutory context and direct 1-click execution buttons on every module.
+
 ---
 
 ## 🎨 Design System & UX Standards
@@ -118,11 +159,16 @@ flowchart TD
 ## 🔍 SEO, AEO & Schema.org Metadata
 
 - **Schema.org Structured Data**: Configured `AccountingService` JSON-LD in `app/layout.tsx` targeting UK search and AI Engine Optimization (AEO).
-- **Official Entity Details**:
+- **Official Entity Details (Verified via kptc.co.uk & Companies House)**:
   - **Company**: KP Tax Consultants Ltd (Company No. 12908850)
-  - **Registered Address**: 7 Bell Yard, London, WC2A 2JR, United Kingdom
-  - **Direct Contact**: `+44 7861 690954` (WhatsApp) | `info@kptc.co.uk`
-  - **Regulatory Bodies**: ICAEW (Firm No. 12908850) & CIOT (Chartered Tax Advisers)
+  - **Registered Office**: 167-169 Great Portland Street, 5th Floor, London, W1W 5PF, United Kingdom
+  - **London Correspondence**: 7 Bell Yard, London, WC2A 2JR, United Kingdom
+  - **Senior Leadership**:
+    - **Kalpesh Patel** BSc (Hons), FCA (Fellow Chartered Accountant)
+    - **Pritpal Singh Chaggar** BSc (Hons), ATT, CTA (Chartered Tax Advisor)
+  - **Direct Contact**: `kpatel@kptc.co.uk` & `info@kptc.co.uk` | WhatsApp / Phone: `+44 7861 690954`
+  - **Regulatory Bodies**: ICAEW (Institute of Chartered Accountants in England and Wales) & CIOT (Chartered Institute of Taxation)
+  - **Core Practice Sectors**: Property Investors & Developers, Contractors & Freelancers (IR35), Construction Industry (CIS), Dentists & Healthcare, Retail, and E-commerce.
 
 ---
 

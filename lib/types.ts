@@ -13,7 +13,8 @@ export type ScreenView =
   | 'client_overview'
   | 'dropzone'
   | 'vault'
-  | 'client_messages';
+  | 'client_messages'
+  | 'client_bills';
 
 export interface BankTransaction {
   id: string;
@@ -98,10 +99,53 @@ export interface LandlordClient {
   properties: PropertyItem[];
   parties: ClientParty[];
   documents: DocumentItem[];
+  bills?: PropertyBillItem[];
   unbilledWip: number;
   lastChasedAt?: string;
   chaseCount: number;
   totalRentalIncome: number;
+}
+
+export type BillCategory =
+  | 'mortgage_interest'
+  | 'maintenance_repairs'
+  | 'letting_fees'
+  | 'service_charge'
+  | 'ground_rent'
+  | 'insurance'
+  | 'utilities_council_tax'
+  | 'statutory_compliance';
+
+export interface PropertyBillItem {
+  id: string;
+  title: string;
+  category: BillCategory;
+  vendorOrRecipient: string;
+  amount: number;
+  frequency: 'monthly' | 'quarterly' | 'annual' | 'one_off';
+  isAllowableExpense: boolean;
+  isSection24Restricted: boolean;
+  propertyAddress: string;
+  dueDate: string;
+  paidDate?: string;
+  status: 'paid' | 'due' | 'scheduled';
+  receiptAttached: boolean;
+  receiptName?: string;
+  taxYear: string;
+  hmrcBoxNote?: string;
+}
+
+export interface NewBillInput {
+  title: string;
+  category: BillCategory;
+  vendorOrRecipient: string;
+  amount: number;
+  frequency: 'monthly' | 'quarterly' | 'annual' | 'one_off';
+  isSection24Restricted: boolean;
+  propertyAddress: string;
+  dueDate: string;
+  status: 'paid' | 'due' | 'scheduled';
+  notes?: string;
 }
 
 export interface CommunicationLogItem {

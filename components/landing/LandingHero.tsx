@@ -87,6 +87,36 @@ export default function LandingHero() {
               </button>
             </div>
 
+            {/* Clear 3-Step Next-Action Roadmap */}
+            <div className="pt-3 border-t border-neutral-100 space-y-2">
+              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
+                Clear 3-Step Client Journey:
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/90 space-y-1 hover:border-neutral-300 transition">
+                  <div className="flex items-center space-x-1.5 font-bold text-neutral-900">
+                    <span className="w-4 h-4 rounded-full bg-primary text-white text-[10px] flex items-center justify-center font-mono">1</span>
+                    <span>Calculate Tax Exposure</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-tight">Run your numbers in our live Section 24 model.</p>
+                </div>
+                <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/90 space-y-1 hover:border-neutral-300 transition">
+                  <div className="flex items-center space-x-1.5 font-bold text-neutral-900">
+                    <span className="w-4 h-4 rounded-full bg-primary text-white text-[10px] flex items-center justify-center font-mono">2</span>
+                    <span>Strategic Advisory Call</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-tight">Review SPV transfers & tax reducers with a CTA partner.</p>
+                </div>
+                <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/90 space-y-1 hover:border-neutral-300 transition">
+                  <div className="flex items-center space-x-1.5 font-bold text-neutral-900">
+                    <span className="w-4 h-4 rounded-full bg-emerald-700 text-white text-[10px] flex items-center justify-center font-mono">3</span>
+                    <span>1-Click Phone Dropzone</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 leading-tight">Snap mortgage photos & log property bills without paperwork.</p>
+                </div>
+              </div>
+            </div>
+
             {/* 3 Outcome Proof Blocks */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-neutral-100 text-xs">
               <div className="space-y-0.5">

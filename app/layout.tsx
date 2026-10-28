@@ -86,12 +86,12 @@ export default function RootLayout({
     "@id": "https://kptc.co.uk",
     url: "https://kptc.co.uk",
     telephone: "+44 7861 690954",
-    email: "info@kptc.co.uk",
+    email: "kpatel@kptc.co.uk",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "7 Bell Yard",
+      streetAddress: "167-169 Great Portland Street, 5th Floor",
       addressLocality: "London",
-      postalCode: "WC2A 2JR",
+      postalCode: "W1W 5PF",
       addressCountry: "GB",
     },
     geo: {

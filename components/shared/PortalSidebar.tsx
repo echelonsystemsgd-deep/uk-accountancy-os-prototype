@@ -29,6 +29,7 @@ import {
   Crown,
   LogOut,
   Landmark,
+  Receipt,
 } from "lucide-react";
 
 export default function PortalSidebar() {
@@ -82,6 +83,7 @@ export default function PortalSidebar() {
 
   const clientLinks: { id: ScreenView; label: string; badge?: string; icon: React.ReactNode }[] = [
     { id: "client_overview", label: "Portfolio & Tax Overview", icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: "client_bills", label: "Bills & Outgoings Hub", badge: `${(activeClient.bills || []).length} logged`, icon: <Receipt className="w-4 h-4 text-emerald-600" /> },
     { id: "dropzone", label: "Document Dropzone", badge: `${activeClient.documents.filter(d => d.status === "pending").length} needed`, icon: <Smartphone className="w-4 h-4" /> },
     { id: "vault", label: "Encrypted Document Vault", badge: `${activeClient.documents.filter(d => d.status === "verified").length}`, icon: <FolderLock className="w-4 h-4" /> },
     { id: "client_messages", label: "Direct Advisor Thread", icon: <MessageSquare className="w-4 h-4" /> },
@@ -101,7 +103,12 @@ export default function PortalSidebar() {
               </div>
             ) : (
               <div className="w-10 h-10 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
-                MS
+                {(currentUser?.name || activeClient.primaryContact || "LC")
+                  .split(" ")
+                  .filter(Boolean)
+                  .map((n) => n[0])
+                  .slice(0, 2)
+                  .join("")}
               </div>
             )}
             <div className="truncate">
@@ -124,35 +131,155 @@ export default function PortalSidebar() {
           </div>
         </div>
 
-        {/* Client Selector (Accountant View Only) */}
-        {isAccountant && (
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-semibold text-neutral-600 block uppercase tracking-wider">
-              Active Client Portfolio:
+        {/* Client Selector (Available in BOTH Practice OS and Landlord Portal for Prototype Evaluation) */}
+        <div className="space-y-2 bg-white p-3 rounded-xl border border-neutral-200 shadow-2xs">
+          <div className="flex items-center justify-between">
+            <label className="text-[11px] font-bold text-neutral-700 block uppercase tracking-wider">
+              {isAccountant ? "Active Client Portfolio:" : "Switch Portfolio (Prototype):"}
             </label>
-            <select
-              value={activeClient.id}
-              onChange={(e) => setSelectedClientId(e.target.value)}
-              className="w-full text-xs border border-neutral-200 rounded-lg p-2 bg-white text-neutral-800 font-medium focus:ring-1 focus:ring-primary focus:outline-none"
-            >
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.entityName} ({c.documents.filter((d) => d.status === "pending").length} missing)
-                </option>
-              ))}
-            </select>
+            <span className="text-[10px] text-primary font-mono font-medium">
+              {clients.length} Portfolios
+            </span>
+          </div>
 
-            {/* Quick Creation Trigger */}
+          <select
+            value={activeClient.id}
+            onChange={(e) => {
+              const newId = e.target.value;
+              setSelectedClientId(newId);
+              if (isAccountant) {
+                if (currentView === "radar" || currentView === "pipeline") {
+                  setCurrentView("workspace");
+                }
+              } else {
+                if (!["client_overview", "dropzone", "vault", "client_messages"].includes(currentView)) {
+                  setCurrentView("client_overview");
+                }
+              }
+            }}
+            className="w-full text-xs border border-neutral-300 rounded-lg p-2.5 bg-neutral-50/70 text-neutral-900 font-semibold focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition shadow-2xs"
+          >
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.entityName} — {c.primaryContact}
+              </option>
+            ))}
+          </select>
+
+          {/* Active Portfolio Detail Card (Immediate Visual Feedback on Client Change) */}
+          <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200/80 text-[11px] space-y-1.5 animate-in fade-in duration-150">
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 font-medium">Entity:</span>
+              <span className="font-bold text-neutral-900 truncate max-w-[150px]">{activeClient.entityName}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 font-medium">Contact:</span>
+              <span className="font-semibold text-neutral-800 truncate max-w-[150px]">{activeClient.primaryContact}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 font-medium">Structure:</span>
+              <span className="font-semibold text-neutral-700">
+                {activeClient.entityType === "spv_ltd" ? "SPV Limited Company" : activeClient.entityType === "joint" ? "Joint Landlords (BTL)" : "Personal / LLP"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 font-medium">Gross Rental:</span>
+              <span className="font-bold text-emerald-700">£{activeClient.totalRentalIncome.toLocaleString()} / year</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-neutral-500 font-medium">Assigned Lead:</span>
+              <span className="font-semibold text-neutral-800">{activeClient.assignedAccountant}</span>
+            </div>
+            <div className="flex items-center justify-between pt-1 border-t border-neutral-200/60">
+              <span className="text-neutral-500 font-medium">Missing Docs:</span>
+              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                activeClient.documents.filter(d => d.status === "pending").length > 0
+                  ? "bg-amber-100 text-amber-800"
+                  : "bg-emerald-100 text-emerald-800"
+              }`}>
+                {activeClient.documents.filter(d => d.status === "pending").length > 0
+                  ? `${activeClient.documents.filter(d => d.status === "pending").length} Needed`
+                  : "All Verified (Review Ready)"}
+              </span>
+            </div>
+          </div>
+
+          {/* Quick Context Action Button */}
+          {isAccountant ? (
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
+              <button
+                type="button"
+                onClick={() => setCurrentView("workspace")}
+                className={`py-1.5 px-2 rounded-lg text-[10px] font-semibold border text-center transition ${
+                  currentView === "workspace"
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100"
+                }`}
+              >
+                Owner Hub
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentView("statements")}
+                className={`py-1.5 px-2 rounded-lg text-[10px] font-semibold border text-center transition ${
+                  currentView === "statements"
+                    ? "bg-neutral-900 text-white border-neutral-900"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100"
+                }`}
+              >
+                P&L / CT600
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-1 pt-1">
+              <button
+                type="button"
+                onClick={() => setCurrentView("client_overview")}
+                className={`py-1.5 px-1.5 rounded-lg text-[10px] font-semibold border text-center transition ${
+                  currentView === "client_overview"
+                    ? "bg-emerald-700 text-white border-emerald-700"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100"
+                }`}
+              >
+                Overview
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentView("client_bills")}
+                className={`py-1.5 px-1.5 rounded-lg text-[10px] font-semibold border text-center transition ${
+                  currentView === "client_bills"
+                    ? "bg-emerald-700 text-white border-emerald-700"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100"
+                }`}
+              >
+                Bills & Spend
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentView("dropzone")}
+                className={`py-1.5 px-1.5 rounded-lg text-[10px] font-semibold border text-center transition ${
+                  currentView === "dropzone"
+                    ? "bg-emerald-700 text-white border-emerald-700"
+                    : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100"
+                }`}
+              >
+                Dropzone
+              </button>
+            </div>
+          )}
+
+          {/* Quick Creation Trigger (Accountant Mode) */}
+          {isAccountant && (
             <button
               type="button"
               onClick={openCreateEntityModal}
-              className="w-full mt-2 py-2 px-3 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition flex items-center justify-center space-x-1.5 shadow-xs"
+              className="w-full mt-1.5 py-2 px-3 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition flex items-center justify-center space-x-1.5 shadow-2xs"
             >
               <Plus className="w-3.5 h-3.5 text-amber-400" />
               <span>+ New Client / Invoice / Asset</span>
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Navigation Links */}
         <div className="space-y-1">

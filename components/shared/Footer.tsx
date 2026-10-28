@@ -86,6 +86,8 @@ export default function Footer() {
             <ul className="space-y-1.5 text-[11px] text-neutral-600">
               <li className="flex items-center space-x-2">
                 <Mail className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <a href="mailto:kpatel@kptc.co.uk" className="hover:text-primary transition font-medium">kpatel@kptc.co.uk</a>
+                <span className="text-neutral-400">&bull;</span>
                 <a href="mailto:info@kptc.co.uk" className="hover:text-primary transition">info@kptc.co.uk</a>
               </li>
               <li className="flex items-center space-x-2">
@@ -105,7 +107,11 @@ export default function Footer() {
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />
-                <span>7 Bell Yard, London, WC2A 2JR, United Kingdom</span>
+                <div>
+                  <span className="block font-medium text-neutral-700">Registered Office:</span>
+                  <span>167-169 Great Portland Street, 5th Floor, London, W1W 5PF</span>
+                  <span className="block text-[10px] text-neutral-500 mt-0.5">Correspondence: 7 Bell Yard, London, WC2A 2JR</span>
+                </div>
               </li>
               <li className="flex items-center space-x-2">
                 <Building2 className="w-3.5 h-3.5 text-neutral-400 shrink-0" />

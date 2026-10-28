@@ -29,6 +29,7 @@ import {
   Plus,
   Crown,
   Landmark,
+  Receipt,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -36,6 +37,7 @@ export default function Navbar() {
     currentMode,
     currentView,
     setCurrentView,
+    activeClient,
     metrics,
     resetDemoState,
     mobileFrameEnabled,
@@ -384,7 +386,9 @@ export default function Navbar() {
                     Practice OS
                   </span>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium hidden sm:block">Kalpesh Patel FCA &bull; Chartered Accountants &bull; ICAEW Regulated</p>
+                <p className="text-xs text-neutral-500 font-medium hidden sm:block">
+                  Active Portfolio: <strong className="text-neutral-800">{activeClient.entityName}</strong> &bull; {activeClient.assignedAccountant}
+                </p>
               </div>
             </div>
 
@@ -438,6 +442,7 @@ export default function Navbar() {
   // 3. DEDICATED CLIENT PORTAL HEADER
   const clientNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
     { id: "client_overview", label: "Overview & Roadmap", icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: "client_bills", label: "Bills & Spend Tracker", icon: <Receipt className="w-4 h-4 text-emerald-600" /> },
     { id: "dropzone", label: "Upload Dropzone", icon: <Smartphone className="w-4 h-4" /> },
     { id: "vault", label: "Document Vault", icon: <FolderLock className="w-4 h-4" /> },
     { id: "client_messages", label: "Advisor Messages", icon: <MessageSquare className="w-4 h-4" /> },
@@ -471,7 +476,9 @@ export default function Navbar() {
                   Client Portal
                 </span>
               </div>
-              <p className="text-xs text-neutral-500 font-medium hidden sm:block">Account: Marcus & Sarah Sterling &bull; Section 24 Review</p>
+              <p className="text-xs text-neutral-500 font-medium hidden sm:block">
+                Account: <strong className="text-neutral-700">{activeClient.entityName}</strong> &bull; {activeClient.primaryContact}
+              </p>
             </div>
           </div>
 
@@ -490,7 +497,7 @@ export default function Navbar() {
 
             <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs border border-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-              <span className="font-semibold">{currentUser?.name || "Marcus Sterling"}</span>
+              <span className="font-semibold">{currentUser?.name || activeClient.primaryContact}</span>
             </div>
 
             <button

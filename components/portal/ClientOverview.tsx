@@ -15,7 +15,10 @@ import {
   MessageSquare,
   Clock,
   ExternalLink,
+  Receipt,
+  Printer,
 } from "lucide-react";
+import UserNextStepBar from "@/components/shared/UserNextStepBar";
 
 export default function ClientOverview() {
   const { activeClient, setCurrentView } = useDemoStore();
@@ -99,6 +102,64 @@ export default function ClientOverview() {
             </span>
             <span className="text-[10px] text-neutral-400 block">31 Jan 2026 HMRC Deadline</span>
           </div>
+        </div>
+      </div>
+
+      {/* Guided Next Step Action Banner (Clear Guidance for Users) */}
+      {pendingDocs.length > 0 ? (
+        <UserNextStepBar
+          stepNumber={1}
+          totalSteps={3}
+          title={`Upload ${pendingDocs.length} Missing Certificate${pendingDocs.length > 1 ? "s" : ""} for Section 24 Tax Finalization`}
+          description="Your accountant requires your year-end mortgage statement and expense vouchers to claim full allowable tax deductions against your gross rental income."
+          actionLabel="Open Mobile Dropzone"
+          targetView="dropzone"
+          statusBadge="Action Required"
+          variant="amber"
+        />
+      ) : (
+        <UserNextStepBar
+          stepNumber={2}
+          totalSteps={3}
+          title="Review 2024/25 Property Bills & Spend Ledger"
+          description="All statutory certificates have been verified. You can print your month-end cashflow statement or view your draft statutory P&L."
+          actionLabel="Open Bills & Cashflow Hub"
+          targetView="client_bills"
+          statusBadge="Ready for Review"
+          variant="emerald"
+        />
+      )}
+
+      {/* Landlord Property Bills & Outgoings Quick Card */}
+      <div className="accountant-card p-5 bg-white border border-neutral-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-start space-x-3.5">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0">
+            <Receipt className="w-5 h-5 text-emerald-700" />
+          </div>
+          <div className="space-y-0.5">
+            <div className="flex items-center space-x-2">
+              <h2 className="font-bold text-sm text-neutral-900">
+                Landlord Property Bill & Outgoings Hub
+              </h2>
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 border border-neutral-200">
+                {(activeClient.bills || []).length} Logged
+              </span>
+            </div>
+            <p className="text-xs text-neutral-600 max-w-xl">
+              Track allowable letting fees, contractor invoices, ground rent, and Section 24 finance charges. Print month-end cashflow statements with 1 tap.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setCurrentView("client_bills")}
+            className="touch-target-44 btn-tactile px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition inline-flex items-center space-x-1.5 shadow-2xs"
+          >
+            <span>View Bills & Print Schedule</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
 

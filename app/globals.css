@@ -214,4 +214,27 @@ html.modal-open {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Print Styles for Landlord Bill Ledger & Statutory Statements */
+@media print {
+  header,
+  footer,
+  aside,
+  nav,
+  .print\:hidden,
+  button,
+  .fixed {
+    display: none !important;
+  }
+  body, main {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .accountant-card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+  }
+}
+
 

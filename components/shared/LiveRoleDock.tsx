@@ -113,6 +113,12 @@ export default function LiveRoleDock() {
               >
                 &bull; Advisor Chat
               </button>
+              <button
+                onClick={() => { enterClientPortal("client_bills"); setExpanded(false); }}
+                className={`px-2 py-1.5 rounded text-left transition ${currentView === "client_bills" ? "bg-emerald-500/20 text-emerald-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
+              >
+                &bull; Bills & Spend Hub
+              </button>
             </div>
           </div>
         </div>

@@ -105,6 +105,10 @@ graph TD
 - [x] Mount `EnvironmentSwitcherBar` and `LiveRoleDock` in `app/page.tsx`.
 - [x] Add 1-click Demo Entry buttons in `PortalLoginModal.tsx`, `app/admin/page.tsx`, and `app/portal/page.tsx`.
 - [x] Audit and polish mobile layouts for Financial Statements, Partner Radar, Invoicing, and Open Banking.
+- [x] Universal Client Switching across both Practice OS and Client Portal (immediate visual update of all views, active client summary cards, dynamic user sessions).
+- [x] Integrate real Mum & Dad (Singh Family Residential BTL) portfolio (£16,800 rental turnover, £9,200.38 allowable expenses, £6,330.72 Section 24 restricted finance costs, Pritpal Chaggar CTA).
+- [x] Integrate verified KP Tax Consultants Ltd official credentials from `https://www.kptc.co.uk/` and UK Companies House.
+- [x] Add direct route fallbacks in `app/portal/page.tsx` and `app/admin/page.tsx` preventing blank route rendering.
 - [x] Execute `npm run build` to verify 0 TypeScript/build errors.
 - [x] Test on simulated mobile screen dimensions (375px, 390px, 768px).
 - [x] Commit and push to git repository.

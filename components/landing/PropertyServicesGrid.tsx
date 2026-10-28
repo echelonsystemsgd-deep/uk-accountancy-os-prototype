@@ -8,7 +8,11 @@ import {
   CalendarCheck,
   FileCheck2,
   ArrowRight,
-  ShieldAlert,
+  ShieldCheck,
+  Coins,
+  Scale,
+  Briefcase,
+  CheckCircle2,
 } from "lucide-react";
 
 export default function PropertyServicesGrid() {
@@ -47,6 +51,47 @@ export default function PropertyServicesGrid() {
         "Selling a residential buy-to-let requires calculating Capital Gains Tax and filing a dedicated UK Property Return within 60 days of completion. We claim all allowable enhancement expenses and private residence relief.",
       outcome: "Accurate computation of acquisition costs, legal fees, and full statutory clearance within 60 days.",
     },
+    {
+      title: "Corporation Tax & CT600 Marginal Relief",
+      icon: <Scale className="w-5 h-5 text-amber-600" />,
+      tag: "Corporate Compliance",
+      description:
+        "Specialist CT600 filing incorporating 19% small profits rate, 25% main rate, and exact marginal relief calculations for property SPVs, developers, and holding company structures.",
+      outcome: "Full utilization of capital allowances, pre-trading expenses, and marginal relief bands.",
+    },
+    {
+      title: "Inheritance Tax (IHT) & Succession Advisory",
+      icon: <ShieldCheck className="w-5 h-5 text-emerald-700" />,
+      tag: "Wealth Preservation",
+      description:
+        "Comprehensive estate structuring for multi-property portfolios, utilizing Business Property Relief (BPR), spousal exemptions, Family Investment Companies (FICs), and discretionary trusts.",
+      outcome: "Generational wealth protection minimizing 40% IHT exposure on UK property assets.",
+    },
+    {
+      title: "Cryptocurrency & NFT Digital Asset Taxation",
+      icon: <Coins className="w-5 h-5 text-indigo-600" />,
+      tag: "Specialist Advisory",
+      description:
+        "Official partner expertise for landlords and investors diversifying into cryptoassets, DeFi staking, and digital property under HMRC capital gains pooling rules and Section 104.",
+      outcome: "Audit-ready transaction reconciliation with clear HMRC disclosure.",
+    },
+    {
+      title: "Company Secretarial & Year-End Statutory Accounts",
+      icon: <Briefcase className="w-5 h-5 text-neutral-800" />,
+      tag: "Companies House & ICAEW",
+      description:
+        "Full FRS 102 1A and FRS 105 micro-entity accounts preparation, confirmation statements CS01, registered office services in London (W1W & WC2A), and dividend board minutes.",
+      outcome: "Timely, compliant statutory filings ensuring good standing on the public register.",
+    },
+  ];
+
+  const focusSectors = [
+    "Property Investors & Developers",
+    "Contractors & Freelancers (IR35)",
+    "Construction Industry (CIS)",
+    "Healthcare & Dentists",
+    "Retail & E-commerce",
+    "Owner-Managed Businesses",
   ];
 
   return (
@@ -102,6 +147,29 @@ export default function PropertyServicesGrid() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Official Focus Sectors from kptc.co.uk */}
+        <div className="pt-6 border-t border-neutral-100 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
+              Specialized Industry Sectors (KP Tax Consultants Ltd)
+            </span>
+            <span className="text-[11px] text-neutral-400">
+              Tailored UK compliance architectures for niche trade and asset profiles
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {focusSectors.map((sector) => (
+              <span
+                key={sector}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 text-neutral-800 text-xs font-medium border border-neutral-200/80 hover:bg-neutral-200/60 transition"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{sector}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

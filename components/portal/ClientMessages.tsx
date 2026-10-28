@@ -24,29 +24,57 @@ interface ChatMessage {
 export default function ClientMessages() {
   const { activeClient, setCurrentView, triggerToast } = useDemoStore();
 
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: "msg-1",
-      sender: "accountant",
-      senderName: activeClient.assignedAccountant,
-      text: `Hi ${activeClient.primaryContact.split(" ")[0]}, welcome to your KP Accountants client portal! We are currently assembling your ${activeClient.taxYear} tax file. To ensure we claim the maximum allowable finance costs under Section 24 rules, please upload the year-end mortgage interest certificates for your properties.`,
-      timestamp: "Yesterday, 14:20",
-    },
-    {
-      id: "msg-2",
-      sender: "client",
-      senderName: activeClient.primaryContact,
-      text: "Thanks Kalpesh. I have the NatWest certificate on my desk right now. Will upload a photo from my phone shortly.",
-      timestamp: "Yesterday, 16:05",
-    },
-    {
-      id: "msg-3",
-      sender: "accountant",
-      senderName: activeClient.assignedAccountant,
-      text: "Perfect. As soon as that comes in, Pritpal and I will run the comparison against an SPV limited company transfer so you can see your 5-year trajectory.",
-      timestamp: "Today, 09:15",
-    },
-  ]);
+  const getInitialMessages = (client: typeof activeClient): ChatMessage[] => {
+    if (client.id === "client-singh-family") {
+      return [
+        {
+          id: "msg-singh-1",
+          sender: "client",
+          senderName: "Gurtej Singh",
+          text: "Hi Pritpal, hope you're having a good week! Here are the 2024/25 property figures for Mum & Dad as requested:\n\n* Gross Rental Income: £16,800 (£1,400 / month)\n\nAllowable Property Expenses:\n* OpenRent Fee: £120.00\n* Bathroom Refurbishment: £5,000.00\n* Ground Rent: £294.00\n* Service Charge: £3,752.88\n* Council Tax (April): £33.50\nTotal Allowable Expenses: £9,200.38\n\nResidential Finance Costs (Section 24):\n* Mortgage Interest / Payments (Year): £6,330.72\n\nLet me know if you need any individual receipts or bank statements for these.",
+          timestamp: "27 Oct, 09:40",
+        },
+        {
+          id: "msg-singh-2",
+          sender: "accountant",
+          senderName: "Pritpal Chaggar CTA",
+          text: "Hi Gurtej, thanks for this. Will take a look and revert. All 5 expense vouchers and the £6,330.72 mortgage certificate have been cross-checked in your vault.",
+          timestamp: "27 Oct, 22:13",
+        },
+      ];
+    }
+
+    return [
+      {
+        id: "msg-1",
+        sender: "accountant",
+        senderName: client.assignedAccountant,
+        text: `Hi ${client.primaryContact.split(" ")[0]}, welcome to your KP Accountants client portal! We are currently assembling your ${client.taxYear} tax file. To ensure we claim the maximum allowable finance costs under Section 24 rules, please upload the year-end mortgage interest certificates for your properties.`,
+        timestamp: "Yesterday, 14:20",
+      },
+      {
+        id: "msg-2",
+        sender: "client",
+        senderName: client.primaryContact,
+        text: `Thanks ${client.assignedAccountant.split(" ")[0]}. I have the certificates on my desk right now. Will upload a photo from my phone shortly.`,
+        timestamp: "Yesterday, 16:05",
+      },
+      {
+        id: "msg-3",
+        sender: "accountant",
+        senderName: client.assignedAccountant,
+        text: "Perfect. As soon as that comes in, our tax advisory team will run the comparison against an SPV limited company transfer so you can see your 5-year trajectory.",
+        timestamp: "Today, 09:15",
+      },
+    ];
+  };
+
+  const [messages, setMessages] = useState<ChatMessage[]>(() => getInitialMessages(activeClient));
+
+  // Sync messages when active client changes
+  React.useEffect(() => {
+    setMessages(getInitialMessages(activeClient));
+  }, [activeClient.id]);
 
   const [replyText, setReplyText] = useState("");
 
@@ -64,7 +92,7 @@ export default function ClientMessages() {
 
     setMessages((prev) => [...prev, newMsg]);
     setReplyText("");
-    triggerToast("Message Sent", "Your message was transmitted to Kalpesh Patel FCA.", "success");
+    triggerToast("Message Sent", `Your message was transmitted to ${activeClient.assignedAccountant}.`, "success");
 
     // Simulated quick accountant acknowledgement
     setTimeout(() => {

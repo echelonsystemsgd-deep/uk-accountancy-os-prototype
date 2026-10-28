@@ -34,6 +34,7 @@ import ClientOverview from "@/components/portal/ClientOverview";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
 import ClientMessages from "@/components/portal/ClientMessages";
+import LandlordBillTrackerHub from "@/components/portal/LandlordBillTrackerHub";
 // Portal Sidebar Component
 import PortalSidebar from "@/components/shared/PortalSidebar";
 
@@ -141,6 +142,12 @@ export default function Home() {
             {currentView === "client_messages" && (
               <div className="animate-in fade-in duration-200">
                 <ClientMessages />
+              </div>
+            )}
+
+            {currentView === "client_bills" && (
+              <div className="animate-in fade-in duration-200">
+                <LandlordBillTrackerHub />
               </div>
             )}
           </main>

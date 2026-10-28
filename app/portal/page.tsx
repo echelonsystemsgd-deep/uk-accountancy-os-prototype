@@ -12,16 +12,28 @@ import ClientOverview from "@/components/portal/ClientOverview";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
 import ClientMessages from "@/components/portal/ClientMessages";
+import LandlordBillTrackerHub from "@/components/portal/LandlordBillTrackerHub";
 import { Smartphone, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
 
 export default function PortalPage() {
-  const { currentView, currentUser, loginWithCredentials, loginAsClientDemo } = useDemoStore();
+  const { currentView, setCurrentView, currentUser, loginWithCredentials, loginAsClientDemo, activeClient } = useDemoStore();
 
-  const [email, setEmail] = useState<string>("marcus.sterling@sterlingholdings.co.uk");
-  const [password, setPassword] = useState<string>("123456");
+  const [email, setEmail] = useState<string>("deepgurtej28@gmail.com");
+  const [password, setPassword] = useState<string>("Gurtej@2008#");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Auto-switch to client mode on direct route visit
+  React.useEffect(() => {
+    if (!["client_overview", "dropzone", "vault", "client_messages", "client_bills"].includes(currentView)) {
+      if (!currentUser || currentUser.role !== "client") {
+        loginAsClientDemo("client-singh-family");
+      } else {
+        setCurrentView("client_overview");
+      }
+    }
+  }, [currentView, currentUser, setCurrentView, loginAsClientDemo]);
 
   const isAuthenticated = Boolean(currentUser);
 
@@ -81,14 +93,24 @@ export default function PortalPage() {
               <p className="text-[11px] text-emerald-800">
                 Test the mobile document dropzone, camera upload OCR, and statutory tax vault with 1 click.
               </p>
-              <button
-                type="button"
-                onClick={loginAsClientDemo}
-                className="w-full py-2.5 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition active:scale-95"
-              >
-                <span>⚡ Enter as Landlord Client (Marcus Sterling)</span>
-                <ArrowRight className="w-3.5 h-3.5 text-emerald-300" />
-              </button>
+              <div className="grid grid-cols-1 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => loginAsClientDemo("client-singh-family")}
+                  className="w-full py-2.5 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-between shadow-sm transition active:scale-95"
+                >
+                  <span>⚡ Mum & Dad (Singh Family BTL - £16.8k Rental)</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => loginAsClientDemo("client-sterling")}
+                  className="w-full py-2 px-3 rounded-lg bg-neutral-900 text-neutral-100 hover:bg-neutral-800 font-semibold text-xs flex items-center justify-between border border-neutral-700 transition active:scale-95"
+                >
+                  <span>⚡ Marcus & Sarah Sterling (Sterling Holdings)</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+                </button>
+              </div>
             </div>
 
             {errorMessage && (
@@ -175,8 +197,11 @@ export default function PortalPage() {
           <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
             {currentView === "dropzone" && <MobileDropzone />}
             {currentView === "vault" && <ClientDocumentVault />}
-            {currentView === "client_overview" && <ClientOverview />}
             {currentView === "client_messages" && <ClientMessages />}
+            {currentView === "client_bills" && <LandlordBillTrackerHub />}
+            {(currentView === "client_overview" || !["dropzone", "vault", "client_messages", "client_bills"].includes(currentView)) && (
+              <ClientOverview />
+            )}
           </main>
         </div>
       )}

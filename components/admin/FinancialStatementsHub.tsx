@@ -17,6 +17,7 @@ import {
   Printer,
   Sparkles,
 } from "lucide-react";
+import UserNextStepBar from "@/components/shared/UserNextStepBar";
 
 export default function FinancialStatementsHub() {
   const { clients, activeClient, setSelectedClientId, triggerToast } = useDemoStore();
@@ -131,6 +132,18 @@ export default function FinancialStatementsHub() {
           </button>
         </div>
       </div>
+
+      {/* Guided Next Step Action Banner */}
+      <UserNextStepBar
+        stepNumber={3}
+        totalSteps={4}
+        title={`Approve ${activeClient.entityType === "spv_ltd" ? "CT600 Corporation Tax Computation" : "Section 24 Self-Assessment Schedule"} for ${activeClient.entityName}`}
+        description="Draft statutory statements reconciled against ICAEW FRS 102 1A. All finance deductions and allowable repairs have been applied. Issue practice fee note or export to Karbon."
+        actionLabel="Issue Practice WIP Fee Note"
+        targetView="invoicing"
+        statusBadge="Statements Balanced"
+        variant="slate"
+      />
 
       {/* 4 Interactive Statement Tabs */}
       <div className="border-b border-neutral-200 flex space-x-3 sm:space-x-4 text-xs font-semibold overflow-x-auto scrollbar-none pb-1">

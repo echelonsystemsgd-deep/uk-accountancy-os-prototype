@@ -20,7 +20,7 @@ import CreateEntityModal from "@/components/admin/CreateEntityModal";
 import { Lock, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function AdminPage() {
-  const { currentView, currentUser, loginWithCredentials, loginAsPartnerDemo } = useDemoStore();
+  const { currentView, setCurrentView, currentUser, loginWithCredentials, loginAsPartnerDemo } = useDemoStore();
 
   const [email, setEmail] = useState<string>("kalpesh@kptc.co.uk");
   const [password, setPassword] = useState<string>("admin123");
@@ -29,6 +29,18 @@ export default function AdminPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const isAuthenticated = currentUser?.role === "admin" || currentUser?.role === "accountant";
+
+  // Auto-switch to accountant practice OS view on route visit
+  React.useEffect(() => {
+    const accountantViews = ["radar", "pipeline", "statements", "invoicing", "open_banking", "wealth_advisory", "workspace", "chaser"];
+    if (!accountantViews.includes(currentView)) {
+      if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "accountant")) {
+        loginAsPartnerDemo();
+      } else {
+        setCurrentView("radar");
+      }
+    }
+  }, [currentView, currentUser, setCurrentView, loginAsPartnerDemo]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -178,7 +190,6 @@ export default function AdminPage() {
         <div className="flex-1 w-full max-w-[1600px] mx-auto flex">
           <PortalSidebar />
           <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
-            {currentView === "radar" && <PartnerRadar />}
             {currentView === "pipeline" && <LandlordPipeline />}
             {currentView === "statements" && <FinancialStatementsHub />}
             {currentView === "invoicing" && <PracticeInvoicingHub />}
@@ -186,6 +197,9 @@ export default function AdminPage() {
             {currentView === "wealth_advisory" && <WealthAdvisoryHub />}
             {currentView === "workspace" && <PropertyWorkspace />}
             {currentView === "chaser" && <ChaserView />}
+            {(currentView === "radar" || !["pipeline", "statements", "invoicing", "open_banking", "wealth_advisory", "workspace", "chaser"].includes(currentView)) && (
+              <PartnerRadar />
+            )}
           </main>
         </div>
       )}

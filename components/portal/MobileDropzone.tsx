@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
+import UserNextStepBar from "@/components/shared/UserNextStepBar";
 
 export default function MobileDropzone() {
   const {
@@ -110,6 +111,31 @@ export default function MobileDropzone() {
 
       {/* Main Checklist Body */}
       <div className="p-4 sm:p-5 space-y-5 flex-1">
+        {/* Next Step Guidance Prompt */}
+        {pendingDocs.length > 0 ? (
+          <UserNextStepBar
+            stepNumber={1}
+            totalSteps={3}
+            title="Snap Photo or Upload Missing Mortgage Statement"
+            description="Tap the Camera or Upload button below. The OCR parser will extract lender, balance, and annual interest in 4.2 seconds."
+            actionLabel="View Verified Vault"
+            targetView="vault"
+            statusBadge="Capture Required"
+            variant="amber"
+          />
+        ) : (
+          <UserNextStepBar
+            stepNumber={2}
+            totalSteps={3}
+            title="Review Property Bills & Cashflow Schedule"
+            description="All checklist items verified. Review your month-end ledger and print your physical cashflow report."
+            actionLabel="Open Bills Hub"
+            targetView="client_bills"
+            statusBadge="Dropzone Complete"
+            variant="emerald"
+          />
+        )}
+
         {/* Context Alert */}
         {pendingDocs.length > 0 ? (
           <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
@@ -118,7 +144,7 @@ export default function MobileDropzone() {
               <span>{pendingDocs.length} Document{pendingDocs.length > 1 ? "s" : ""} Needed for Tax Finalization</span>
             </div>
             <p className="text-[11px] text-amber-800 leading-relaxed pl-5">
-              Kalpesh Patel is finalizing your Section 24 mortgage relief computation. Please upload or photograph the items below.
+              {activeClient.assignedAccountant} is finalizing your Section 24 mortgage relief computation. Please upload or photograph the items below.
             </p>
           </div>
         ) : (
