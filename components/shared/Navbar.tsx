@@ -70,228 +70,276 @@ export default function Navbar() {
   React.useEffect(() => {
     if (mobileMenuOpen) {
       document.body.classList.add("modal-open");
+      document.documentElement.classList.add("modal-open");
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.classList.remove("modal-open");
+      document.documentElement.classList.remove("modal-open");
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
       document.body.classList.remove("modal-open");
+      document.documentElement.classList.remove("modal-open");
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
   // 1. PUBLIC LANDING PAGE HEADER
   if (currentMode === "landing") {
     return (
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
-            {/* Practice Branding with Official Logo */}
-            <div
-              onClick={() => setCurrentView("landing")}
-              className="flex items-center space-x-3 cursor-pointer group shrink-0"
-            >
-              <img
-                src="/logo.png"
-                alt="KP Tax Consultants Official Emblem"
-                width={140}
-                height={48}
-                className="h-10 sm:h-12 w-auto object-contain shrink-0"
-              />
-              <div className="space-y-0.5">
-                <div className="flex items-center space-x-1.5 whitespace-nowrap">
-                  <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
-                    KP Accountants
-                  </span>
-                  <span className="text-neutral-300 text-xs">/</span>
-                  <span className="text-neutral-600 text-xs sm:text-xs font-semibold">KP Tax</span>
+      <>
+        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
+              {/* Practice Branding with Official Logo */}
+              <div
+                onClick={() => setCurrentView("landing")}
+                className="flex items-center space-x-3 cursor-pointer group shrink-0"
+              >
+                <img
+                  src="/logo.png"
+                  alt="KP Tax Consultants Official Emblem"
+                  width={140}
+                  height={48}
+                  className="h-10 sm:h-12 w-auto object-contain shrink-0"
+                />
+                <div className="space-y-0.5">
+                  <div className="flex items-center space-x-1.5 whitespace-nowrap">
+                    <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
+                      KP Accountants
+                    </span>
+                    <span className="text-neutral-300 text-xs">/</span>
+                    <span className="text-neutral-600 text-xs sm:text-xs font-semibold">KP Tax</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap hidden sm:block">
+                    Chartered UK Property Tax Advisers &bull; ICAEW
+                  </p>
                 </div>
-                <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap hidden sm:block">
-                  Chartered UK Property Tax Advisers &bull; ICAEW
+              </div>
+
+              {/* Desktop Navigation Links (Single Line, Never Wraps) */}
+              <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("specialisms")}
+                  className="hover:text-primary transition py-1"
+                >
+                  Property Specialisms
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("tax-calculator")}
+                  className="hover:text-primary transition py-1"
+                >
+                  Section 24 Calculator
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("mtd-guidance")}
+                  className="hover:text-primary transition py-1"
+                >
+                  MTD 2026 Mandate
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("about-firm")}
+                  className="hover:text-primary transition py-1"
+                >
+                  About Our Firm
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("faqs")}
+                  className="hover:text-primary transition py-1"
+                >
+                  FAQs
+                </button>
+              </nav>
+
+              {/* Right Action CTAs (Single Line, Never Wraps) */}
+              <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
+                {/* Direct WhatsApp Channel for instant lead response */}
+                <a
+                  href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition inline-flex items-center space-x-1.5 border border-emerald-200"
+                  aria-label="Direct WhatsApp Enquiry"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>WhatsApp</span>
+                </a>
+
+                {/* Login Button with 2 Options */}
+                <button
+                  type="button"
+                  onClick={openLoginModal}
+                  className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5 border border-neutral-200/80 whitespace-nowrap"
+                >
+                  <Lock className="w-3.5 h-3.5 text-neutral-500" />
+                  <span>Portal Login</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => openIntakeModal()}
+                  className="btn-tactile px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-1.5 shadow-sm whitespace-nowrap"
+                >
+                  <span>Book Consultation</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Mobile / Tablet Hamburger Button */}
+              <div className="flex lg:hidden items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={openLoginModal}
+                  className="sm:hidden px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
+                  aria-label="Toggle mobile menu"
+                >
+                  {mobileMenuOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6" />}
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Full-Screen Static Mobile Navigation Overlay (Rendered outside header to avoid backdrop-filter trapping) */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 z-[100] bg-white flex flex-col justify-between animate-in fade-in duration-200 shadow-2xl">
+            {/* Top Bar with Logo & Close Button */}
+            <div className="h-16 sm:h-20 px-4 sm:px-6 border-b border-neutral-200 flex items-center justify-between bg-white shrink-0">
+              <div className="flex items-center space-x-3">
+                <img
+                  src="/logo.png"
+                  alt="KP Tax Consultants Official Emblem"
+                  width={140}
+                  height={48}
+                  className="h-10 sm:h-12 w-auto object-contain shrink-0"
+                />
+                <div className="space-y-0.5">
+                  <div className="flex items-center space-x-1.5 whitespace-nowrap">
+                    <span className="font-extrabold text-neutral-900 text-base tracking-tight leading-none">
+                      KP Accountants
+                    </span>
+                    <span className="text-neutral-300 text-xs">/</span>
+                    <span className="text-neutral-600 text-xs font-semibold">KP Tax</span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap">
+                    Chartered UK Property Tax Advisers
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
+                aria-label="Close navigation menu"
+              >
+                <X className="w-6 h-6 text-primary" />
+              </button>
+            </div>
+
+            {/* Scrollable Navigation Body */}
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col justify-between space-y-6 overscroll-contain">
+              <div className="flex flex-col space-y-3 text-base font-semibold text-neutral-900">
+                <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold mb-1">
+                  Navigation
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("specialisms")}
+                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
+                >
+                  <span>Property Specialisms</span>
+                  <ArrowRight className="w-4 h-4 text-neutral-400" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("tax-calculator")}
+                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
+                >
+                  <span>Section 24 Calculator</span>
+                  <ArrowRight className="w-4 h-4 text-neutral-400" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("mtd-guidance")}
+                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
+                >
+                  <span>MTD 2026 Mandate</span>
+                  <ArrowRight className="w-4 h-4 text-neutral-400" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("about-firm")}
+                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
+                >
+                  <span>About Our Firm</span>
+                  <ArrowRight className="w-4 h-4 text-neutral-400" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("faqs")}
+                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
+                >
+                  <span>Frequently Asked Questions</span>
+                  <ArrowRight className="w-4 h-4 text-neutral-400" />
+                </button>
+              </div>
+
+              <div className="pt-6 border-t border-neutral-200 space-y-3 pb-6">
+                <a
+                  href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center flex items-center justify-center space-x-2"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-600" />
+                  <span>Chat on WhatsApp (+44 7861 690954)</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openLoginModal();
+                  }}
+                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200 text-center flex items-center justify-center space-x-2"
+                >
+                  <Lock className="w-4 h-4 text-neutral-500" />
+                  <span>Portal Sign In (Client or Staff)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openIntakeModal();
+                  }}
+                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-white bg-primary text-center shadow-md flex items-center justify-center space-x-2"
+                >
+                  <span>Book Direct Consultation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <p className="text-[11px] text-neutral-400 text-center pt-1">
+                  Chartered Tax Advisers (CTA) &bull; ICAEW Regulated Practice
                 </p>
               </div>
             </div>
-
-            {/* Desktop Navigation Links (Single Line, Never Wraps) */}
-            <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
-              <button
-                type="button"
-                onClick={() => handleScrollTo("specialisms")}
-                className="hover:text-primary transition py-1"
-              >
-                Property Specialisms
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("tax-calculator")}
-                className="hover:text-primary transition py-1"
-              >
-                Section 24 Calculator
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("mtd-guidance")}
-                className="hover:text-primary transition py-1"
-              >
-                MTD 2026 Mandate
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("about-firm")}
-                className="hover:text-primary transition py-1"
-              >
-                About Our Firm
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("faqs")}
-                className="hover:text-primary transition py-1"
-              >
-                FAQs
-              </button>
-            </nav>
-
-            {/* Right Action CTAs (Single Line, Never Wraps) */}
-            <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
-              {/* Direct WhatsApp Channel for instant lead response */}
-              <a
-                href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition inline-flex items-center space-x-1.5 border border-emerald-200"
-                aria-label="Direct WhatsApp Enquiry"
-              >
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                <span>WhatsApp</span>
-              </a>
-
-              {/* Login Button with 2 Options */}
-              <button
-                type="button"
-                onClick={openLoginModal}
-                className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5 border border-neutral-200/80 whitespace-nowrap"
-              >
-                <Lock className="w-3.5 h-3.5 text-neutral-500" />
-                <span>Portal Login</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => openIntakeModal()}
-                className="btn-tactile px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-1.5 shadow-sm whitespace-nowrap"
-              >
-                <span>Book Consultation</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Mobile / Tablet Hamburger Button */}
-            <div className="flex lg:hidden items-center space-x-2">
-              <button
-                type="button"
-                onClick={openLoginModal}
-                className="sm:hidden px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
-                aria-label="Toggle mobile menu"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Full-Screen Static Mobile Navigation Drawer (Locked Viewport, No Background Scroll) */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-white flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200 shadow-2xl">
-            <div className="flex flex-col space-y-3 text-base font-semibold text-neutral-900">
-              <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold mb-1">
-                Navigation
-              </span>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("specialisms")}
-                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-              >
-                <span>Property Specialisms</span>
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("tax-calculator")}
-                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-              >
-                <span>Section 24 Calculator</span>
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("mtd-guidance")}
-                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-              >
-                <span>MTD 2026 Mandate</span>
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("about-firm")}
-                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-              >
-                <span>About Our Firm</span>
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleScrollTo("faqs")}
-                className="text-left py-2.5 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-              >
-                <span>Frequently Asked Questions</span>
-                <ArrowRight className="w-4 h-4 text-neutral-400" />
-              </button>
-            </div>
-
-            <div className="pt-6 border-t border-neutral-200 space-y-3">
-              <a
-                href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center flex items-center justify-center space-x-2"
-              >
-                <MessageSquare className="w-4 h-4 text-emerald-600" />
-                <span>Chat on WhatsApp (+44 7861 690954)</span>
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  openLoginModal();
-                }}
-                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200 text-center flex items-center justify-center space-x-2"
-              >
-                <Lock className="w-4 h-4 text-neutral-500" />
-                <span>Portal Sign In (Client or Staff)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  openIntakeModal();
-                }}
-                className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-white bg-primary text-center shadow-md flex items-center justify-center space-x-2"
-              >
-                <span>Book Direct Consultation</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <p className="text-[11px] text-neutral-400 text-center pt-1">
-                Chartered Tax Advisers (CTA) &bull; ICAEW Regulated Practice
-              </p>
-            </div>
           </div>
         )}
-      </header>
+      </>
     );
   }
 

@@ -36,8 +36,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body.modal-open {
+body.modal-open,
+html.modal-open {
   overflow: hidden !important;
+  height: 100% !important;
+  overscroll-behavior: none;
   /* Allow vertical touch gestures inside drawer & modal scrolling containers */
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
