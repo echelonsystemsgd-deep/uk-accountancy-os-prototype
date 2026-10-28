@@ -48,13 +48,13 @@ export default function PortalSidebar() {
     exitToLanding,
     currentUser,
     logout,
+    isMobileSidebarOpen,
+    setMobileSidebarOpen,
   } = useDemoStore();
-
-  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   // Control body scroll lock when mobile drawer is open
   React.useEffect(() => {
-    if (mobileDrawerOpen) {
+    if (isMobileSidebarOpen) {
       document.body.classList.add("modal-open");
     } else {
       document.body.classList.remove("modal-open");
@@ -62,7 +62,7 @@ export default function PortalSidebar() {
     return () => {
       document.body.classList.remove("modal-open");
     };
-  }, [mobileDrawerOpen]);
+  }, [isMobileSidebarOpen]);
 
   // If on public landing page, no portal sidebar is needed
   if (currentMode === "landing") return null;
@@ -90,14 +90,14 @@ export default function PortalSidebar() {
   const currentLinks = isAccountant ? accountantLinks : clientLinks;
 
   const SidebarContent = (
-    <div className="h-full flex flex-col justify-between p-4 space-y-6 text-left">
+    <div className="flex flex-col min-h-full justify-between p-4 space-y-6 text-left pb-12">
       <div className="space-y-6">
         {/* Portal Profile Card */}
         <div className="p-3.5 rounded-xl border border-neutral-200 bg-neutral-50 space-y-2.5">
           <div className="flex items-center space-x-3">
             {isAccountant ? (
               <div className="w-10 h-10 rounded-full bg-neutral-900 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 border border-amber-400/40 shadow-xs">
-                {currentUser?.name ? currentUser.name.split(" ").map(n => n[0]).join("") : "GS"}
+                {currentUser?.name ? currentUser.name.split(" ").map(n => n[0]).join("") : "KP"}
               </div>
             ) : (
               <div className="w-10 h-10 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
@@ -106,7 +106,7 @@ export default function PortalSidebar() {
             )}
             <div className="truncate">
               <span className="font-bold text-xs text-neutral-900 block truncate">
-                {isAccountant ? (currentUser?.name || "Gurtej Singh") : (currentUser?.name || activeClient.primaryContact)}
+                {isAccountant ? (currentUser?.name || "Kalpesh Patel FCA") : (currentUser?.name || activeClient.primaryContact)}
               </span>
               <span className="text-[11px] text-neutral-500 block truncate">
                 {isAccountant ? "KP Tax Consultants Ltd" : (currentUser?.firmName || activeClient.entityName)}
@@ -168,7 +168,7 @@ export default function PortalSidebar() {
                   type="button"
                   onClick={() => {
                     setCurrentView(item.id);
-                    setMobileDrawerOpen(false);
+                    setMobileSidebarOpen(false);
                   }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-all ${
                     isActive
@@ -205,7 +205,7 @@ export default function PortalSidebar() {
             type="button"
             onClick={() => {
               exitToLanding();
-              setMobileDrawerOpen(false);
+              setMobileSidebarOpen(false);
             }}
             className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition"
           >
@@ -217,7 +217,7 @@ export default function PortalSidebar() {
             type="button"
             onClick={() => {
               logout();
-              setMobileDrawerOpen(false);
+              setMobileSidebarOpen(false);
             }}
             className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50 transition border border-red-100"
           >
@@ -258,11 +258,11 @@ export default function PortalSidebar() {
       </aside>
 
       {/* 2. Mobile Floating Menu Trigger Button (Visible on screens < lg) */}
-      <div className="lg:hidden fixed bottom-4 left-4 z-40">
+      <div className="lg:hidden fixed bottom-5 left-4 z-40">
         <button
           type="button"
-          onClick={() => setMobileDrawerOpen(true)}
-          className="touch-target-44 btn-tactile px-4 py-2.5 rounded-full bg-primary text-white font-semibold text-xs shadow-xl flex items-center space-x-2 border border-neutral-700"
+          onClick={() => setMobileSidebarOpen(true)}
+          className="touch-target-44 btn-tactile px-4 py-2.5 rounded-full bg-primary text-white font-semibold text-xs shadow-xl flex items-center space-x-2 border border-neutral-700 active:scale-95 transition-all"
           aria-label="Open portal navigation"
         >
           <Menu className="w-4 h-4" />
@@ -271,29 +271,37 @@ export default function PortalSidebar() {
       </div>
 
       {/* 3. Mobile Slide-Over Drawer with Backdrop */}
-      {mobileDrawerOpen && (
+      {isMobileSidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           {/* Backdrop */}
           <div
-            onClick={() => setMobileDrawerOpen(false)}
+            onClick={() => setMobileSidebarOpen(false)}
             className="fixed inset-0 bg-neutral-900/60 backdrop-blur-xs animate-in fade-in duration-200"
           />
 
           {/* Drawer Panel */}
-          <div className="relative w-80 max-w-[85vw] bg-white h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-250">
-            <div className="p-3.5 border-b border-neutral-200 flex items-center justify-between">
-              <span className="font-bold text-sm text-neutral-900">
-                {isAccountant ? "Practice OS Navigation" : "Landlord Portal Navigation"}
-              </span>
+          <div className="relative w-84 max-w-[85vw] bg-white h-full shadow-2xl flex flex-col z-50 animate-in slide-in-from-left duration-250">
+            <div className="p-3.5 border-b border-neutral-200 flex items-center justify-between shrink-0 bg-white">
+              <div className="flex items-center space-x-2">
+                <img
+                  src="/logo.png"
+                  alt="KP Tax Consultants Official Emblem"
+                  className="h-7 w-auto object-contain shrink-0"
+                />
+                <span className="font-bold text-xs text-neutral-900 truncate">
+                  {isAccountant ? "Practice OS Menu" : "Landlord Portal Menu"}
+                </span>
+              </div>
               <button
                 type="button"
-                onClick={() => setMobileDrawerOpen(false)}
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 rounded-lg"
+                onClick={() => setMobileSidebarOpen(false)}
+                className="p-1.5 text-neutral-400 hover:text-neutral-700 rounded-lg touch-target-44 flex items-center justify-center"
+                aria-label="Close menu drawer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto overscroll-contain">
               {SidebarContent}
             </div>
           </div>

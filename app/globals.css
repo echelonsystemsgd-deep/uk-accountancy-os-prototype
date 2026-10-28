@@ -38,8 +38,9 @@ body {
 
 body.modal-open {
   overflow: hidden !important;
-  touch-action: none;
-  -webkit-overflow-scrolling: auto;
+  /* Allow vertical touch gestures inside drawer & modal scrolling containers */
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Institutional Card Shell with clean border and subtle elevation */

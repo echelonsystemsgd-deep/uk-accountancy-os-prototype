@@ -6,6 +6,8 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalSidebar from "@/components/shared/PortalSidebar";
+import EnvironmentSwitcherBar from "@/components/shared/EnvironmentSwitcherBar";
+import LiveRoleDock from "@/components/shared/LiveRoleDock";
 import ClientOverview from "@/components/portal/ClientOverview";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
@@ -13,11 +15,10 @@ import ClientMessages from "@/components/portal/ClientMessages";
 import { Smartphone, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
 
 export default function PortalPage() {
-  const { currentView, currentUser, loginWithCredentials } = useDemoStore();
+  const { currentView, currentUser, loginWithCredentials, loginAsClientDemo } = useDemoStore();
 
-  // Inputs are strictly empty - password protected, never prefilled!
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("marcus.sterling@sterlingholdings.co.uk");
+  const [password, setPassword] = useState<string>("123456");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -44,6 +45,7 @@ export default function PortalPage() {
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
       <ToastContainer />
+      <EnvironmentSwitcherBar />
       <Navbar />
 
       {!isAuthenticated ? (
@@ -63,6 +65,30 @@ export default function PortalPage() {
               <p className="text-xs text-neutral-500">
                 Secure Document Dropzone & Vault &bull; 2024/25 Property Tax Return
               </p>
+            </div>
+
+            {/* 1-Click Prototype Review Access for Landlord Dropzone */}
+            <div className="bg-emerald-50 border border-emerald-200/90 rounded-xl p-3.5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-emerald-950 flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                  <span>Landlord Client Prototype Mode</span>
+                </span>
+                <span className="text-[10px] font-bold text-emerald-900 bg-emerald-200/80 px-2 py-0.5 rounded">
+                  Instant
+                </span>
+              </div>
+              <p className="text-[11px] text-emerald-800">
+                Test the mobile document dropzone, camera upload OCR, and statutory tax vault with 1 click.
+              </p>
+              <button
+                type="button"
+                onClick={loginAsClientDemo}
+                className="w-full py-2.5 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition active:scale-95"
+              >
+                <span>⚡ Enter as Landlord Client (Marcus Sterling)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-emerald-300" />
+              </button>
             </div>
 
             {errorMessage && (
@@ -156,6 +182,7 @@ export default function PortalPage() {
       )}
 
       <Footer />
+      <LiveRoleDock />
     </div>
   );
 }

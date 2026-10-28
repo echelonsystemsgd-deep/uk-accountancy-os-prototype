@@ -17,17 +17,16 @@ import {
 } from "lucide-react";
 
 export default function PortalLoginModal() {
-  const { isLoginModalOpen, closeLoginModal, loginWithCredentials } = useDemoStore();
+  const { isLoginModalOpen, closeLoginModal, loginWithCredentials, loginAsPartnerDemo, loginAsClientDemo } = useDemoStore();
 
   const [activeTab, setActiveTab] = useState<"admin" | "client">("admin");
-  // Strictly blank inputs - never pre-filled!
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("kalpesh@kptc.co.uk");
+  const [password, setPassword] = useState<string>("admin123");
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  // Client tab fields - strictly blank
-  const [clientEmail, setClientEmail] = useState<string>("");
-  const [clientPassword, setClientPassword] = useState<string>("");
+  // Client tab fields
+  const [clientEmail, setClientEmail] = useState<string>("marcus.sterling@sterlingholdings.co.uk");
+  const [clientPassword, setClientPassword] = useState<string>("123456");
   const [showClientPassword, setShowClientPassword] = useState<boolean>(false);
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -150,6 +149,40 @@ export default function PortalLoginModal() {
             <Smartphone className="w-3.5 h-3.5 text-emerald-700" />
             <span>Landlord Client Portal</span>
           </button>
+        </div>
+
+        {/* Prototype Review Quick Access (For KPTC Accountants) */}
+        <div className="bg-amber-50/90 border border-amber-200/90 rounded-xl p-3.5 space-y-2.5">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-amber-950 flex items-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span>KP Accountants Prototype Evaluation Mode</span>
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 bg-amber-200/70 px-2 py-0.5 rounded">
+              1-Click Demo
+            </span>
+          </div>
+          <p className="text-[11px] text-amber-800/90 leading-relaxed">
+            Partners and staff can bypass manual password entry to immediately evaluate the 8 Practice OS modules and client vault.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+            <button
+              type="button"
+              onClick={loginAsPartnerDemo}
+              className="w-full py-2 px-3 rounded-lg bg-neutral-900 text-amber-300 hover:bg-neutral-800 font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition active:scale-95"
+            >
+              <Briefcase className="w-3.5 h-3.5 text-amber-400" />
+              <span>⚡ Enter as Partner (Kalpesh Patel FCA)</span>
+            </button>
+            <button
+              type="button"
+              onClick={loginAsClientDemo}
+              className="w-full py-2 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition active:scale-95"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-emerald-300" />
+              <span>⚡ Enter as Landlord Client</span>
+            </button>
+          </div>
         </div>
 
         {/* Error Alert */}

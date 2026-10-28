@@ -6,6 +6,8 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalSidebar from "@/components/shared/PortalSidebar";
+import EnvironmentSwitcherBar from "@/components/shared/EnvironmentSwitcherBar";
+import LiveRoleDock from "@/components/shared/LiveRoleDock";
 import PartnerRadar from "@/components/admin/PartnerRadar";
 import LandlordPipeline from "@/components/admin/LandlordPipeline";
 import PropertyWorkspace from "@/components/admin/PropertyWorkspace";
@@ -18,11 +20,10 @@ import CreateEntityModal from "@/components/admin/CreateEntityModal";
 import { Lock, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function AdminPage() {
-  const { currentView, currentUser, loginWithCredentials } = useDemoStore();
+  const { currentView, currentUser, loginWithCredentials, loginAsPartnerDemo } = useDemoStore();
 
-  // Inputs are strictly empty - password protected, never prefilled!
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("kalpesh@kptc.co.uk");
+  const [password, setPassword] = useState<string>("admin123");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -49,6 +50,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
       <ToastContainer />
+      <EnvironmentSwitcherBar />
       <Navbar />
 
       {!isAuthenticated ? (
@@ -66,8 +68,32 @@ export default function AdminPage() {
                 KP Accountants Practice OS
               </h1>
               <p className="text-xs text-neutral-500">
-                UK Practice Cockpit &bull; Secure Partner Authentication Gate
+                UK Practice Cockpit &bull; Kalpesh Patel FCA &bull; ICAEW Regulated
               </p>
+            </div>
+
+            {/* 1-Click Prototype Review Access for KPTC Accountants */}
+            <div className="bg-amber-50 border border-amber-200/90 rounded-xl p-3.5 space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-amber-950 flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>KPTC Partner Review Mode</span>
+                </span>
+                <span className="text-[10px] font-bold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded">
+                  Instant
+                </span>
+              </div>
+              <p className="text-[11px] text-amber-800">
+                Bypass manual passwords and enter Practice OS immediately as senior partner.
+              </p>
+              <button
+                type="button"
+                onClick={loginAsPartnerDemo}
+                className="w-full py-2.5 px-3 rounded-lg bg-neutral-900 text-amber-300 hover:bg-neutral-800 font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition active:scale-95"
+              >
+                <span>⚡ Enter as Partner (Kalpesh Patel FCA)</span>
+                <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+              </button>
             </div>
 
             {errorMessage && (
@@ -166,6 +192,7 @@ export default function AdminPage() {
 
       <Footer />
       <CreateEntityModal />
+      <LiveRoleDock />
     </div>
   );
 }

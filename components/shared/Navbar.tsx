@@ -47,6 +47,7 @@ export default function Navbar() {
     exitToLanding,
     currentUser,
     logout,
+    toggleMobileSidebar,
   } = useDemoStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -110,7 +111,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links (Single Line, Never Wraps) */}
-            <nav className="hidden xl:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
+            <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
               <button
                 type="button"
                 onClick={() => handleScrollTo("specialisms")}
@@ -182,19 +183,19 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile Hamburger Button */}
-            <div className="flex sm:hidden items-center space-x-2">
+            {/* Mobile / Tablet Hamburger Button */}
+            <div className="flex lg:hidden items-center space-x-2">
               <button
                 type="button"
                 onClick={openLoginModal}
-                className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
+                className="sm:hidden px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
               >
                 Login
               </button>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition"
+                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
                 aria-label="Toggle mobile menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6" />}
@@ -311,18 +312,26 @@ export default function Navbar() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
-            {/* Header Brand with Official Logo */}
-            <div className="flex items-center space-x-3">
+            {/* Header Brand with Official Logo & Mobile Drawer Toggle */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <button
+                type="button"
+                onClick={toggleMobileSidebar}
+                className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center -ml-1"
+                aria-label="Toggle Practice OS Menu"
+              >
+                <Menu className="w-5 h-5 text-neutral-800" />
+              </button>
               <img
                 src="/logo.png"
                 alt="KP Tax Consultants Official Emblem"
                 width={140}
                 height={40}
-                className="h-9 sm:h-10 w-auto object-contain shrink-0"
+                className="h-8 sm:h-10 w-auto object-contain shrink-0"
               />
               <div className="space-y-0.5">
                 <div className="flex items-center space-x-2">
-                  <span className="font-bold text-neutral-900 text-base sm:text-lg">KP Accountants</span>
+                  <span className="font-bold text-neutral-900 text-sm sm:text-lg">KP Accountants</span>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider border border-neutral-200">
                     Practice OS
                   </span>
@@ -332,18 +341,18 @@ export default function Navbar() {
             </div>
 
             {/* Authenticated Staff Actions */}
-            <div className="flex items-center space-x-2.5">
+            <div className="flex items-center space-x-2 sm:space-x-2.5">
               <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-neutral-100 text-xs border border-neutral-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-semibold text-neutral-800">{currentUser?.name || "Gurtej Singh"}</span>
+                <span className="font-semibold text-neutral-800">{currentUser?.name || "Kalpesh Patel FCA"}</span>
                 <span className="text-neutral-400">&bull;</span>
-                <span className="text-neutral-500 text-[11px] font-mono">{currentUser?.email || "mercianwealthgs@gmail.com"}</span>
+                <span className="text-neutral-500 text-[11px] font-mono">{currentUser?.email || "kalpesh@kptc.co.uk"}</span>
               </div>
 
               <button
                 type="button"
                 onClick={logout}
-                className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
+                className="btn-tactile px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition inline-flex items-center space-x-1 sm:space-x-1.5 whitespace-nowrap"
                 title="Sign out of practice session"
               >
                 <LogOut className="w-3.5 h-3.5 text-red-600" />
@@ -390,18 +399,26 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Header Brand with Official Logo */}
-          <div className="flex items-center space-x-3">
+          {/* Header Brand with Official Logo & Mobile Drawer Toggle */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <button
+              type="button"
+              onClick={toggleMobileSidebar}
+              className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center -ml-1"
+              aria-label="Toggle Landlord Portal Menu"
+            >
+              <Menu className="w-5 h-5 text-neutral-800" />
+            </button>
             <img
               src="/logo.png"
               alt="KP Tax Consultants Official Emblem"
               width={140}
               height={40}
-              className="h-9 sm:h-10 w-auto object-contain shrink-0"
+              className="h-8 sm:h-10 w-auto object-contain shrink-0"
             />
             <div className="space-y-0.5">
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-neutral-900 text-base sm:text-lg">KP Accountants</span>
+                <span className="font-bold text-neutral-900 text-sm sm:text-lg">KP Accountants</span>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider border border-emerald-200">
                   Client Portal
                 </span>

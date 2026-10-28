@@ -96,10 +96,10 @@ export default function PracticeInvoicingHub() {
       {/* Filter Tabs & Invoicing Table */}
       <div className="accountant-card p-6 bg-white space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-neutral-100 pb-3 gap-2">
-          <div className="flex space-x-2 text-xs font-medium">
+          <div className="flex flex-wrap sm:flex-nowrap gap-1.5 sm:space-x-2 text-xs font-medium overflow-x-auto">
             <button
               onClick={() => setFilter("all")}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 filter === "all" ? "bg-neutral-900 text-white font-bold" : "text-neutral-600 hover:bg-neutral-100"
               }`}
             >
@@ -107,7 +107,7 @@ export default function PracticeInvoicingHub() {
             </button>
             <button
               onClick={() => setFilter("awaiting_payment")}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 filter === "awaiting_payment"
                   ? "bg-amber-100 text-amber-900 font-bold border border-amber-300"
                   : "text-neutral-600 hover:bg-neutral-100"
@@ -117,7 +117,7 @@ export default function PracticeInvoicingHub() {
             </button>
             <button
               onClick={() => setFilter("paid")}
-              className={`px-3 py-1.5 rounded-md transition ${
+              className={`px-3 py-1.5 rounded-md transition whitespace-nowrap ${
                 filter === "paid"
                   ? "bg-emerald-100 text-emerald-900 font-bold border border-emerald-300"
                   : "text-neutral-600 hover:bg-neutral-100"

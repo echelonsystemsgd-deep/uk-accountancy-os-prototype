@@ -74,6 +74,12 @@ export default function LiveRoleDock() {
               >
                 &bull; Chaser Engine
               </button>
+              <button
+                onClick={() => { enterAccountantPortal("open_banking"); setExpanded(false); }}
+                className={`px-2 py-1.5 rounded text-left transition ${currentView === "open_banking" ? "bg-amber-500/20 text-amber-300 font-bold" : "hover:bg-slate-800 text-slate-300"}`}
+              >
+                &bull; Open Banking
+              </button>
             </div>
           </div>
 

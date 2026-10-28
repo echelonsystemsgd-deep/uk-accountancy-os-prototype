@@ -69,3 +69,16 @@ graph TB
 - [x] Create Director Dividend vs Salary Tax Modeling Tool.
 - [x] Ensure 0 TypeScript errors and full production compilation.
 - [x] Push all code to main branch.
+
+---
+
+## 5. Phase 2.1: Mobile Ergonomics & Frictionless Prototype Mode
+*Refer to detailed specification: [`mobile_responsiveness_and_prototype_mode_plan.md`](file:///c:/Users/Deepg/OneDrive/Desktop/The%20Real%20World/Campuses/AI%20Automation/New%20Lessons/CODING/uk-accountancy-os-prototype/implementation/mobile_responsiveness_and_prototype_mode_plan.md)*
+
+- [x] Mobile Navigation Overhaul: Add top Navbar hamburger in Practice OS & Client modes; repair touch-action scroll locking.
+- [x] Responsive Breakpoints: Eliminate the 640px–1279px tablet dead zone in public navigation.
+- [x] Fluid Drawer Sizing: Refactor `PortalSidebar` with fluid scroll and iOS safe-area padding.
+- [x] Restore Prototype Mode: Re-mount top `EnvironmentSwitcherBar` and floating `LiveRoleDock`.
+- [x] 1-Click Accountant Demo Entry: Add instant Partner (Kalpesh Patel FCA) and Client demo login buttons in `PortalLoginModal.tsx`, `/admin`, and `/portal`.
+- [x] Data Table Mobile Wrappers: Add horizontal scrolling and card stacking for Financial Statements, Invoices, and Pipeline tables.
+- [x] End-to-End Build & Validation: Zero TypeScript errors, test mobile viewports (375px/390px/768px).

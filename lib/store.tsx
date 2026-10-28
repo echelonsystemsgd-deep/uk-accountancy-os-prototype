@@ -73,7 +73,12 @@ interface DemoContextType {
   triggerToast: (title: string, message: string, type?: "success" | "warning" | "info") => void;
   currentUser: UserProfile | null;
   loginWithCredentials: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  loginAsPartnerDemo: () => void;
+  loginAsClientDemo: () => void;
   logout: () => void;
+  isMobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (open: boolean) => void;
+  toggleMobileSidebar: () => void;
 }
 
 const INITIAL_CLIENTS: LandlordClient[] = [
@@ -644,17 +649,26 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [isIntakeModalOpen, setIsIntakeModalOpen] = useState<boolean>(false);
   const [intakeDefaultValues, setIntakeDefaultValues] = useState<Partial<IntakeSubmission> | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
   const [isCreateEntityModalOpen, setIsCreateEntityModalOpen] = useState<boolean>(false);
   const [isCreatePropertyModalOpen, setIsCreatePropertyModalOpen] = useState<boolean>(false);
   const [isCreateInvoiceModalOpen, setIsCreateInvoiceModalOpen] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = sessionStorage.getItem("mercian_auth_user");
+        const saved = sessionStorage.getItem("kptc_auth_user") || sessionStorage.getItem("mercian_auth_user");
         if (saved) return JSON.parse(saved);
       } catch (e) {}
     }
-    return null; // Require login each time!
+    // Default partner demo profile in prototype mode
+    return {
+      email: "kalpesh@kptc.co.uk",
+      name: "Kalpesh Patel FCA",
+      role: "accountant",
+      firmName: "KP Tax Consultants Ltd",
+      isAuthenticated: true,
+      lastLogin: "Active Session",
+    };
   });
 
   // Derive active application mode
@@ -808,41 +822,85 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     return { success: false, error: "Invalid email or password. Please verify your credentials." };
   };
 
+  const loginAsPartnerDemo = () => {
+    const partnerProfile: UserProfile = {
+      email: "kalpesh@kptc.co.uk",
+      name: "Kalpesh Patel FCA",
+      role: "accountant",
+      firmName: "KP Tax Consultants Ltd",
+      isAuthenticated: true,
+      lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+    };
+    setCurrentUser(partnerProfile);
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("kptc_auth_user", JSON.stringify(partnerProfile));
+        localStorage.setItem("kptc_auth_user", JSON.stringify(partnerProfile));
+      } catch (e) {}
+    }
+    closeLoginModal();
+    setCurrentView("radar");
+    triggerToast(
+      "Partner Prototype Active",
+      "Welcome Kalpesh Patel FCA. Full Practice OS radar, P&L, CT600 & WIP unlocked.",
+      "success"
+    );
+  };
+
+  const loginAsClientDemo = () => {
+    const clientProfile: UserProfile = {
+      email: "marcus.sterling@sterlingholdings.co.uk",
+      name: "Marcus & Sarah Sterling",
+      role: "client",
+      firmName: "Sterling Property Holdings",
+      isAuthenticated: true,
+      lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+    };
+    setCurrentUser(clientProfile);
+    if (typeof window !== "undefined") {
+      try {
+        sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+        localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
+      } catch (e) {}
+    }
+    closeLoginModal();
+    setCurrentView("dropzone");
+    triggerToast(
+      "Landlord Prototype Active",
+      "Welcome Marcus Sterling. 2024/25 tax year dropzone ready.",
+      "info"
+    );
+  };
+
+  const toggleMobileSidebar = () => {
+    setMobileSidebarOpen((prev) => !prev);
+  };
+
   const logout = () => {
     setCurrentUser(null);
     if (typeof window !== "undefined") {
       try {
+        sessionStorage.removeItem("kptc_auth_user");
+        localStorage.removeItem("kptc_auth_user");
         sessionStorage.removeItem("mercian_auth_user");
         localStorage.removeItem("mercian_auth_user");
       } catch (e) {}
     }
     exitToLanding();
-    triggerToast("Signed Out", "You have securely logged out of Mercian Wealth Practice Cockpit. Login required to re-access.", "info");
+    triggerToast("Signed Out", "Prototype mode reset to public practice portal.", "info");
   };
 
   const enterAccountantPortal = (targetView: ScreenView = "radar") => {
     if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "accountant")) {
-      openLoginModal();
-      triggerToast(
-        "Practice Login Required",
-        "Please authenticate with mercianwealthgs@gmail.com to access the Practice Cockpit.",
-        "warning"
-      );
-      return;
+      loginAsPartnerDemo();
     }
     closeLoginModal();
     setCurrentView(targetView);
   };
 
   const enterClientPortal = (targetView: ScreenView = "dropzone") => {
-    if (!currentUser) {
-      openLoginModal();
-      triggerToast(
-        "Client Login Required",
-        "Please verify your client credentials to enter the private dropzone.",
-        "warning"
-      );
-      return;
+    if (!currentUser || currentUser.role !== "client") {
+      loginAsClientDemo();
     }
     closeLoginModal();
     setCurrentView(targetView);
@@ -1308,7 +1366,12 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         triggerToast,
         currentUser,
         loginWithCredentials,
+        loginAsPartnerDemo,
+        loginAsClientDemo,
         logout,
+        isMobileSidebarOpen,
+        setMobileSidebarOpen,
+        toggleMobileSidebar,
       }}
     >
       {children}

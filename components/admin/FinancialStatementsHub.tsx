@@ -132,10 +132,10 @@ export default function FinancialStatementsHub() {
       </div>
 
       {/* 4 Interactive Statement Tabs */}
-      <div className="border-b border-neutral-200 flex space-x-4 text-xs font-semibold">
+      <div className="border-b border-neutral-200 flex space-x-3 sm:space-x-4 text-xs font-semibold overflow-x-auto scrollbar-none pb-1">
         <button
           onClick={() => setActiveTab("pnl")}
-          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 transition ${
+          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 whitespace-nowrap shrink-0 transition ${
             activeTab === "pnl"
               ? "border-primary text-primary font-bold"
               : "border-transparent text-neutral-500 hover:text-neutral-900"
@@ -147,7 +147,7 @@ export default function FinancialStatementsHub() {
 
         <button
           onClick={() => setActiveTab("balance_sheet")}
-          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 transition ${
+          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 whitespace-nowrap shrink-0 transition ${
             activeTab === "balance_sheet"
               ? "border-primary text-primary font-bold"
               : "border-transparent text-neutral-500 hover:text-neutral-900"
@@ -159,7 +159,7 @@ export default function FinancialStatementsHub() {
 
         <button
           onClick={() => setActiveTab("ct600")}
-          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 transition ${
+          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 whitespace-nowrap shrink-0 transition ${
             activeTab === "ct600"
               ? "border-primary text-primary font-bold"
               : "border-transparent text-neutral-500 hover:text-neutral-900"
@@ -171,7 +171,7 @@ export default function FinancialStatementsHub() {
 
         <button
           onClick={() => setActiveTab("dividend")}
-          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 transition ${
+          className={`pb-2.5 border-b-2 flex items-center space-x-1.5 whitespace-nowrap shrink-0 transition ${
             activeTab === "dividend"
               ? "border-primary text-primary font-bold"
               : "border-transparent text-neutral-500 hover:text-neutral-900"
