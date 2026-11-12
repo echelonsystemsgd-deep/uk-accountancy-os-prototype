@@ -1,120 +1,87 @@
-# MERCIAN WEALTH TAX & LEDGER: PRACTICE OS & CONVERSION INFRASTRUCTURE MASTER PLAN
-
-**Target Entity:** SUKHPREET KAUR LEGACY WEALTH LTD (Co. Reg #14892011) & Mercian Wealth Chartered Practice  
-**Supervising Partner:** Kalpesh Patel BSc(Hons), FCA & Pritpal Chaggar BSc(Hons), ATT, CTA  
-**Status:** Full Production Architecture & Implementation Blueprint  
-**Design Standard:** Origin UI + Shadcn UI (Slate FinTech) & Bklit Graphic Telemetry  
+# Full Practice OS & Conversion Infrastructure Implementation Plan
+### Practice: Mercian Wealth & Advisory | Target Client: SUKHPREET KAUR LEGACY WEALTH LTD (Co. #14892011)
 
 ---
 
-## 1. Executive Strategy: Conversion Infrastructure Over "AI Slop"
+## 1. System Identity & Conversion Strategy
 
-In the modern AI-assisted search and discovery landscape:
-> *"AI search is compressing attention. Fewer casual clicks, more decision-ready visitors. When they land, your site must convert or you lose them... Trust requirements are rising. If your site looks outdated, slow, unclear, or generic, you get filtered out instantly... The demand is conversion infrastructure: built for speed of decision, trust, and action."*
+The purpose of this platform is to provide a complete, bank-grade UK Accountancy Operating System replacing fragile spreadsheets, generic "AI slop" templates, and expensive third-party subscriptions (Xero £35/mo, Dext £20/mo per client) with an integrated proprietary platform.
 
-### Why Generic AI Websites Fail in Accounting & FinTech
-- **Over-Decoration:** Tacky glowing gold borders, neon gradients, and slow decorative animations make financial software look like student mockups or crypto pump-and-dump landing pages.
-- **Low Information Density:** Huge, empty padding forces accountants and property directors to scroll endlessly to find basic trial balances or mortgage figures.
-- **Missing Software Controls:** Clunky "prototype switcher" bars instead of authentic software top bars with entity selectors, accounting periods, and reconciliation status pills.
-
-### The Mercian Solution: Authentic Xero-Grade Cloud Accounting
-Mercian Wealth Tax & Ledger is architected to deliver the density, precision, and visual credibility of **Xero, FreeAgent, and Ramp**:
-1. **Instant Proof (Speed of Decision):** Legal company number, property title deeds, live net rental yield (`6.8%`), and verified Section 24 corporate tax shield calculation within 3 seconds of viewing.
-2. **Instant Action (Speed of Execution):** Zero-friction receipt dropzone with heuristic OCR, 1-click bank statement reconciliation, and 1-click HMRC CT600 statutory year-end compilation.
-3. **End-of-Month Record Keeping:** Printable spending statement for landlords tired of paper books, ready for binder filing or PDF export.
+### Core Architecture Pillars:
+1. **Speed of Decision Hub (Public Landing):** Mobile-optimized, instant Section 24 mortgage relief tax impact scoper, zero layout shift, sub-second trust establishment.
+2. **Institutional Client Portal (`/portal`):** Modeled after actual Xero cloud software, featuring Rexora-grade metric cards, Bklit SVG cash flow trajectory graphs, landlord bill tracker with vector A4 PDF generation, and two-column bank feed reconciliation.
+3. **Practice Operations Engine (`/admin`):** Comprehensive practice radar, Bklit halo funnel pipeline, live 9-box MTD VAT calculation engine, automated WhatsApp/SMS client chasers, and Director's Loan Account (DLA) Section 455 monitors.
 
 ---
 
-## 2. Production Technology Stack & Integrations
+## 2. Authentication & Credential Architecture
 
-| Layer | Technology | Strategic Rationale |
-| :--- | :--- | :--- |
-| **Frontend Framework** | **Next.js 14+ (App Router)** | High-velocity server/client rendering, instant route transitions, zero CLS. |
-| **Language & Typings** | **TypeScript 5.6+** | Strict compile-time safety across double-entry ledgers, DLA balances, and VAT calculations. |
-| **Styling & Design Tokens** | **Tailwind CSS 3.4+** | High-density utility styling, custom tabular numbers, card inner shadows, and `@media print` rules. |
-| **UI Component System** | **Origin UI + Shadcn UI** | Accessible Radix primitives with Origin UI micro-interaction controls and compact data tables. |
-| **Data Graphics Engine** | **Bklit.com Custom SVG** | Composable Area Charts and Funnel Charts (pure lightweight SVG, zero external chart bloat). |
-| **Database & Auth** | **Supabase (PostgreSQL)** | Row-Level Security (RLS), multi-tenant SPV client isolation, real-time sync, and document storage. |
-| **Email Infrastructure** | **Resend** | Transactional delivery of automated WhatsApp/Email chaser logs, receipt confirmations, and CT600 packs. |
-| **Hosting & Infrastructure**| **Vercel / Dedicated VPS** | Edge-accelerated global distribution on Vercel; VPS containerization for self-hosted instances. |
-| **Automations & Pipelines**| **n8n** | Webhook orchestration connecting Open Banking feeds, Companies House scrape queues, and accounting sync. |
-| **Coding & Agent Workflow**| **Codex / Antigravity** | High-precision agentic workflow adhering strictly to UI/UX Pro Max guidelines and enterprise specs. |
+Security and access are unified through a clean `/login` route binding the exact requested administrative and client credentials:
 
----
+```
+┌────────────────────────────────────────────────────────────────────────────────┐
+│                           AUTHENTICATION CREDENTIALS                           │
+├───────────────┬──────────────────────────┬───────────────┬─────────────────────┤
+│ Role          │ Email                    │ Password      │ Direct Route        │
+├───────────────┼──────────────────────────┼───────────────┼─────────────────────┤
+│ Practice Admin│ mercianwealthgs@gmail.com│ Gurtej@2008#  │ /admin              │
+│ SPV Client    │ deepgurtej28@gmail.com   │ Gurtej@2008#  │ /portal             │
+└───────────────┴──────────────────────────┴───────────────┴─────────────────────┘
+```
 
-## 3. Design System Intelligence: UI-UX-Pro-Max & Community Guidelines
-
-Adhering to the design rules in `public/ui-ux-pro-max/references/pro-rules.md` and community feedback:
-
-### 1. Card Shadows & Inner Shadows (Rexora Standard)
-- **Outer Elevation:** `box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);`
-- **Subtle Inner Shadow / Highlight:** `inset 0 1px 0 0 rgba(255, 255, 255, 0.05);` (on dark card surfaces)
-- **Scoped Rule:** Applied strictly to `.accountant-card` and `.accountant-card-interactive`; never applied to arbitrary text or containers.
-
-### 2. Rexora-Style Metric Cards
-Every telemetry card on the dashboard features:
-- **Top-Left Title:** Small, clear, semi-bold metric label (`Total Gross Rent`, `Director DLA Buffer`, `Annual Tax Shield`, `Corp Tax Provision`).
-- **Top-Right Icon Pill:** Dedicated vector SVG icon in a subtle colored circle or pill (`Building2`, `Coins`, `ShieldCheck`, `Scale`).
-- **Centered / Lower Hero Value:** Large, bold numeric value using tabular monospace font (`tabular-nums font-mono text-2xl sm:text-3xl font-extrabold`).
-- **Trend Badge & Action Link:** Subtitle status pill (`+6.8% Yield`, `0% Tax Extraction`) alongside a right-aligned drilldown link (`Properties ↗`, `DLA Ledger ↗`).
-
-### 3. Removal of Eyebrow Text
-- Completely removed all unnecessary orange/amber eyebrow text badges at the top of headers and cards to eliminate visual clutter and ensure clean enterprise focus.
-
-### 4. Bklit-Inspired Graphic Telemetry (`https://bklit.com/`)
-- **Composable Area Chart (`BklitAreaChart.tsx`):** Smooth dual-curve area chart showing Gross Rental Revenue vs Allowable Costs over the financial year, with gradient fills and an interactive hover tooltip.
-- **Composable Funnel Chart (`BklitFunnelChart.tsx`):** Multi-stage conversion pipeline tracker illustrating outreach progress:
-  - Stage 1: Target Landlords (100% - 2,450 records)
-  - Stage 2: Outreach & Audited (55% - 1,350 records)
-  - Stage 3: KYC & Identity Verified (26% - 640 records)
-  - Stage 4: SPV Portfolios Active (12% - 295 records)
-  - Stage 5: CT600 Filed & Retained (5% - 125 records)
-
-### 5. Color Palette Tokens (Institutional FinTech Slate)
-- **Canvas Background:** `#0B0F19` (Deep slate navy)
-- **Panel / Surface:** `#111827` (Container surface)
-- **Card Surface:** `#162032` (High-contrast card elevation)
-- **Borders & Dividers:** `#1F293D` (Crisp 1px structural border)
-- **Primary Action (Xero Azure):** `#0077C8` (Hover: `#0284C7`)
-- **HMRC Verified (Emerald):** `#10B981` (Reconciled balances, allowable tax deductions)
-- **Finance Notice (Amber):** `#F59E0B` (Section 24 restrictions, pending filings)
-- **Typography:** `Plus Jakarta Sans` / `Inter` for UI; `JetBrains Mono` for all currency amounts and tabular figures.
+- **Environment Isolation:** Credentials and database connection strings are stored securely in `.env.local` and excluded from git tracking via `.gitignore`.
+- **Masked Password Field:** Toggleable visibility, zero plaintext exposure.
 
 ---
 
-## 4. End-of-Month Printable Bill Tracker (Notion Replacement)
+## 3. UI Token System & Anti-Slop Specifications
 
-Addressing the personal bill tracker requirement (*"got tired of my book one. Each end of the month also Ill print just to keep records of my spendings and all"*):
-1. **Interactive Monthly Ingest:** Record recurring mortgage interest, repairs, insurance, gas CP12 safety inspections, and letting fees.
-2. **DLA Personal Card Credit:** Checkbox to immediately credit expenses paid out of the director's personal pocket to their Director’s Loan Account (DLA).
-3. **Monthly Period Selector:** Filter outgoings by specific calendar month (`October 2024`, `November 2024`, etc.).
-4. **Dedicated A4 Printable View (`window.print()`):**
-   - Formatted for clean white-paper printing with `@media print` CSS.
-   - Legal company header: `SUKHPREET KAUR LEGACY WEALTH LTD (Co. #14892011)`.
-   - Summary telemetry: Total Mortgage Finance, Total Allowable Expenses, Total Outgoings.
-   - Comprehensive line-item ledger with date, vendor, description, HMRC category, and net amount.
-   - Statutory certification signature block for the physical binder.
+Built with **Origin UI & Shadcn UI** design primitives in the slate/azure spectrum:
 
----
-
-## 5. Mobile & Viewport Optimization Standards
-
-In compliance with UI-UX-Pro-Max Priority 2 & 5:
-- **Minimum Touch Targets:** Every interactive button and selector enforces `touch-target-44` (min 44×44px interactive bounds).
-- **Responsive Navigation:** Desktop displays full horizontal sub-tabs; mobile devices collapse smoothly into an accessible side drawer without horizontal scroll jitter.
-- **Adaptive Grid Layouts:** 4-column metric grids on desktop collapse into 2-column grids on tablets and 1-column cards on small mobile screens (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`).
-- **Safe Area Insets:** Margins and sticky headers respect mobile notch safe areas (`pb-16` on mobile screens to ensure fixed docks do not obscure data tables).
+- **Canvas Background:** `#0B0F19` (Deep Slate Void)
+- **Container Workspace:** `#111827` (Charcoal Slate)
+- **Data Card Surface:** `#162032` (High-contrast card with inner specular highlight)
+- **Structural Borders:** `#1F293D` (1px subtle hairline divider)
+- **Primary Accent:** `#0077C8` (Xero Azure Trust)
+- **Success / Inflow:** `#10B981` (Verified Emerald)
+- **Pending / Due:** `#F59E0B` (Audit Amber)
+- **Card Shadow (Strictly Scoped to Cards):**
+  ```css
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid #1F293D;
+  border-radius: 12px;
+  ```
+- **Zero Eyebrow Badges:** Elimination of all decorative orange badges or pseudo-luxury marketing fluff.
 
 ---
 
-## 6. Implementation Verification Checklist
+## 4. Landlord Bill Tracker: Vector A4 PDF Statement Generator
 
-- [x] Removed all prototype switcher bars (`EnvironmentSwitcherBar`) across the codebase.
-- [x] Swapped tacky gold/neon colors for institutional slate navy, Xero azure (`#0077C8`), and verified emerald (`#10B981`).
-- [x] Added card outer shadow + inner subtle border highlight (`.accountant-card`).
-- [x] Built Rexora-style metric cards with top-right icons in pills, bold monospace figures, and drilldown links.
-- [x] Built and integrated `BklitAreaChart.tsx` with smooth gradient fills and hover tooltip.
-- [x] Built and integrated `BklitFunnelChart.tsx` for client acquisition and statutory retention.
-- [x] Implemented printable monthly statement mode in `LandlordBillTrackerHub.tsx`.
-- [x] Configured clean default route landing into client portal for `SUKHPREET KAUR LEGACY WEALTH LTD`.
-- [x] Validated zero-error build with `npm run build`.
+To fully replace paper books and Notion habit trackers, the system includes a dedicated vector PDF engine powered by `jspdf` and `jspdf-autotable`:
+
+### PDF Export Specifications (`lib/pdfGenerator.ts`):
+- **Document Dimensions:** Standard A4 portrait (210mm × 297mm).
+- **Header:** Firm title (`Mercian Wealth & Advisory`), Landlord company details (`SUKHPREET KAUR LEGACY WEALTH LTD - Co. #14892011`), Director name, Tax Year (`2024/25`), and generation timestamp.
+- **KPI Summary Grid:**
+  - SPV Mortgage Interest (Section 24 Relief pool - 100% allowable).
+  - General Allowable Expenses (Repairs, Management, Insurance, Admin).
+  - Total Statement Expenditure.
+- **Itemized Ledger Table:** Date, Vendor/Payee, Description, HMRC Category, Property Ref, Amount (£), and Verification status.
+- **Statutory Sign-Off:** HMRC CT600 declaration block, Director signature line, and Supervising Practice verification stamp.
+
+---
+
+## 5. Security & Private Document Vault
+
+- Files uploaded via the **"Upload All Files"** button or document dropzone are handled through `app/api/upload/route.ts`.
+- Files stream directly to the private Supabase Storage Bucket `landlord-private-vault`.
+- Raw file URLs are never public. Access is granted only via short-lived HMAC-signed URLs (60-second expiry).
+- Any temporary staging directories are automatically shielded by `.gitignore`.
+
+---
+
+## 6. Verification & Quality Assurance
+
+- **Route Coverage:** 23 Next.js App Router routes compiled cleanly.
+- **Type Safety:** 100% TypeScript compile validity with zero any-leaks or broken props.
+- **Responsiveness:** Full layout testing across iPhone (375px), iPad (768px), and Desktop (1440px).

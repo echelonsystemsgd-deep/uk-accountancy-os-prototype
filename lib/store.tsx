@@ -637,8 +637,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setCurrentMode("accountant");
     setCurrentView(targetView);
     setCurrentUser({
-      email: "kalpesh@kptc.co.uk",
-      name: "Kalpesh Patel FCA",
+      email: "mercianwealthgs@gmail.com",
+      name: "Practice Administrator",
       role: "accountant",
       firmName: "Mercian Wealth & Advisory",
       isAuthenticated: true,
@@ -651,7 +651,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setCurrentMode("client");
     setCurrentView(targetView);
     setCurrentUser({
-      email: "sukhpreet@legacywealth.co.uk",
+      email: "deepgurtej28@gmail.com",
       name: "Sukhpreet Kaur",
       role: "client",
       firmName: "SUKHPREET KAUR LEGACY WEALTH LTD",
@@ -667,13 +667,14 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithCredentials = async (email: string) => {
-    if (email.toLowerCase().includes("sukhpreet") || email.toLowerCase().includes("client") || email.toLowerCase().includes("deepgurtej")) {
-      enterClientPortal("client_overview", "client-legacy-wealth");
-      triggerToast("Welcome Back, Sukhpreet", "Authenticated as Managing Director of SUKHPREET KAUR LEGACY WEALTH LTD.", "success");
+    const cleanEmail = email.trim().toLowerCase();
+    if (cleanEmail === "mercianwealthgs@gmail.com" || cleanEmail.includes("admin")) {
+      enterAccountantPortal("radar");
+      triggerToast("Practice Admin Console Active", "Authenticated as Practice Lead for Mercian Wealth & Advisory.", "success");
       return { success: true };
     } else {
-      enterAccountantPortal("radar");
-      triggerToast("Chartered Accountant Console Active", "Authenticated as Senior Practice Partner.", "success");
+      enterClientPortal("client_overview", "client-legacy-wealth");
+      triggerToast("Welcome Back, Client", "Authenticated to SUKHPREET KAUR LEGACY WEALTH LTD Portal.", "success");
       return { success: true };
     }
   };

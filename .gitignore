@@ -39,3 +39,7 @@ next-env.d.ts
 # legacy archives
 archive/
 
+# python cache
+__pycache__/
+*.pyc
+

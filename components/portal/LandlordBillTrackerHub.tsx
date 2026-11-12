@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { BillCategory, PropertyBillItem, NewBillInput } from "@/lib/types";
+import { generateLandlordMonthlyStatementPdf } from "@/lib/pdfGenerator";
 import {
   Receipt,
   Plus,
@@ -167,11 +168,23 @@ export default function LandlordBillTrackerHub() {
           <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
+              onClick={() => {
+                generateLandlordMonthlyStatementPdf(activeClient, filteredBills, selectedMonth);
+                triggerToast("PDF Generated", "Downloaded official A4 monthly statement for your records.", "success");
+              }}
+              className="touch-target-44 px-3.5 py-2 rounded-lg font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center space-x-2 transition shadow-sm active:scale-95"
+            >
+              <Download className="w-4 h-4 text-sky-400" />
+              <span>Download PDF Statement</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => setIsPrintModalOpen(true)}
               className="touch-target-44 px-3.5 py-2 rounded-lg font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center space-x-2 transition shadow-sm active:scale-95"
             >
-              <Printer className="w-4 h-4 text-sky-400" />
-              <span>Print Monthly Record</span>
+              <Printer className="w-4 h-4 text-slate-400" />
+              <span>Statement View</span>
             </button>
 
             <button
@@ -483,16 +496,27 @@ export default function LandlordBillTrackerHub() {
                 <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
                   End-of-Month Record Keeping
                 </span>
-                <h2 className="text-lg font-bold text-white">Printable Spending Statement</h2>
+                <h2 className="text-lg font-bold text-white">Monthly Spending Statement &amp; PDF Export</h2>
               </div>
               <div className="flex items-center space-x-2">
                 <button
                   type="button"
-                  onClick={() => window.print()}
-                  className="touch-target-44 px-4 py-2 rounded-lg text-xs font-bold bg-[#0077C8] hover:bg-[#0284C7] text-white flex items-center space-x-1.5 shadow-sm transition active:scale-95"
+                  onClick={() => {
+                    generateLandlordMonthlyStatementPdf(activeClient, filteredBills, selectedMonth);
+                    triggerToast("PDF Generated", "Downloaded official A4 monthly statement for your records.", "success");
+                  }}
+                  className="touch-target-44 px-3.5 py-2 rounded-lg text-xs font-bold bg-[#0077C8] hover:bg-[#0284C7] text-white flex items-center space-x-1.5 shadow-sm transition active:scale-95"
                 >
-                  <Printer className="w-4 h-4" />
-                  <span>Print Statement</span>
+                  <Download className="w-4 h-4" />
+                  <span>Download PDF Statement</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="touch-target-44 px-3 py-2 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center space-x-1.5 transition active:scale-95 border border-slate-700"
+                >
+                  <Printer className="w-4 h-4 text-slate-400" />
+                  <span>Print View</span>
                 </button>
                 <button
                   type="button"
