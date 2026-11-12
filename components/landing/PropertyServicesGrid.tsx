@@ -1,175 +1,117 @@
 "use client";
 
 import React from "react";
-import { useDemoStore } from "@/lib/store";
 import {
   TrendingUp,
   Building2,
-  CalendarCheck,
   FileCheck2,
-  ArrowRight,
   ShieldCheck,
   Coins,
   Scale,
-  Briefcase,
   CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 
 export default function PropertyServicesGrid() {
-  const { openIntakeModal } = useDemoStore();
-
   const services = [
     {
-      title: "Section 24 Mortgage Relief Planning",
-      icon: <TrendingUp className="w-5 h-5 text-emerald-700" />,
-      tag: "Income Tax Mitigation",
+      title: "Section 24 SPV Mortgage Relief",
+      icon: <TrendingUp className="w-5 h-5 text-sky-400" />,
+      tag: "Corporate Finance Shield",
       description:
-        "Higher-rate landlords lose significant profits when mortgage finance costs are restricted to a 20% tax credit. We model your exact threshold exposure and design restructuring strategies to protect rental yields.",
-      outcome: "Preserves allowable finance deductions & prevents unexpected higher-rate tax brackets.",
+        "Purchasing properties within an SPV Limited Company unlocks 100% mortgage interest deductibility at 19%–25% Corporation Tax, completely bypassing the individual Section 24 restriction.",
+      outcome: "Full interest deduction against profits + access to specialist commercial buy-to-let mortgage terms.",
     },
     {
-      title: "SPV Company Incorporations & Section 162",
-      icon: <Building2 className="w-5 h-5 text-slate-700" />,
-      tag: "Corporate Structuring",
+      title: "Director’s Loan Account (DLA) Architecture",
+      icon: <Coins className="w-5 h-5 text-indigo-400" />,
+      tag: "Tax-Free Capital Extraction",
       description:
-        "Purchasing through an SPV Limited Company allows 100% mortgage interest deductibility at 19%–25% Corporation Tax. For established portfolios, we advise on Section 162 incorporation relief to defer Capital Gains Tax.",
-      outcome: "Full interest deduction against profits + access to commercial mortgage terms.",
+        "Index your initial property deposits, SDLT, and conveyancing legal costs into a dedicated DLA ledger. Withdraw rental profits 100% tax-free as loan repayments before triggering dividend taxes.",
+      outcome: "0% Income Tax and 0% National Insurance on capital extraction with strict Section 455 safeguards.",
     },
     {
-      title: "Landlord Self Assessment & MTD for ITSA",
-      icon: <CalendarCheck className="w-5 h-5 text-emerald-700" />,
-      tag: "Statutory Compliance",
+      title: "1-Click CT600 & HMRC Year-End Tax Pack",
+      icon: <FileCheck2 className="w-5 h-5 text-sky-400" />,
+      tag: "Statutory Reporting",
       description:
-        "Starting April 2026, landlords earning gross property income over £50,000 must submit quarterly digital updates to HMRC. We set up your digital records now so your filings are automated rather than a January panic.",
-      outcome: "Zero HMRC late penalties + smooth quarterly compliance spread throughout the year.",
+        "Automated preparation of your Profit & Loss Statement, Balance Sheet, Section 24 Finance Cost Schedule, and Capital Asset basis, formatted for instant submission to your Chartered Accountant.",
+      outcome: "Zero receipt chasing: verified PDF executive summaries and pre-categorized CSV schedules.",
     },
     {
-      title: "60-Day CGT Property Disposal Filings",
-      icon: <FileCheck2 className="w-5 h-5 text-slate-700" />,
-      tag: "Capital Gains Relief",
+      title: "Capital vs Revenue Expenditure Indexing",
+      icon: <Scale className="w-5 h-5 text-emerald-400" />,
+      tag: "Capital Gains Tax (CGT) Basis",
       description:
-        "Selling a residential buy-to-let requires calculating Capital Gains Tax and filing a dedicated UK Property Return within 60 days of completion. We claim all allowable enhancement expenses and private residence relief.",
-      outcome: "Accurate computation of acquisition costs, legal fees, and full statutory clearance within 60 days.",
+        "Segregate day-to-day allowable repairs (boiler fixes, gas safety checks) from capital additions (SDLT, legal fees, extensions) to index your base cost and minimize future Corporation Tax on chargeable gains.",
+      outcome: "Accurate computation of base cost reducing tax liabilities upon eventual property disposal.",
     },
     {
-      title: "Corporation Tax & CT600 Marginal Relief",
-      icon: <Scale className="w-5 h-5 text-amber-600" />,
-      tag: "Corporate Compliance",
+      title: "Zero-Cost Autonomous Document OCR",
+      icon: <Sparkles className="w-5 h-5 text-sky-400" />,
+      tag: "Machine Extraction",
       description:
-        "Specialist CT600 filing incorporating 19% small profits rate, 25% main rate, and exact marginal relief calculations for property SPVs, developers, and holding company structures.",
-      outcome: "Full utilization of capital allowances, pre-trading expenses, and marginal relief bands.",
+        "Drag-and-drop contractor invoices, utility bills, and mortgage schedules. Serverless heuristic OCR extracts vendor, date, 20% VAT, and automatically maps to HMRC CT600 expenditure accounts.",
+      outcome: "Sub-second parsing eliminates manual bookkeeping overhead and missing expense receipts.",
     },
     {
-      title: "Inheritance Tax (IHT) & Succession Advisory",
-      icon: <ShieldCheck className="w-5 h-5 text-emerald-700" />,
-      tag: "Wealth Preservation",
+      title: "Making Tax Digital (MTD ITSA) Readiness",
+      icon: <Building2 className="w-5 h-5 text-emerald-400" />,
+      tag: "HMRC Compliance",
       description:
-        "Comprehensive estate structuring for multi-property portfolios, utilizing Business Property Relief (BPR), spousal exemptions, Family Investment Companies (FICs), and discretionary trusts.",
-      outcome: "Generational wealth protection minimizing 40% IHT exposure on UK property assets.",
+        "Architected specifically for HMRC's Making Tax Digital mandates. Segregates multiple SPV entities and personal landlord returns with continuous quarterly digital record-keeping.",
+      outcome: "Full compliance with April 2026 MTD requirements with automated submission-ready ledgers.",
     },
-    {
-      title: "Cryptocurrency & NFT Digital Asset Taxation",
-      icon: <Coins className="w-5 h-5 text-indigo-600" />,
-      tag: "Specialist Advisory",
-      description:
-        "Official partner expertise for landlords and investors diversifying into cryptoassets, DeFi staking, and digital property under HMRC capital gains pooling rules and Section 104.",
-      outcome: "Audit-ready transaction reconciliation with clear HMRC disclosure.",
-    },
-    {
-      title: "Company Secretarial & Year-End Statutory Accounts",
-      icon: <Briefcase className="w-5 h-5 text-neutral-800" />,
-      tag: "Companies House & ICAEW",
-      description:
-        "Full FRS 102 1A and FRS 105 micro-entity accounts preparation, confirmation statements CS01, registered office services in London (W1W & WC2A), and dividend board minutes.",
-      outcome: "Timely, compliant statutory filings ensuring good standing on the public register.",
-    },
-  ];
-
-  const focusSectors = [
-    "Property Investors & Developers",
-    "Contractors & Freelancers (IR35)",
-    "Construction Industry (CIS)",
-    "Healthcare & Dentists",
-    "Retail & E-commerce",
-    "Owner-Managed Businesses",
   ];
 
   return (
-    <section id="specialisms" className="py-12 sm:py-16 bg-white border-b border-neutral-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="max-w-2xl space-y-2">
-          <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
-            Practice Specialisms
+    <section id="specialisms" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
+        {/* Section Header */}
+        <div className="max-w-3xl space-y-2">
+          <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">
+            CORE INFRASTRUCTURE CAPABILITIES
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
-            How We Protect Your Property Returns
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Specialized UK Property &amp; Wealth Accountancy Engine
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-            Unlike general high-street practices that treat rental income as a secondary task, our team specializes in UK property statutes, corporate property SPVs, and HMRC land taxation.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Every feature is purpose-built to maximize allowable statutory claims, protect director wealth, and eliminate compliance bottlenecks.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((svc) => (
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {services.map((service, idx) => (
             <div
-              key={svc.title}
-              className="accountant-card p-5 sm:p-6 space-y-4 hover:border-neutral-300 transition shadow-sm flex flex-col justify-between"
+              key={idx}
+              className="accountant-card p-6 bg-[#162032] border border-[#1F293D] hover:border-slate-700 rounded-xl space-y-4 transition-all flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="w-9 h-9 rounded bg-neutral-100 flex items-center justify-center">
-                    {svc.icon}
+                  <div className="p-2.5 rounded-lg bg-[#111827] border border-[#1F293D]">
+                    {service.icon}
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-neutral-100 text-neutral-700">
-                    {svc.tag}
+                  <span className="text-[10px] font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-full border border-sky-500/20 uppercase tracking-wider">
+                    {service.tag}
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-neutral-900 tracking-tight">
-                  {svc.title}
+
+                <h3 className="text-base font-bold text-white leading-snug">
+                  {service.title}
                 </h3>
-                <p className="text-xs text-neutral-600 leading-relaxed">
-                  {svc.description}
+
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {service.description}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-neutral-100 space-y-3">
-                <div className="text-[11px] text-emerald-800 bg-emerald-50/70 p-2.5 rounded font-medium">
-                  <strong>Outcome:</strong> {svc.outcome}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => openIntakeModal({ notes: `Interested in: ${svc.title}` })}
-                  className="text-xs font-semibold text-primary hover:text-neutral-700 inline-flex items-center space-x-1 transition"
-                >
-                  <span>Request Specific Advisory</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+              <div className="pt-3 border-t border-[#1F293D] text-[11px] text-emerald-400 font-medium flex items-start space-x-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <span>{service.outcome}</span>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Official Focus Sectors from kptc.co.uk */}
-        <div className="pt-6 border-t border-neutral-100 space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <span className="text-xs font-bold text-neutral-500 uppercase tracking-wider">
-              Specialized Industry Sectors (KP Tax Consultants Ltd)
-            </span>
-            <span className="text-[11px] text-neutral-400">
-              Tailored UK compliance architectures for niche trade and asset profiles
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {focusSectors.map((sector) => (
-              <span
-                key={sector}
-                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-neutral-100 text-neutral-800 text-xs font-medium border border-neutral-200/80 hover:bg-neutral-200/60 transition"
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span>{sector}</span>
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </section>

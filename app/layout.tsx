@@ -11,29 +11,24 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kptc.co.uk"),
-  title: "KP Tax Consultants | UK Property Tax Specialists",
+  metadataBase: new URL("https://mercianwealth.com"),
+  title: "Mercian Wealth | UK Accountancy OS & Property SPV Tax Suite",
   description:
-    "Chartered Tax Advisers (CTA) & Accountants (FCA) advising UK property portfolio landlords on Section 24 relief, SPV structures & Making Tax Digital.",
+    "High-converting digital infrastructure and autonomous accounting OS for UK property portfolio landlords and chartered accountancy practices.",
   alternates: {
-    canonical: "https://kptc.co.uk",
+    canonical: "https://mercianwealth.com",
   },
   keywords: [
-    "KP Tax Consultants",
-    "KP Accountants",
-    "UK Property Accountant",
+    "Mercian Wealth",
+    "Mercian Tax & Ledger",
+    "UK Property Accountant OS",
     "Section 24 Mortgage Relief",
-    "Buy to Let Accounts",
     "SPV Limited Company Property",
-    "Chartered Tax Adviser CTA",
-    "Pritpal Chaggar CTA",
-    "Kalpesh Patel FCA",
-    "Landlord Self Assessment",
-    "Making Tax Digital ITSA 2026",
-    "7 Bell Yard London Accountants",
+    "Making Tax Digital ITSA",
+    "Autonomous Accountancy Infrastructure",
   ],
-  authors: [{ name: "KP Tax Consultants Ltd", url: "https://kptc.co.uk" }],
-  creator: "KP Accountants / KP Tax Consultants Ltd",
+  authors: [{ name: "Mercian Wealth", url: "https://mercianwealth.com" }],
+  creator: "Mercian Wealth",
   icons: {
     icon: [
       { url: "/icon.svg?v=kptc", type: "image/svg+xml" },

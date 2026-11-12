@@ -9,46 +9,61 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        obsidian: {
+          DEFAULT: "#0B0F19",
+          50: "#1E293D",
+          100: "#162032",
+          200: "#111827",
+          300: "#0F172A",
+          400: "#0D1322",
+          500: "#0B0F19",
+        },
+        cardSurface: "#162032",
+        gold: {
+          light: "#38BDF8",
+          DEFAULT: "#0077C8", // Remapped to Xero Institutional Azure
+          hover: "#0284C7",
+          dark: "#0369A1",
+        },
+        xero: {
+          light: "#38BDF8",
+          DEFAULT: "#0077C8",
+          hover: "#0284C7",
+          dark: "#00558F",
+        },
         primary: {
-          DEFAULT: "#0F172A", // Slate 900
+          DEFAULT: "#0077C8",
           foreground: "#FFFFFF",
-          hover: "#1E293B",
+          hover: "#0284C7",
         },
         secondary: {
-          DEFAULT: "#F1F5F9", // Slate 100
-          foreground: "#0F172A",
-          hover: "#E2E8F0",
+          DEFAULT: "#111827",
+          foreground: "#F8FAFC",
+          hover: "#162032",
         },
         accent: {
-          DEFAULT: "#047857", // Emerald 700 (tax compliance / verified)
-          light: "#ECFDF5",   // Emerald 50
+          DEFAULT: "#10B981", // Emerald 500
+          light: "#D1FAE5",
           foreground: "#FFFFFF",
         },
         surface: {
-          DEFAULT: "#FFFFFF",
-          muted: "#F8FAFC",   // Slate 50
-          card: "#FFFFFF",
-          border: "#E2E8F0",  // Slate 200
+          DEFAULT: "#111827",
+          muted: "#0F172A",
+          card: "#162032",
+          border: "#1F293D",
         },
         warning: {
-          DEFAULT: "#B45309", // Amber 700
-          light: "#FFFBEB",   // Amber 50
+          DEFAULT: "#DCAE53",
+          light: "#FEF3C7",
         },
         danger: {
-          DEFAULT: "#B91C1C", // Red 700
-          light: "#FEF2F2",   // Red 50
+          DEFAULT: "#EF4444",
+          light: "#FEE2E2",
         },
-        neutral: {
-          50: "#F8FAFC",
-          100: "#F1F5F9",
-          200: "#E2E8F0",
-          300: "#CBD5E1",
-          400: "#94A3B8",
-          500: "#64748B",
-          600: "#475569",
-          700: "#334155",
-          800: "#1E293B",
-          900: "#0F172A",
+        emerald: {
+          400: "#34D399",
+          500: "#10B981",
+          600: "#059669",
         },
       },
       fontFamily: {
@@ -70,9 +85,11 @@ module.exports = {
         ],
       },
       boxShadow: {
-        card: "0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.06)",
-        "card-hover": "0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06)",
-        modal: "0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1)",
+        gold: "0 0 20px -3px rgba(220, 174, 83, 0.25)",
+        "gold-glow": "0 0 35px -5px rgba(220, 174, 83, 0.35)",
+        card: "0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3)",
+        "card-hover": "0 8px 16px -2px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3)",
+        modal: "0 25px 50px -12px rgba(0, 0, 0, 0.7)",
       },
     },
   },

@@ -1,0 +1,168 @@
+Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them.
+[9/7/26, 10:12:28 PM] - Your business uses a secure service from Meta to manage this chat. Click to learn more.
+[9/8/26, 8:05:12 AM] You: Hi 👋
+[9/8/26, 8:07:17 AM] Wealth Wise Accountant: Hi
+[9/8/26, 8:07:37 AM] Wealth Wise Accountant: How can I help you bro ?
+[9/8/26, 8:16:49 AM] You: Appreciate you replying 🙏
+
+I came across Wealth Wise Accountant on TikTok, had a look for a website, couldn't find one. 
+
+That's the kind of thing that quietly costs a business enquiries without anyone noticing; people search, compare, and message whoever looks easiest to trust, and right now that's not you by default, even with the content clearly working.
+
+I build the site before I ever ask for money - I don't sell direction I haven't already shown. If it's not for you, no pressure at all, just glad I flagged it. If it is, we take it from there.
+[9/8/26, 9:05:29 AM] - [Call]
+[9/8/26, 9:15:32 AM] You: Hello, sorry about that.
+
+We were having disputes with our neighbours.
+
+Can I call you?
+[9/8/26, 9:15:49 AM] Wealth Wise Accountant: Yes
+[9/8/26, 9:17:11 AM] - [Call]
+[9/8/26, 9:25:12 AM] - [Call]
+[9/8/26, 9:25:25 AM] You: Sorry, miss clicked.
+[9/8/26, 9:39:58 AM] You: Hey, appreciate you taking the time on the call 🙏
+
+Here's what I do, in short — everything's built around three things: more leads captured, faster response times, and less manual work on your end.
+
+1. Chatbots & automated customer support — so enquiries get answered instantly, even outside working hours, instead of going cold.
+2. Automation — the repetitive admin (follow-ups, data entry, scheduling) handled without anyone having to do it manually.
+3. Email outreach — consistent, ongoing outreach that keeps new leads coming in without you having to chase it yourself.
+4. AI inbound calling — every call answered, every time, so nothing gets missed.
+5. AI outbound calling — automated follow-up calls to leads who've gone quiet, without needing a person to make them.
+
+All of it's built to save time, cut costs, or bring in more business — happy to go into more detail on whichever of these is actually relevant to what you and your partner are looking at.
+
+Here's my site if you want to have a look: mercianwealth.com
+[10/9/26, 5:20:58 PM] You: Hi, hope business is going well 🙏
+
+Good to see the website is live. I had a look on my phone and wanted to flag one thing before it costs you enquiries: on mobile the heading overlaps the text, the writing is squeezed into a narrow column, and there are blank white blocks where content should be.
+
+That matters because anyone who finds you on TikTok will be on their phone. If the first thing they see looks broken, most won't scroll or message, they'll just go to the next accountant, and you'd never know they were there.
+It's a quick fix. Want me to send a demo of how it could look on mobile? 
+Free to view and you only keep it if you like it.
+[10/9/26, 5:23:25 PM] Wealth Wise Accountant: Hi mate, thanks for letting me know and for taking the time to check it. My team is aware and they’re already working on it to get everything sorted. Appreciate you flagging it up 🙏
+[10/9/26, 5:23:53 PM] - [Call]
+[10/9/26, 8:39:12 PM] You: Hey bro, sorry for the late message!
+
+Just wanted to give you a quick heads-up — I’m putting the finishing touches on a free interactive prototype of the accounting platform we discussed.
+
+It'll give you a clear look at how an in-house system would handle your client portals, bank recs, and workload.
+
+I’ll send the link over tomorrow morning. If you like the direction, I’ll just need a few details about your current setup to see what we build out next. Have a good evening!
+[10/10/26, 8:38:11 AM] You: Good morning paji, I’ve put together an initial prototype of the accounting platform we discussed, to give you a visual idea of what it could look like and how the different areas might work.
+
+You can view it here:
+https://wealth-wise-platform-sigma.vercel.app/
+
+This is an early prototype to demonstrate the direction, rather than a finished product. The important part now is understanding exactly what you want the platform to do and how it needs to work around Wealth Wise Accountant.
+
+I’d suggest we approach this in three stages so that we can properly understand your requirements before committing to the full development.
+[10/10/26, 10:30:15 AM] You: Here's how I'd suggest we approach it paji, so we build the right thing before committing to a full build:
+
+1. Discovery and requirements: we go through how Wealth Wise works today, your workflows, the systems you use and what you want the platform to solve, for both your team and your clients. This is a defined stage with agreed deliverables, done through calls, screen sharing and messages.
+
+2. Specification and roadmap: I turn that into a written specification covering features, user roles, integrations, security and what gets built first versus later.
+
+3. Proposal: a tailored plan with phases, timeline and investment, based on your real requirements rather than assumptions.
+
+It also helps me to know roughly what budget you have in mind for the full platform, so I can shape the first version around it. Do you have a range you're working with?
+[10/11/26, 8:35:04 PM] Wealth Wise Accountant: Yes bro
+[10/11/26, 8:35:10 PM] Wealth Wise Accountant: Give me a call when you get a chance
+[10/11/26, 8:47:19 PM] You: Hi paji, thanks for getting back to me. 
+
+I'll give you a call tomorrow at 10:00am. 
+
+I'll mostly be asking questions about how Wealth Wise works day to day, so I understand what you actually need before I suggest anything. 
+
+Does that suit you, or would another time be better?
+[10/11/26, 9:00:57 PM] Wealth Wise Accountant: Th
+[10/12/26, 10:00:10 AM] - [Call]
+[10/12/26, 10:01:43 AM] Wealth Wise Accountant: <voice message omitted>
+[10/12/26, 10:02:00 AM] You: No worries bro.
+[10/12/26, 10:30:02 AM] You: Hey paji, no stress at all! I have client calls lined up starting shortly until 19:00 today. Would 19:00 today or tomorrow at 11:00 AM work better for you to reschedule?
+[10/12/26, 2:10:29 PM] You: Quick update paji, I'm free now if it suits you. If not, 19:00 today or 11:00 tomorrow both still work, whichever is easier.
+[10/12/26, 2:50:17 PM] Wealth Wise Accountant: Call me now
+[10/12/26, 2:50:20 PM] Wealth Wise Accountant: If u can
+[10/12/26, 2:50:32 PM] - [Call]
+[10/12/26, 3:11:42 PM] You: Thanks for your time earlier paji, really appreciate you walking me through how Wealth Wise operates day to day.
+
+I've taken full notes on everything you mentioned—from replacing the Hostinger site to the automated VAT quarters, client portal, and bank feeds.
+
+I'm putting together a clear, written proposal breaking down:
+
+What we can deliver immediately for your launch in early November.
+The realistic scope and options for the custom accounting software vs. the website.
+
+I'll send this over to you by the end off the day. Once you've reviewed the numbers and options with your partner, we can arrange the in-person session if we're aligned on the scope. Speak soon!
+[10/12/26, 3:54:10 PM] - [Call]
+[10/12/26, 7:39:02 PM] You: Hi paji,
+
+Thanks again for your time earlier today!
+
+I’ve spent the afternoon analysing how Wealth Wise operates, comparing what you currently spend on software (Xero + Hostinger + manual receipt chasing) against having your own proprietary system.
+
+To hit your launch date in early November with zero stress or delays, the smartest way is to deliver this in two clear phases:
+
+PHASE 1: Immediate Website Launch (Fast-Track for November)
+Our immediate focus so you have a world-class online presence ready for next month.
+Scope: Complete replacement of your current Hostinger site with the luxury black-and-gold website you previewed—fully mobile-optimized, high-converting client intake forms, and practice branding.
+Logistics (100% Remote): Handled completely over the phone and WhatsApp so you don't have to waste time hosting meetings at your office. I can grab the domain access and text from you over a quick 10-minute call.
+Timeline: Live within 7–10 days (guaranteed ready well ahead of your November deadline).
+Investment: £495 one-off (£250 deposit to start, remaining £245 on live launch).
+
+PHASE 2: The Custom "Wealth Wise Accounting Platform" (Optional Future Rollout)
+When you and your partner are ready to completely eliminate your monthly Xero and Dext bills.
+Right now, an accounting practice with 50–100 clients bleeds £30,000 to £50,000 every year to third-party software vendors (paying Xero ~£35/mo and Dext ~£20/mo per client). Having your own platform means you keep that cash inside your business, retaining over £90,000 in saved expenses across 3 years.
+
+What It Includes:
+Automated Live UK Bank Feeds: Direct connection to Barclays, NatWest, HSBC, Revolut, etc., with 2-column rule reconciliation (no CSV uploads).
+Automated VAT Engine: Live 9-box quarterly calculations so you instantly know what’s due each period.
+Weekly Client Dropzone: Clients upload receipts weekly, auto-matching to bank entries.
+General Ledger & Invoicing: Full custom nominal ledger and invoice issuance.
+
+Investment Options (When You Decide to Build):
+1. Option A (Outright Buyout): £7,000 one-time build fee (split into project milestones). 100% full code ownership and intellectual property transferred to Wealth Wise upon completion with zero permanent developer fees.
+2. Option B (Lease-to-Own): £1,000 deposit to begin development, followed by £500/month until the £7,000 total is reached, at which point full ownership signs over to you.
+
+How We Get Started Today:
+To guarantee we hit your early November deadline with zero disruption, let's lock in Phase 1 (Website for £495) today. I'll get the site ready to launch this week, and whenever you and your partner are ready to look at Phase 2, we have the complete blueprint ready to roll.
+
+If you’re happy with that, let me know and I’ll send over the invoice for the £250 deposit so we can kick off today! 🚀
+[10/12/26, 7:39:24 PM] - [Call]
+[10/12/26, 9:31:56 PM] You: Hi paji, hope you're well.
+
+Thanks again for your time today. I need to correct something before we go any further.
+
+My message earlier this evening gave a price and timings before I'd properly scoped the work, and I undervalued it. We hadn't decided on a price yet, so nothing is locked in either way, but I'd rather the number match the real scope. Bank feeds, a VAT engine, a ledger and full code ownership are a much bigger project than I priced, and some of the figures I used were rough estimates, not facts. Please disregard the price, the savings figures, the 7 to 10 day guarantee and the two options in that message. I'd rather tell you now than after you've planned around them.
+
+What I'd like to do is get the scope right first, then give you a fixed price for exactly what we agree. To do that, here are my questions in writing. Short answers are fine, and there's no rush tonight.
+
+Launch and website (these matter most for your early November date)
+1. Who controls your domain, hosting and email today, and can I get access?
+2. Who is currently working on your website, and will they hand it over?
+3. Do you have your logo, photos, wording and company details ready?
+
+The software
+4. What must be working at launch, and what can come later?
+5. Who will use it on day one: your team only, or your clients too? How many clients?
+6. Which VAT schemes do you work with, and who on your side will check the accounting logic?
+7. For bank feeds: which banks, and will your clients connect their own accounts?
+8. Do you want your Xero and Dext data moved across, or will you run both for a while?
+9. You mentioned charging your clients £10 a month. Who will support them if something goes wrong?
+10. Will real client data be used at launch?
+
+Commercials
+11. What budget have you set aside, and for which parts?
+12. When you say full code ownership, what do you need to be able to do with it (host it yourselves, change it, resell it)?
+13. Who else is involved in the decision, and what happens if the date has to move?
+
+I'm happy to meet in person once the scope is agreed and we're aligned on budget, so neither of us wastes time travelling before then.
+
+Since we hadn't decided on a price yet, could you answer all the questions and send them to me, so that I can give you the final price?
+[10/13/26, 11:12:36 AM] You: Hi paji, just a quick follow-up so my last message doesn’t give you the wrong impression.
+
+I want to make sure we fully understand the scope of the software, the November deadline and your requirements, so we can agree on something that works best for both of us.
+
+Could you please answer all the questions in my previous message? Once I have the full picture, we can hop on a call, go through everything and discuss the pricing properly.
+
+Separately, I’m happy to look into some marketing options for Wealth Wise, as discussed on our call, and send over a few names with no obligation.

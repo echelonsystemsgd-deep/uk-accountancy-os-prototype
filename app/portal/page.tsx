@@ -6,29 +6,47 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalSidebar from "@/components/shared/PortalSidebar";
-import EnvironmentSwitcherBar from "@/components/shared/EnvironmentSwitcherBar";
 import LiveRoleDock from "@/components/shared/LiveRoleDock";
+import MobileBottomDock from "@/components/shared/MobileBottomDock";
 import ClientOverview from "@/components/portal/ClientOverview";
+import PropertyPortfolioHub from "@/components/portal/PropertyPortfolioHub";
+import LandlordBillTrackerHub from "@/components/portal/LandlordBillTrackerHub";
+import DlaTrackerHub from "@/components/portal/DlaTrackerHub";
+import MileageLogHub from "@/components/portal/MileageLogHub";
+import TaxOptimizerHub from "@/components/portal/TaxOptimizerHub";
+import TaxPackGeneratorHub from "@/components/portal/TaxPackGeneratorHub";
 import MobileDropzone from "@/components/portal/MobileDropzone";
 import ClientDocumentVault from "@/components/portal/ClientDocumentVault";
 import ClientMessages from "@/components/portal/ClientMessages";
-import LandlordBillTrackerHub from "@/components/portal/LandlordBillTrackerHub";
 import { Smartphone, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff, Lock } from "lucide-react";
 
 export default function PortalPage() {
   const { currentView, setCurrentView, currentUser, loginWithCredentials, loginAsClientDemo, activeClient } = useDemoStore();
 
-  const [email, setEmail] = useState<string>("deepgurtej28@gmail.com");
-  const [password, setPassword] = useState<string>("Gurtej@2008#");
+  const [email, setEmail] = useState<string>("sukhpreet@legacywealth.co.uk");
+  const [password, setPassword] = useState<string>("Sukhpreet@2024#");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Auto-switch to client mode on direct route visit
   React.useEffect(() => {
-    if (!["client_overview", "dropzone", "vault", "client_messages", "client_bills"].includes(currentView)) {
+    const validClientViews = [
+      "client_overview",
+      "client_properties",
+      "client_bills",
+      "client_dla",
+      "client_mileage",
+      "client_tax_optimizer",
+      "client_tax_pack",
+      "dropzone",
+      "vault",
+      "client_messages",
+    ];
+
+    if (!validClientViews.includes(currentView)) {
       if (!currentUser || currentUser.role !== "client") {
-        loginAsClientDemo("client-singh-family");
+        loginAsClientDemo("client-legacy-wealth");
       } else {
         setCurrentView("client_overview");
       }
@@ -55,159 +73,134 @@ export default function PortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-obsidian-500 text-neutral-100 flex flex-col justify-between">
       <ToastContainer />
-      <EnvironmentSwitcherBar />
       <Navbar />
 
       {!isAuthenticated ? (
         <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-          <div className="accountant-card max-w-md w-full p-6 sm:p-8 bg-white space-y-6 shadow-xl rounded-2xl border border-neutral-200">
+          <div className="accountant-card max-w-md w-full p-6 sm:p-8 bg-cardSurface border border-gold/30 space-y-6 shadow-2xl rounded-2xl">
             <div className="text-center space-y-2">
-              <img
-                src="/logo.png"
-                alt="KP Tax Consultants Official Emblem"
-                width={140}
-                height={40}
-                className="h-11 w-auto object-contain mx-auto"
-              />
-              <h1 className="text-xl font-extrabold text-neutral-900 tracking-tight">
-                Landlord Tax Portal Access
+              <span className="text-xs font-bold text-gold uppercase tracking-wider block font-crest">
+                MERCIAN WEALTH TAX & LEDGER
+              </span>
+              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                SPV Client Portal Access
               </h1>
-              <p className="text-xs text-neutral-500">
-                Secure Document Dropzone & Vault &bull; 2024/25 Property Tax Return
+              <p className="text-xs text-neutral-400">
+                SUKHPREET KAUR LEGACY WEALTH LTD &bull; Section 24 Corporate Tax Vault
               </p>
             </div>
 
-            {/* 1-Click Prototype Review Access for Landlord Dropzone */}
-            <div className="bg-emerald-50 border border-emerald-200/90 rounded-xl p-3.5 space-y-2">
+            {/* 1-Click Instant Access */}
+            <div className="bg-gold/10 border border-gold/30 rounded-xl p-3.5 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-emerald-950 flex items-center space-x-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-                  <span>Landlord Client Prototype Mode</span>
+                <span className="font-bold text-gold flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                  <span>Director Instant Prototype Access</span>
                 </span>
-                <span className="text-[10px] font-bold text-emerald-900 bg-emerald-200/80 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold text-obsidian bg-gold px-2 py-0.5 rounded">
                   Instant
                 </span>
               </div>
-              <p className="text-[11px] text-emerald-800">
-                Test the mobile document dropzone, camera upload OCR, and statutory tax vault with 1 click.
+              <p className="text-[11px] text-neutral-300">
+                Test the SPV portfolio ledger, DLA tracker, OCR scanner, and 1-Click HMRC Tax Pack generator.
               </p>
-              <div className="grid grid-cols-1 gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => loginAsClientDemo("client-singh-family")}
-                  className="w-full py-2.5 px-3 rounded-lg bg-emerald-800 text-white hover:bg-emerald-700 font-bold text-xs flex items-center justify-between shadow-sm transition active:scale-95"
-                >
-                  <span>⚡ Mum & Dad (Singh Family BTL - £16.8k Rental)</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => loginAsClientDemo("client-sterling")}
-                  className="w-full py-2 px-3 rounded-lg bg-neutral-900 text-neutral-100 hover:bg-neutral-800 font-semibold text-xs flex items-center justify-between border border-neutral-700 transition active:scale-95"
-                >
-                  <span>⚡ Marcus & Sarah Sterling (Sterling Holdings)</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => loginAsClientDemo("client-legacy-wealth")}
+                className="w-full py-2.5 px-3 rounded-lg bg-gold hover:bg-gold-hover text-obsidian font-bold text-xs flex items-center justify-between shadow-gold transition active:scale-95"
+              >
+                <span>Enter as Sukhpreet Kaur (Director)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
 
-            {errorMessage && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-2 text-xs text-red-700 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleLogin} className="space-y-4">
+            {/* Login Form */}
+            <form onSubmit={handleLogin} className="space-y-4 text-xs">
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Landlord / Investor Email
+                <label className="block text-neutral-300 font-semibold mb-1">
+                  Director Work Email
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. landlord@example.co.uk"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 outline-none font-medium"
+                  placeholder="sukhpreet@legacywealth.co.uk"
+                  className="w-full px-3 py-2.5 rounded-lg bg-obsidian-400 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
                 />
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-neutral-700">
-                    Password / Access Key
-                  </label>
+                <label className="block text-neutral-300 font-semibold mb-1">
+                  Access Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full px-3 py-2.5 rounded-lg bg-obsidian-400 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold pr-10"
+                  />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] text-neutral-500 hover:text-neutral-700 flex items-center space-x-1"
+                    className="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-200"
                   >
-                    {showPassword ? (
-                      <>
-                        <EyeOff className="w-3 h-3" />
-                        <span>Hide</span>
-                      </>
-                    ) : (
-                      <>
-                        <Eye className="w-3 h-3" />
-                        <span>Show</span>
-                      </>
-                    )}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 outline-none font-mono"
-                />
               </div>
+
+              {errorMessage && (
+                <div className="p-3 rounded-lg bg-ruby/15 border border-ruby/30 text-ruby text-xs flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
+                className="w-full py-2.5 px-4 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs transition border border-neutral-700 flex items-center justify-center space-x-2"
               >
-                {isSubmitting ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Lock className="w-3.5 h-3.5 text-amber-300" />
-                    <span>Enter Landlord Dropzone</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </>
-                )}
+                <Lock className="w-3.5 h-3.5 text-gold" />
+                <span>{isSubmitting ? "Authenticating..." : "Sign In to Client Portal"}</span>
               </button>
             </form>
-
-            <div className="pt-2 border-t border-neutral-100 flex items-center justify-center space-x-1.5 text-[11px] text-neutral-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>TLS 1.3 Encrypted &bull; 256-Bit Vault Protection</span>
-            </div>
           </div>
         </div>
       ) : (
-        <div className="flex-1 w-full max-w-[1600px] mx-auto flex">
+        <div className="flex-1 flex max-w-7xl w-full mx-auto">
+          {/* Permanent Desktop Sidebar */}
           <PortalSidebar />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
+
+          {/* Main Content Area */}
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            {currentView === "client_overview" && <ClientOverview />}
+            {currentView === "client_properties" && <PropertyPortfolioHub />}
+            {currentView === "client_bills" && <LandlordBillTrackerHub />}
+            {currentView === "client_dla" && <DlaTrackerHub />}
+            {currentView === "client_mileage" && <MileageLogHub />}
+            {currentView === "client_tax_optimizer" && <TaxOptimizerHub />}
+            {currentView === "client_tax_pack" && <TaxPackGeneratorHub />}
             {currentView === "dropzone" && <MobileDropzone />}
             {currentView === "vault" && <ClientDocumentVault />}
             {currentView === "client_messages" && <ClientMessages />}
-            {currentView === "client_bills" && <LandlordBillTrackerHub />}
-            {(currentView === "client_overview" || !["dropzone", "vault", "client_messages", "client_bills"].includes(currentView)) && (
-              <ClientOverview />
-            )}
           </main>
         </div>
       )}
 
-      <Footer />
+      {/* Floating Role Dock */}
       <LiveRoleDock />
+
+      {/* Mobile Ergonomic Bottom Dock for Thumb-Zone Navigation */}
+      <MobileBottomDock />
+
+      <Footer />
     </div>
   );
 }

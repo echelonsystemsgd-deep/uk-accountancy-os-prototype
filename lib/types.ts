@@ -10,11 +10,19 @@ export type ScreenView =
   | 'invoicing'
   | 'wealth_advisory'
   | 'open_banking'
+  | 'admin_ledger'
+  | 'admin_audit_trail'
   | 'client_overview'
+  | 'client_properties'
+  | 'client_bills'
+  | 'client_ocr_scanner'
+  | 'client_dla'
+  | 'client_mileage'
+  | 'client_tax_optimizer'
+  | 'client_tax_pack'
   | 'dropzone'
   | 'vault'
-  | 'client_messages'
-  | 'client_bills';
+  | 'client_messages';
 
 export interface BankTransaction {
   id: string;
@@ -71,6 +79,60 @@ export interface PropertyItem {
   annualRentalIncome: number;
   mortgageLender?: string;
   outstandingMortgage?: number;
+  purchaseDate?: string;
+  purchasePrice?: number;
+  currentValuation?: number;
+  stampDutyPaid?: number;
+  legalFees?: number;
+  depositPaid?: number;
+  monthlyMortgagePayment?: number;
+  monthlyMortgageInterest?: number;
+  tenantName?: string;
+  monthlyRent?: number;
+  tenancyStart?: string;
+  tenancyEnd?: string;
+  isSpvHeld?: boolean;
+  netYield?: number;
+}
+
+export interface DlaEntry {
+  id: string;
+  date: string;
+  description: string;
+  credit: number; // Director injected (deposit, SDLT, legal, personal card, mileage)
+  debit: number;  // Director took out (tax-free loan repayment)
+  referencePropertyId?: string;
+  category: 'deposit_equity' | 'sdlt_legal' | 'personal_card_expense' | 'mileage_reimbursement' | 'cash_withdrawal';
+  receiptUrl?: string;
+}
+
+export interface MileageLog {
+  id: string;
+  date: string;
+  origin: string;
+  destination: string;
+  purpose: string;
+  miles: number;
+  ratePerMile: number; // 0.45 or 0.25
+  totalClaim: number;
+  propertyAddress: string;
+  isCreditedToDla: boolean;
+}
+
+export interface TaxPackage {
+  id: string;
+  taxYear: string;
+  periodStart: string;
+  periodEnd: string;
+  totalRentalTurnover: number;
+  totalAllowableExpenses: number;
+  totalMortgageInterest: number;
+  operatingProfit: number;
+  estimatedCorporationTax: number;
+  netRetainedProfit: number;
+  dlaClosingBalance: number;
+  status: 'ready_for_accountant' | 'filed_hmrc' | 'under_review';
+  createdAt: string;
 }
 
 export interface ClientParty {
@@ -104,6 +166,10 @@ export interface LandlordClient {
   lastChasedAt?: string;
   chaseCount: number;
   totalRentalIncome: number;
+  dlaBalance?: number;
+  dlaEntries?: DlaEntry[];
+  mileageLogs?: MileageLog[];
+  taxPackages?: TaxPackage[];
 }
 
 export type BillCategory =

@@ -10,112 +10,89 @@ import {
   Smartphone,
   ArrowRight,
   ShieldCheck,
+  Building2,
 } from "lucide-react";
 
 export default function MtdGuidanceSection() {
-  const { openIntakeModal } = useDemoStore();
+  const { openIntakeModal, enterClientPortal } = useDemoStore();
 
   return (
-    <section id="mtd-guidance" className="py-12 sm:py-16 bg-neutral-50 border-b border-neutral-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section id="mtd-guidance" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left">
         <div className="max-w-3xl space-y-2">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-800 bg-neutral-200/80 px-2.5 py-1 rounded w-fit">
-            <Calendar className="w-3.5 h-3.5 text-neutral-700" />
-            <span>HMRC Statutory Mandate</span>
+          <div className="flex items-center space-x-2 text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 w-fit">
+            <Calendar className="w-3.5 h-3.5 text-sky-400" />
+            <span>HMRC Statutory Mandate &amp; SPV Transition</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
-            Making Tax Digital (MTD) for Landlords: Are You Ready for April 2026?
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Making Tax Digital &amp; Corporate Restructuring
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-            The traditional once-a-year tax panic is ending. HMRC's Making Tax Digital for Income Tax Self Assessment (MTD for ITSA) requires landlords to submit quarterly digital updates.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            HMRC requires quarterly digital reporting for personal landlords. Meanwhile, incorporating an SPV shields you from Section 24 restrictions and consolidates your filings into one predictable annual CT600 Corporation Tax return.
           </p>
         </div>
 
         {/* Timeline Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Phase 1: April 2026 */}
-          <div className="accountant-card p-5 sm:p-6 space-y-4 border-l-4 border-l-primary">
+          <div className="accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded text-xs font-bold bg-neutral-100 text-neutral-900">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">
                 Phase 1: April 2026
               </span>
-              <span className="text-xs font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded">
-                Mandatory Threshold
+              <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                MTD Mandatory
               </span>
             </div>
             <div>
-              <h3 className="text-base font-bold text-neutral-900">
-                Gross Property Income Over £50,000
+              <h3 className="text-base font-bold text-white">
+                Gross Rental Turnover Over £50,000
               </h3>
-              <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Applies to gross rental turnover (before mortgage interest and property expenses). Landlords must record property transactions digitally and submit four quarterly updates directly to HMRC.
+              <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Applies to gross personal rent before mortgage interest. Requires digital record-keeping and 4 quarterly filings plus year-end declaration to HMRC.
               </p>
             </div>
-            <ul className="text-xs text-neutral-700 space-y-1.5 pt-2 border-t border-neutral-100">
-              <li className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Quarter 1 Update: Due 5 August</span>
+            <ul className="text-xs text-neutral-300 space-y-2 pt-2 border-t border-neutral-800">
+              <li className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Quarterly digital submissions via HMRC API</span>
               </li>
-              <li className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Quarter 2 Update: Due 5 November</span>
-              </li>
-              <li className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Quarter 3 Update: Due 5 February</span>
-              </li>
-              <li className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Quarter 4 Update + Final Declaration: Due 5 May</span>
+              <li className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Digital receipt retention and bank feed matching</span>
               </li>
             </ul>
           </div>
 
-          {/* Phase 2: April 2027 */}
-          <div className="accountant-card p-5 sm:p-6 space-y-4 border-l-4 border-l-slate-400">
+          {/* Phase 2: SPV Corporate Alternative */}
+          <div className="accountant-card p-6 bg-cardSurface border-2 border-gold/40 rounded-2xl space-y-4 shadow-gold">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded text-xs font-bold bg-neutral-100 text-neutral-900">
-                Phase 2: April 2027
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gold text-obsidian">
+                The SPV Alternative
               </span>
-              <span className="text-xs font-semibold text-neutral-600 bg-neutral-100 px-2 py-0.5 rounded">
-                Secondary Threshold
+              <span className="text-xs font-bold text-gold">
+                Corporate Tax Regime
               </span>
             </div>
             <div>
-              <h3 className="text-base font-bold text-neutral-900">
-                Gross Property Income Over £30,000
+              <h3 className="text-base font-bold text-white">
+                SPV Limited Company (Corporation Tax)
               </h3>
-              <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Expands the mandatory quarterly digital filing rules to individuals with total gross property or self-employment turnover exceeding £30,000.
+              <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                Properties held within an SPV (like SUKHPREET KAUR LEGACY WEALTH LTD) are governed by Corporation Tax. Full mortgage interest is deductible and accounts are filed annually at Companies House & HMRC.
               </p>
             </div>
-            <div className="p-3.5 rounded bg-emerald-50 text-xs text-emerald-900 space-y-1 border border-emerald-100">
-              <span className="font-semibold block">How We Solve It:</span>
-              <p className="text-[11px] leading-relaxed">
-                You do not need to become an expert in accounting software. We provide you with our mobile dropzone to snap certificates and receipts. We validate the records and submit quarterly filings directly to HMRC on your behalf.
-              </p>
-            </div>
+            <ul className="text-xs text-neutral-300 space-y-2 pt-2 border-t border-neutral-800">
+              <li className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-gold shrink-0" />
+                <span>100% Mortgage interest allowable against rent</span>
+              </li>
+              <li className="flex items-center space-x-2">
+                <CheckCircle2 className="w-4 h-4 text-gold shrink-0" />
+                <span>Tax-free capital extraction via Director’s Loan Account</span>
+              </li>
+            </ul>
           </div>
-        </div>
-
-        {/* Bottom Banner */}
-        <div className="accountant-card p-5 bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="space-y-1">
-            <h4 className="text-sm font-bold text-neutral-900">
-              Unsure if your gross rental income crosses the £50,000 threshold?
-            </h4>
-            <p className="text-xs text-neutral-600">
-              We offer a complimentary 15-minute MTD readiness check for portfolio landlords.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => openIntakeModal({ notes: "Requesting MTD for ITSA readiness assessment" })}
-            className="touch-target-44 px-4 py-2.5 rounded text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition shrink-0 inline-flex items-center space-x-1.5"
-          >
-            <span>Request MTD Assessment</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
       </div>
     </section>

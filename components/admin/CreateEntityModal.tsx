@@ -97,33 +97,33 @@ export default function CreateEntityModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="accountant-card max-w-xl w-full p-6 bg-white space-y-5 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
+      <div className="accountant-card max-w-xl w-full p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-5 shadow-2xl relative text-left">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+        <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
           <div>
-            <h2 className="text-base font-bold text-neutral-900 leading-tight">
+            <h2 className="text-base font-bold text-white leading-tight">
               Practice Creation Wizard
             </h2>
-            <p className="text-xs text-neutral-500">
+            <p className="text-xs text-slate-400">
               Add new landlord clients, register portfolio assets, or issue VAT fee notes.
             </p>
           </div>
           <button
             type="button"
             onClick={closeCreateEntityModal}
-            className="p-1.5 text-neutral-400 hover:text-neutral-700 rounded-md transition"
+            className="p-1.5 text-slate-400 hover:text-white rounded-md transition"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* 3 Sub-tabs */}
-        <div className="flex space-x-2 border-b border-neutral-200 pb-2 text-xs font-semibold">
+        <div className="flex space-x-2 border-b border-[#1F293D] pb-2 text-xs font-semibold">
           <button
             onClick={() => setActiveTab("client")}
             className={`px-3 py-1.5 rounded-md flex items-center space-x-1.5 transition ${
-              activeTab === "client" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
+              activeTab === "client" ? "bg-[#0077C8] text-white" : "text-slate-400 hover:bg-slate-800"
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export default function CreateEntityModal() {
           <button
             onClick={() => setActiveTab("property")}
             className={`px-3 py-1.5 rounded-md flex items-center space-x-1.5 transition ${
-              activeTab === "property" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
+              activeTab === "property" ? "bg-[#0077C8] text-white" : "text-slate-400 hover:bg-slate-800"
             }`}
           >
             <Home className="w-3.5 h-3.5" />
@@ -141,7 +141,7 @@ export default function CreateEntityModal() {
           <button
             onClick={() => setActiveTab("invoice")}
             className={`px-3 py-1.5 rounded-md flex items-center space-x-1.5 transition ${
-              activeTab === "invoice" ? "bg-neutral-900 text-white" : "text-neutral-600 hover:bg-neutral-100"
+              activeTab === "invoice" ? "bg-[#0077C8] text-white" : "text-slate-400 hover:bg-slate-800"
             }`}
           >
             <FileText className="w-3.5 h-3.5" />

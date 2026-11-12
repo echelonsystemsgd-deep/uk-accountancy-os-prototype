@@ -5,47 +5,45 @@ import { useDemoStore } from "@/lib/store";
 import {
   Calculator,
   ArrowRight,
-  HelpCircle,
   TrendingDown,
   Building2,
   CheckCircle2,
   PoundSterling,
+  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 export default function PropertyTaxCalculator() {
-  const { openIntakeModal } = useDemoStore();
+  const { openIntakeModal, enterClientPortal } = useDemoStore();
 
-  const [propertiesCount, setPropertiesCount] = useState<number>(3);
-  const [grossRent, setGrossRent] = useState<number>(54000);
-  const [mortgageInterest, setMortgageInterest] = useState<number>(18000);
-  const [otherExpenses, setOtherExpenses] = useState<number>(6000);
-  const [isHigherRate, setIsHigherRate] = useState<boolean>(true); // 40% higher rate taxpayer
+  const [propertiesCount, setPropertiesCount] = useState<number>(2);
+  const [grossRent, setGrossRent] = useState<number>(39000);
+  const [mortgageInterest, setMortgageInterest] = useState<number>(20280);
+  const [otherExpenses, setOtherExpenses] = useState<number>(6420);
+  const [isHigherRate, setIsHigherRate] = useState<boolean>(true);
 
-  // Net Cash Profit before tax
+  // Computations
   const actualProfit = grossRent - mortgageInterest - otherExpenses;
 
-  // Personal Ownership under Section 24 (Finance (No. 2) Act 2015):
-  // Taxable rental profit ignores finance costs:
-  const taxableProfitUnderS24 = grossRent - otherExpenses;
+  // Personal Ownership under Section 24:
+  const taxableProfitUnderS24 = Math.max(0, grossRent - otherExpenses);
   const taxRate = isHigherRate ? 0.40 : 0.20;
   const grossTaxDue = taxableProfitUnderS24 * taxRate;
-  // 20% basic rate tax reduction on finance costs:
   const s24TaxCredit = mortgageInterest * 0.20;
   const netPersonalTax = Math.max(0, grossTaxDue - s24TaxCredit);
 
   // SPV Limited Company Ownership:
-  // 100% of mortgage interest is deductible before corporation tax:
   const spvTaxableProfit = Math.max(0, actualProfit);
-  // Corporation tax: 19% on first £50k, 25% main rate
-  const spvTax = spvTaxableProfit <= 50000 
-    ? spvTaxableProfit * 0.19 
-    : (50000 * 0.19) + ((spvTaxableProfit - 50000) * 0.25);
+  let spvTax = 0;
+  if (spvTaxableProfit <= 50000) {
+    spvTax = spvTaxableProfit * 0.19;
+  } else if (spvTaxableProfit > 250000) {
+    spvTax = spvTaxableProfit * 0.25;
+  } else {
+    spvTax = (spvTaxableProfit * 0.25) - ((250000 - spvTaxableProfit) * (3 / 200));
+  }
 
-  // Tax Difference
   const estimatedTaxSaving = Math.max(0, netPersonalTax - spvTax);
-
-  // Recommended Practice Fixed Fee (Tiered by unit count & complexity)
-  const monthlyRetainer = Math.round(150 + propertiesCount * 45);
 
   const handleEnquireWithPortfolio = () => {
     openIntakeModal({
@@ -57,208 +55,139 @@ export default function PropertyTaxCalculator() {
   };
 
   return (
-    <section id="tax-calculator" className="py-12 sm:py-16 bg-neutral-50 border-b border-neutral-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section id="tax-calculator" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left">
         {/* Section Header */}
-        <div className="max-w-2xl space-y-2">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded w-fit">
-            <Calculator className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Interactive Section 24 & SPV Estimator</span>
+        <div className="max-w-3xl space-y-2">
+          <div className="flex items-center space-x-2 text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 w-fit">
+            <Calculator className="w-3.5 h-3.5 text-sky-400" />
+            <span>Interactive Section 24 &amp; SPV Estimator</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
             How Section 24 Restricts Your Buy-to-Let Mortgage Relief
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-            Adjust the sliders below to estimate your current tax exposure under personal ownership versus an SPV Limited Company, and view transparent monthly practice pricing.
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+            Personal landlords can no longer deduct mortgage interest from rental turnover. An SPV Limited Company allows 100% finance deductions and enables tax-free capital extraction via Director’s Loan repayments.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Controls Column (7 cols) */}
-          <div className="lg:col-span-7 accountant-card p-5 sm:p-6 space-y-6">
-            {/* Slider 1: Number of Properties */}
+          <div className="lg:col-span-7 accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-6">
+            {/* Slider 1: Properties Count */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <label htmlFor="calc-properties-count" className="font-semibold text-neutral-900 cursor-pointer">
-                  Number of Buy-to-Let Properties:
-                </label>
-                <span className="font-bold text-primary text-sm num-tabular">
-                  {propertiesCount} {propertiesCount === 1 ? "Property" : "Properties"}
-                </span>
+              <div className="flex justify-between text-xs">
+                <span className="font-semibold text-slate-300">Portfolio Properties</span>
+                <span className="font-bold text-white num-tabular text-sm">{propertiesCount} Units</span>
               </div>
               <input
-                id="calc-properties-count"
-                aria-label="Number of Buy-to-Let Properties"
                 type="range"
                 min={1}
-                max={15}
+                max={25}
                 value={propertiesCount}
                 onChange={(e) => setPropertiesCount(Number(e.target.value))}
-                className="w-full accent-primary h-2 bg-neutral-200 rounded cursor-pointer"
+                className="w-full accent-[#0077C8] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-neutral-400">
-                <span>1 Unit</span>
-                <span>5 Units</span>
-                <span>10 Units</span>
-                <span>15+ Units</span>
-              </div>
             </div>
 
-            {/* Slider 2: Gross Annual Rental Income */}
+            {/* Slider 2: Gross Rent */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <label htmlFor="calc-gross-rent" className="font-semibold text-neutral-900 cursor-pointer">
-                  Total Gross Annual Rental Income:
-                </label>
-                <span className="font-bold text-primary text-sm num-tabular">
-                  £{grossRent.toLocaleString()}/year
-                </span>
+              <div className="flex justify-between text-xs">
+                <span className="font-semibold text-slate-300">Annual Gross Rental Income</span>
+                <span className="font-bold text-white num-tabular text-sm">£{grossRent.toLocaleString()}</span>
               </div>
               <input
-                id="calc-gross-rent"
-                aria-label="Total Gross Annual Rental Income"
                 type="range"
-                min={15000}
-                max={250000}
-                step={5000}
+                min={12000}
+                max={150000}
+                step={1000}
                 value={grossRent}
                 onChange={(e) => setGrossRent(Number(e.target.value))}
-                className="w-full accent-primary h-2 bg-neutral-200 rounded cursor-pointer"
+                className="w-full accent-[#0077C8] cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-neutral-400">
-                <span>£15k</span>
-                <span>£100k</span>
-                <span>£175k</span>
-                <span>£250k+</span>
-              </div>
             </div>
 
-            {/* Slider 3: Annual Mortgage Interest */}
+            {/* Slider 3: Mortgage Interest */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <label htmlFor="calc-mortgage-interest" className="font-semibold text-neutral-900 cursor-pointer">
-                  Total Annual Mortgage Interest Paid:
-                </label>
-                <span className="font-bold text-primary text-sm num-tabular">
-                  £{mortgageInterest.toLocaleString()}/year
-                </span>
+              <div className="flex justify-between text-xs">
+                <span className="font-semibold text-slate-300">Annual Mortgage Interest Payments</span>
+                <span className="font-bold text-white num-tabular text-sm">£{mortgageInterest.toLocaleString()}</span>
               </div>
               <input
-                id="calc-mortgage-interest"
-                aria-label="Total Annual Mortgage Interest Paid"
                 type="range"
-                min={3000}
-                max={120000}
-                step={1000}
+                min={2000}
+                max={80000}
+                step={500}
                 value={mortgageInterest}
                 onChange={(e) => setMortgageInterest(Number(e.target.value))}
-                className="w-full accent-primary h-2 bg-neutral-200 rounded cursor-pointer"
+                className="w-full accent-[#0077C8] cursor-pointer"
               />
-              <p className="text-[11px] text-neutral-500">
-                Finance costs restricted to a 20% basic tax credit under personal ownership rules.
-              </p>
             </div>
 
-            {/* Tax Bracket Toggle */}
-            <div className="pt-2 border-t border-neutral-100 flex items-center justify-between text-xs">
-              <div>
-                <span className="font-semibold text-neutral-900 block">Personal Tax Bracket</span>
-                <span className="text-neutral-500 text-[11px]">
-                  {isHigherRate ? "Higher Rate (40%) or Additional (45%)" : "Basic Rate (20%)"}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsHigherRate(!isHigherRate)}
-                className={`btn-tactile px-3 py-1.5 rounded text-xs font-semibold transition ${
-                  isHigherRate
-                    ? "bg-primary text-white"
-                    : "bg-neutral-200 text-neutral-700"
-                }`}
-              >
-                {isHigherRate ? "Higher Rate (40%)" : "Basic Rate (20%)"}
-              </button>
+            {/* Higher Rate Checkbox */}
+            <div className="flex items-center space-x-2 pt-2 border-t border-[#1F293D]">
+              <input
+                type="checkbox"
+                id="calcHigherRate"
+                checked={isHigherRate}
+                onChange={(e) => setIsHigherRate(e.target.checked)}
+                className="rounded border-slate-700 text-[#0077C8] focus:ring-sky-500 bg-slate-800"
+              />
+              <label htmlFor="calcHigherRate" className="text-slate-300 text-xs cursor-pointer">
+                I am a 40% Higher Rate Taxpayer in my personal name (Income over £50,270)
+              </label>
             </div>
           </div>
 
-          {/* Comparative Results Column (5 cols) */}
-          <div className="lg:col-span-5 accountant-card p-5 sm:p-6 space-y-5 bg-white border-2 border-primary/10">
-            <div>
-              <h3 className="text-sm font-bold text-neutral-900 uppercase tracking-wider">
-                Comparative Tax Analysis
-              </h3>
-              <p className="text-xs text-neutral-500">
-                Estimated annual tax payable based on your figures:
-              </p>
+          {/* Results Column (5 cols) */}
+          <div className="lg:col-span-5 accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-6">
+            <div className="space-y-1 border-b border-[#1F293D] pb-4">
+              <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
+                Estimated Tax Comparison
+              </span>
+              <h3 className="text-lg font-bold text-white">Annual SPV Tax Shield</h3>
             </div>
 
-            {/* Comparison Cards */}
-            <div className="space-y-3">
-              {/* Option A: Personal Ownership */}
-              <div className="p-3.5 rounded-lg border border-neutral-200 bg-neutral-50 space-y-1 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-neutral-700">Personal Name (Section 24)</span>
-                  <span className="font-bold text-neutral-900 text-sm num-tabular">
-                    £{Math.round(netPersonalTax).toLocaleString()}
-                  </span>
-                </div>
-                <p className="text-[11px] text-neutral-500">
-                  Taxed on rent minus expenses, with finance relief capped at 20%.
-                </p>
+            <div className="space-y-3 text-xs">
+              <div className="flex justify-between py-1.5 border-b border-[#1F293D]">
+                <span className="text-slate-400">Personal Tax Bill (Section 24):</span>
+                <span className="font-bold text-red-400 num-tabular">£{Math.round(netPersonalTax).toLocaleString()}</span>
               </div>
 
-              {/* Option B: SPV Ltd Company */}
-              <div className="p-3.5 rounded-lg border border-emerald-200 bg-emerald-50/60 space-y-1 text-xs">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-emerald-900">SPV Company Structure</span>
-                  <span className="font-bold text-emerald-800 text-sm num-tabular">
-                    £{Math.round(spvTax).toLocaleString()}
-                  </span>
-                </div>
-                <p className="text-[11px] text-emerald-700">
-                  100% of mortgage interest deducted before Corporation Tax (19%–25%).
-                </p>
+              <div className="flex justify-between py-1.5 border-b border-[#1F293D]">
+                <span className="text-slate-400">SPV Corporation Tax (19%):</span>
+                <span className="font-bold text-emerald-400 num-tabular">£{Math.round(spvTax).toLocaleString()}</span>
               </div>
-            </div>
 
-            {/* Estimated Annual Differential */}
-            {estimatedTaxSaving > 0 && (
-              <div className="p-3 rounded-lg bg-primary text-white space-y-1 text-xs">
-                <div className="flex items-center justify-between font-bold">
-                  <span>Estimated Annual Tax Difference:</span>
-                  <span className="text-base text-emerald-300 num-tabular">
-                    ~£{Math.round(estimatedTaxSaving).toLocaleString()}/year
-                  </span>
+              <div className="p-4 rounded-lg bg-[#111827] border border-[#1F293D] space-y-1">
+                <span className="text-[11px] text-slate-400 block">Estimated Annual Savings:</span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 num-tabular">
+                  +£{Math.round(estimatedTaxSaving).toLocaleString()}
                 </div>
-                <p className="text-[11px] text-neutral-300 leading-tight">
-                  Potential saving via corporate structuring or mortgage interest restructuring.
-                </p>
-              </div>
-            )}
-
-            {/* Transparent Fixed Fee Retainer */}
-            <div className="pt-3 border-t border-neutral-100 flex items-center justify-between text-xs">
-              <div>
-                <span className="font-semibold text-neutral-900 block">Recommended Retainer:</span>
-                <span className="text-[11px] text-neutral-500">Includes Self Assessment & MTD filings</span>
-              </div>
-              <div className="text-right">
-                <span className="text-lg font-bold text-neutral-900 num-tabular">
-                  £{monthlyRetainer}
+                <span className="text-[10px] text-slate-300 block font-medium">
+                  Saved every year under SPV limited company rules
                 </span>
-                <span className="text-neutral-500 text-xs">/month + VAT</span>
               </div>
             </div>
 
-            {/* Action CTA Button */}
-            <button
-              type="button"
-              onClick={handleEnquireWithPortfolio}
-              className="w-full touch-target-44 btn-tactile py-3 rounded-md text-xs sm:text-sm font-semibold text-white bg-primary hover:bg-neutral-800 transition shadow-sm inline-flex items-center justify-center space-x-2"
-            >
-              <span>Enquire With This Portfolio</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="space-y-2 pt-2">
+              <button
+                type="button"
+                onClick={handleEnquireWithPortfolio}
+                className="touch-target-44 w-full py-2.5 px-4 rounded-lg font-bold text-xs bg-[#0077C8] hover:bg-[#0284C7] text-white transition flex items-center justify-center space-x-2 active:scale-95"
+              >
+                <span>Book SPV Restructuring Diagnostic</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
+                className="w-full py-2 text-center text-xs text-slate-400 hover:text-white transition block"
+              >
+                &rarr; Or launch Sukhpreet Kaur SPV Live Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>

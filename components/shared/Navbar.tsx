@@ -30,6 +30,11 @@ import {
   Crown,
   Landmark,
   Receipt,
+  Sparkles,
+  Coins,
+  ShieldCheck,
+  Car,
+  Zap,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -40,8 +45,6 @@ export default function Navbar() {
     activeClient,
     metrics,
     resetDemoState,
-    mobileFrameEnabled,
-    setMobileFrameEnabled,
     openIntakeModal,
     openLoginModal,
     enterAccountantPortal,
@@ -68,275 +71,213 @@ export default function Navbar() {
     }
   };
 
-  // Control body scroll lock when mobile menu is open
+  // Lock body scroll when mobile menu is open
   React.useEffect(() => {
     if (mobileMenuOpen) {
       document.body.classList.add("modal-open");
-      document.documentElement.classList.add("modal-open");
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     }
     return () => {
       document.body.classList.remove("modal-open");
-      document.documentElement.classList.remove("modal-open");
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
-  // 1. PUBLIC LANDING PAGE HEADER
+  // 1. PUBLIC LANDING PAGE HEADER (Mercian Wealth Brand Standard)
   if (currentMode === "landing") {
     return (
       <>
-        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
+        <header className="sticky top-0 z-40 bg-[#0B0F19]/95 backdrop-blur-md border-b border-[#1F293D] shadow-sm transition-all">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 sm:h-20 gap-4">
-              {/* Practice Branding with Official Logo */}
+            <div className="flex items-center justify-between h-16 sm:h-18 gap-4">
+              {/* Practice Branding */}
               <div
-                onClick={() => setCurrentView("landing")}
+                onClick={() => exitToLanding()}
                 className="flex items-center space-x-3 cursor-pointer group shrink-0"
               >
-                <img
-                  src="/logo.png"
-                  alt="KP Tax Consultants Official Emblem"
-                  width={140}
-                  height={48}
-                  className="h-10 sm:h-12 w-auto object-contain shrink-0"
-                />
-                <div className="space-y-0.5">
+                <div className="w-8 h-8 rounded-lg bg-[#0077C8] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                  MW
+                </div>
+                <div className="space-y-0 text-left">
                   <div className="flex items-center space-x-1.5 whitespace-nowrap">
-                    <span className="font-extrabold text-neutral-900 text-base sm:text-lg tracking-tight leading-none">
-                      KP Accountants
+                    <span className="font-bold text-white text-sm sm:text-base tracking-tight">
+                      MERCIAN WEALTH
                     </span>
-                    <span className="text-neutral-300 text-xs">/</span>
-                    <span className="text-neutral-600 text-xs sm:text-xs font-semibold">KP Tax</span>
+                    <span className="text-[#38BDF8] text-xs font-semibold">&bull; Tax &amp; Ledger OS</span>
                   </div>
-                  <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap hidden sm:block">
-                    Chartered UK Property Tax Advisers &bull; ICAEW
+                  <p className="text-[10px] text-slate-400 font-medium whitespace-nowrap hidden sm:block">
+                    UK Property SPV Infrastructure &bull; Berkshire, United Kingdom
                   </p>
                 </div>
               </div>
 
-              {/* Desktop Navigation Links (Single Line, Never Wraps) */}
-              <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-medium text-neutral-600 whitespace-nowrap">
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("specialisms")}
-                  className="hover:text-primary transition py-1"
-                >
-                  Property Specialisms
-                </button>
+              {/* Desktop Navigation Links */}
+              <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-semibold text-slate-300 whitespace-nowrap">
                 <button
                   type="button"
                   onClick={() => handleScrollTo("tax-calculator")}
-                  className="hover:text-primary transition py-1"
+                  className="hover:text-white transition py-1 flex items-center space-x-1"
                 >
-                  Section 24 Calculator
+                  <Zap className="w-3.5 h-3.5 text-sky-400" />
+                  <span>3-Tap Section 24 Scoper</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleScrollTo("specialisms")}
+                  className="hover:text-white transition py-1"
+                >
+                  SPV Solutions
                 </button>
                 <button
                   type="button"
                   onClick={() => handleScrollTo("mtd-guidance")}
-                  className="hover:text-primary transition py-1"
+                  className="hover:text-white transition py-1"
                 >
-                  MTD 2026 Mandate
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("about-firm")}
-                  className="hover:text-primary transition py-1"
-                >
-                  About Our Firm
+                  HMRC MTD Roadmap
                 </button>
                 <button
                   type="button"
                   onClick={() => handleScrollTo("faqs")}
-                  className="hover:text-primary transition py-1"
+                  className="hover:text-white transition py-1"
                 >
-                  FAQs
+                  HMRC Rules FAQ
                 </button>
               </nav>
 
-              {/* Right Action CTAs (Single Line, Never Wraps) */}
+              {/* Right Action CTAs */}
               <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
-                {/* Direct WhatsApp Channel for instant lead response */}
-                <a
-                  href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20Section%2024%20and%20property%20tax%20advisory"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition inline-flex items-center space-x-1.5 border border-emerald-200"
-                  aria-label="Direct WhatsApp Enquiry"
-                >
-                  <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>WhatsApp</span>
-                </a>
-
-                {/* Login Button with 2 Options */}
                 <button
                   type="button"
-                  onClick={openLoginModal}
-                  className="btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 hover:bg-neutral-200 transition inline-flex items-center space-x-1.5 border border-neutral-200/80 whitespace-nowrap"
+                  onClick={() => enterAccountantPortal("radar")}
+                  className="touch-target-44 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition inline-flex items-center space-x-1.5 border border-slate-700"
                 >
-                  <Lock className="w-3.5 h-3.5 text-neutral-500" />
-                  <span>Portal Login</span>
+                  <Crown className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Accountant Console</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => openIntakeModal()}
-                  className="btn-tactile px-4 py-2 rounded-lg text-xs font-semibold text-white bg-primary hover:bg-neutral-800 transition inline-flex items-center space-x-1.5 shadow-sm whitespace-nowrap"
+                  onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
+                  className="touch-target-44 px-3.5 py-1.5 rounded-md text-xs font-bold text-white bg-[#0077C8] hover:bg-[#0284C7] transition inline-flex items-center space-x-1.5 shadow-sm active:scale-95"
                 >
-                  <span>Book Consultation</span>
+                  <Building2 className="w-3.5 h-3.5 text-white" />
+                  <span>SPV Client Portal</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
 
-              {/* Mobile / Tablet Hamburger Button */}
+              {/* Mobile / Tablet Quick Launch */}
               <div className="flex lg:hidden items-center space-x-2">
                 <button
                   type="button"
-                  onClick={openLoginModal}
-                  className="sm:hidden px-2.5 py-1.5 rounded-lg text-xs font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200"
+                  onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
+                  className="touch-target-44 px-3 py-1.5 rounded-md text-xs font-bold text-white bg-[#0077C8] shadow-sm"
                 >
-                  Login
+                  Launch SPV Portal
                 </button>
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
-                  aria-label="Toggle mobile menu"
+                  className="touch-target-44 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+                  aria-label="Toggle Navigation Menu"
                 >
-                  {mobileMenuOpen ? <X className="w-6 h-6 text-primary" /> : <Menu className="w-6 h-6" />}
+                  {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
                 </button>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Full-Screen Static Mobile Navigation Overlay (Rendered outside header to avoid backdrop-filter trapping) */}
+        {/* Mobile Navigation Drawer Overlay */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 z-[100] bg-white flex flex-col justify-between animate-in fade-in duration-200 shadow-2xl">
-            {/* Top Bar with Logo & Close Button */}
-            <div className="h-16 sm:h-20 px-4 sm:px-6 border-b border-neutral-200 flex items-center justify-between bg-white shrink-0">
-              <div className="flex items-center space-x-3">
-                <img
-                  src="/logo.png"
-                  alt="KP Tax Consultants Official Emblem"
-                  width={140}
-                  height={48}
-                  className="h-10 sm:h-12 w-auto object-contain shrink-0"
-                />
-                <div className="space-y-0.5">
-                  <div className="flex items-center space-x-1.5 whitespace-nowrap">
-                    <span className="font-extrabold text-neutral-900 text-base tracking-tight leading-none">
-                      KP Accountants
-                    </span>
-                    <span className="text-neutral-300 text-xs">/</span>
-                    <span className="text-neutral-600 text-xs font-semibold">KP Tax</span>
-                  </div>
-                  <p className="text-[11px] text-neutral-500 font-medium whitespace-nowrap">
-                    Chartered UK Property Tax Advisers
-                  </p>
+          <div className="lg:hidden fixed inset-0 z-[100] bg-obsidian-500 flex flex-col justify-between animate-in fade-in duration-200 shadow-2xl">
+            <div className="h-16 px-4 border-b border-neutral-800 flex items-center justify-between bg-obsidian-400 shrink-0">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-lg bg-gold/15 border border-gold/40 flex items-center justify-center font-crest font-extrabold text-gold text-sm">
+                  M
                 </div>
+                <span className="font-crest font-bold text-white text-sm tracking-wider">
+                  MERCIAN WEALTH TAX
+                </span>
               </div>
-
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center"
-                aria-label="Close navigation menu"
+                className="touch-target-44 p-2 text-neutral-400 hover:text-white"
               >
-                <X className="w-6 h-6 text-primary" />
+                <X className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Scrollable Navigation Body */}
-            <div className="flex-1 overflow-y-auto p-6 flex flex-col justify-between space-y-6 overscroll-contain">
-              <div className="flex flex-col space-y-3 text-base font-semibold text-neutral-900">
-                <span className="text-xs uppercase tracking-wider text-neutral-400 font-bold mb-1">
-                  Navigation
-                </span>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("specialisms")}
-                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-                >
-                  <span>Property Specialisms</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("tax-calculator")}
-                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-                >
-                  <span>Section 24 Calculator</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("mtd-guidance")}
-                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-                >
-                  <span>MTD 2026 Mandate</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("about-firm")}
-                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-                >
-                  <span>About Our Firm</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleScrollTo("faqs")}
-                  className="text-left py-3 border-b border-neutral-100 hover:text-primary transition flex items-center justify-between"
-                >
-                  <span>Frequently Asked Questions</span>
-                  <ArrowRight className="w-4 h-4 text-neutral-400" />
-                </button>
-              </div>
+            <div className="flex-1 overflow-y-auto p-6 space-y-5 text-sm font-semibold text-neutral-200">
+              <span className="text-[10px] uppercase tracking-wider text-gold font-bold block mb-1">
+                Navigation
+              </span>
+              <button
+                type="button"
+                onClick={() => handleScrollTo("specialisms")}
+                className="touch-target-44 w-full text-left py-2.5 border-b border-neutral-800 hover:text-gold transition flex items-center justify-between"
+              >
+                <span>Property Specialisms</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScrollTo("tax-calculator")}
+                className="touch-target-44 w-full text-left py-2.5 border-b border-neutral-800 hover:text-gold transition flex items-center justify-between"
+              >
+                <span>Section 24 Calculator</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScrollTo("mtd-guidance")}
+                className="touch-target-44 w-full text-left py-2.5 border-b border-neutral-800 hover:text-gold transition flex items-center justify-between"
+              >
+                <span>SPV Structuring</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScrollTo("about-firm")}
+                className="touch-target-44 w-full text-left py-2.5 border-b border-neutral-800 hover:text-gold transition flex items-center justify-between"
+              >
+                <span>About Mercian</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleScrollTo("faqs")}
+                className="touch-target-44 w-full text-left py-2.5 border-b border-neutral-800 hover:text-gold transition flex items-center justify-between"
+              >
+                <span>HMRC FAQs</span>
+                <ArrowRight className="w-4 h-4 text-neutral-500" />
+              </button>
 
-              <div className="pt-6 border-t border-neutral-200 space-y-3 pb-6">
-                <a
-                  href="https://wa.me/447861690954?text=Hello%20KP%20Tax%20Consultants,%20I%20would%20like%20to%20enquire%20about%20property%20tax%20advisory"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center flex items-center justify-center space-x-2"
-                >
-                  <MessageSquare className="w-4 h-4 text-emerald-600" />
-                  <span>Chat on WhatsApp (+44 7861 690954)</span>
-                </a>
+              <div className="pt-6 border-t border-neutral-800 space-y-3">
                 <button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    openLoginModal();
+                    enterClientPortal("client_overview", "client-legacy-wealth");
                   }}
-                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-neutral-800 bg-neutral-100 border border-neutral-200 text-center flex items-center justify-center space-x-2"
+                  className="touch-target-44 w-full py-3 rounded-xl text-xs font-bold bg-gold text-obsidian text-center shadow-gold flex items-center justify-center space-x-2"
                 >
-                  <Lock className="w-4 h-4 text-neutral-500" />
-                  <span>Portal Sign In (Client or Staff)</span>
+                  <Lock className="w-4 h-4" />
+                  <span>Launch Client Portal (Sukhpreet Kaur)</span>
                 </button>
+
                 <button
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    openIntakeModal();
+                    enterAccountantPortal("radar");
                   }}
-                  className="w-full touch-target-44 btn-tactile py-3 rounded-lg text-sm font-semibold text-white bg-primary text-center shadow-md flex items-center justify-center space-x-2"
+                  className="touch-target-44 w-full py-3 rounded-xl text-xs font-bold bg-neutral-800 text-neutral-200 border border-neutral-700 text-center flex items-center justify-center space-x-2"
                 >
-                  <span>Book Direct Consultation</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <Crown className="w-4 h-4 text-gold" />
+                  <span>Chartered Accountant Console</span>
                 </button>
-                <p className="text-[11px] text-neutral-400 text-center pt-1">
-                  Chartered Tax Advisers (CTA) &bull; ICAEW Regulated Practice
-                </p>
               </div>
             </div>
           </div>
@@ -350,71 +291,66 @@ export default function Navbar() {
     const accountantNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
       { id: "radar", label: "Partner Radar", icon: <LayoutDashboard className="w-4 h-4" /> },
       { id: "pipeline", label: "Landlord Pipeline", icon: <Users className="w-4 h-4" /> },
-      { id: "open_banking", label: "Open Banking & MTD", icon: <Landmark className="w-4 h-4 text-emerald-600" /> },
+      { id: "open_banking", label: "Open Banking & MTD", icon: <Landmark className="w-4 h-4 text-emerald-400" /> },
       { id: "statements", label: "Statutory Statements", icon: <Scale className="w-4 h-4" /> },
       { id: "invoicing", label: "Practice Invoicing", icon: <PoundSterling className="w-4 h-4" /> },
-      { id: "wealth_advisory", label: "Wealth & Estate", icon: <Crown className="w-4 h-4 text-amber-500" /> },
+      { id: "wealth_advisory", label: "Wealth & Estate", icon: <Crown className="w-4 h-4 text-gold" /> },
       { id: "workspace", label: "Property Hub", icon: <FolderKanban className="w-4 h-4" /> },
       { id: "chaser", label: "Chaser Engine", icon: <Send className="w-4 h-4" /> },
     ];
 
     return (
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
+      <header className="sticky top-0 z-40 bg-obsidian-500/95 backdrop-blur-md border-b border-neutral-800 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
-            {/* Header Brand with Official Logo & Mobile Drawer Toggle */}
             <div className="flex items-center space-x-2 sm:space-x-3">
               <button
                 type="button"
                 onClick={toggleMobileSidebar}
-                className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center -ml-1"
-                aria-label="Toggle Practice OS Menu"
+                className="lg:hidden touch-target-44 p-2 text-neutral-400 hover:text-white rounded-lg hover:bg-neutral-800 transition flex items-center justify-center -ml-1"
+                aria-label="Toggle Practice Menu"
               >
-                <Menu className="w-5 h-5 text-neutral-800" />
+                <Menu className="w-5 h-5 text-gold" />
               </button>
-              <img
-                src="/logo.png"
-                alt="KP Tax Consultants Official Emblem"
-                width={140}
-                height={40}
-                className="h-8 sm:h-10 w-auto object-contain shrink-0"
-              />
-              <div className="space-y-0.5">
+
+              <div className="w-8 h-8 rounded-lg bg-gold/15 border border-gold/40 flex items-center justify-center font-crest font-extrabold text-gold text-sm shrink-0">
+                M
+              </div>
+              <div className="space-y-0.5 text-left">
                 <div className="flex items-center space-x-2">
-                  <span className="font-bold text-neutral-900 text-sm sm:text-lg">KP Accountants</span>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 uppercase tracking-wider border border-neutral-200">
-                    Practice OS
+                  <span className="font-crest font-bold text-white text-sm sm:text-base tracking-wider">
+                    MERCIAN WEALTH
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-gold/15 text-gold uppercase tracking-wider border border-gold/30">
+                    Partner Console
                   </span>
                 </div>
-                <p className="text-xs text-neutral-500 font-medium hidden sm:block">
-                  Active Portfolio: <strong className="text-neutral-800">{activeClient.entityName}</strong> &bull; {activeClient.assignedAccountant}
+                <p className="text-xs text-neutral-400 font-medium hidden sm:block">
+                  Context: <strong className="text-neutral-200">{activeClient.entityName}</strong> &bull; {activeClient.assignedAccountant}
                 </p>
               </div>
             </div>
 
-            {/* Authenticated Staff Actions */}
             <div className="flex items-center space-x-2 sm:space-x-2.5">
-              <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-neutral-100 text-xs border border-neutral-200">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-semibold text-neutral-800">{currentUser?.name || "Kalpesh Patel FCA"}</span>
-                <span className="text-neutral-400">&bull;</span>
-                <span className="text-neutral-500 text-[11px] font-mono">{currentUser?.email || "kalpesh@kptc.co.uk"}</span>
+              <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-obsidian-400 text-xs border border-neutral-800">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-semibold text-neutral-200">{currentUser?.name || "Kalpesh Patel FCA"}</span>
+                <span className="text-neutral-500">&bull;</span>
+                <span className="text-neutral-400 text-[11px] font-mono">{currentUser?.email || "kalpesh@kptc.co.uk"}</span>
               </div>
 
               <button
                 type="button"
                 onClick={logout}
-                className="btn-tactile px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition inline-flex items-center space-x-1 sm:space-x-1.5 whitespace-nowrap"
-                title="Sign out of practice session"
+                className="touch-target-44 px-3 py-1.5 rounded-lg text-xs font-semibold text-ruby bg-ruby/10 hover:bg-ruby/20 border border-ruby/30 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
               >
-                <LogOut className="w-3.5 h-3.5 text-red-600" />
+                <LogOut className="w-3.5 h-3.5 text-ruby" />
                 <span>Sign Out</span>
               </button>
             </div>
           </div>
 
-          {/* Accountant Subtabs (Visible on Header as Quick Switcher) */}
-          <nav className="flex space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
+          <nav className="flex space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-800/80 pt-1 text-xs">
             {accountantNav.map((item) => {
               const isActive = currentView === item.id;
               return (
@@ -422,10 +358,10 @@ export default function Navbar() {
                   key={item.id}
                   type="button"
                   onClick={() => setCurrentView(item.id)}
-                  className={`flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-all ${
+                  className={`touch-target-44 flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-all ${
                     isActive
-                      ? "border-primary text-primary font-bold bg-neutral-50"
-                      : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
+                      ? "border-gold text-gold font-bold bg-gold/5"
+                      : "border-transparent text-neutral-400 hover:text-neutral-200 hover:border-neutral-700"
                   }`}
                 >
                   {item.icon}
@@ -441,79 +377,84 @@ export default function Navbar() {
 
   // 3. DEDICATED CLIENT PORTAL HEADER
   const clientNav: { id: ScreenView; label: string; icon: React.ReactNode }[] = [
-    { id: "client_overview", label: "Overview & Roadmap", icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: "client_bills", label: "Bills & Spend Tracker", icon: <Receipt className="w-4 h-4 text-emerald-600" /> },
-    { id: "dropzone", label: "Upload Dropzone", icon: <Smartphone className="w-4 h-4" /> },
+    { id: "client_overview", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },
+    { id: "client_properties", label: "Properties & Leases", icon: <Building2 className="w-4 h-4 text-gold" /> },
+    { id: "client_bills", label: "Bills & OCR", icon: <Receipt className="w-4 h-4 text-emerald-400" /> },
+    { id: "client_dla", label: "DLA Ledger", icon: <Coins className="w-4 h-4 text-gold" /> },
+    { id: "client_mileage", label: "HMRC Mileage", icon: <Car className="w-4 h-4" /> },
+    { id: "client_tax_optimizer", label: "Tax Shield", icon: <ShieldCheck className="w-4 h-4 text-emerald-400" /> },
+    { id: "client_tax_pack", label: "Tax Pack", icon: <FileCheck2 className="w-4 h-4 text-gold" /> },
     { id: "vault", label: "Document Vault", icon: <FolderLock className="w-4 h-4" /> },
     { id: "client_messages", label: "Advisor Messages", icon: <MessageSquare className="w-4 h-4" /> },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-xs transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18">
-          {/* Header Brand with Official Logo & Mobile Drawer Toggle */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+    <header className="sticky top-0 z-40 bg-[#0E1526]/95 backdrop-blur-md border-b border-[#1E293D] shadow-sm transition-all">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16">
+          <div className="flex items-center space-x-3 sm:space-x-4">
             <button
               type="button"
               onClick={toggleMobileSidebar}
-              className="lg:hidden p-2 text-neutral-600 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition touch-target-44 flex items-center justify-center -ml-1"
-              aria-label="Toggle Landlord Portal Menu"
+              className="lg:hidden touch-target-44 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition flex items-center justify-center -ml-1"
+              aria-label="Toggle Portal Menu"
             >
-              <Menu className="w-5 h-5 text-neutral-800" />
+              <Menu className="w-5 h-5 text-slate-300" />
             </button>
-            <img
-              src="/logo.png"
-              alt="KP Tax Consultants Official Emblem"
-              width={140}
-              height={40}
-              className="h-8 sm:h-10 w-auto object-contain shrink-0"
-            />
-            <div className="space-y-0.5">
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-neutral-900 text-sm sm:text-lg">KP Accountants</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase tracking-wider border border-emerald-200">
-                  Client Portal
+
+            {/* Institutional Brand Badge */}
+            <div className="flex items-center space-x-2.5">
+              <div className="w-7 h-7 rounded bg-[#0077C8] text-white flex items-center justify-center font-bold text-xs shrink-0 tracking-tight shadow-sm">
+                MT
+              </div>
+              <div className="hidden sm:block">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block font-mono">
+                  MERCIAN TAX &amp; LEDGER
                 </span>
               </div>
-              <p className="text-xs text-neutral-500 font-medium hidden sm:block">
-                Account: <strong className="text-neutral-700">{activeClient.entityName}</strong> &bull; {activeClient.primaryContact}
+            </div>
+
+            <div className="h-5 w-px bg-slate-700 hidden sm:block" />
+
+            {/* Active Legal Entity Switcher / Identity */}
+            <div className="space-y-0 text-left">
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-white text-xs sm:text-sm tracking-tight truncate max-w-[280px] sm:max-w-md">
+                  {activeClient.entityName}
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                  Co. #14892011 &bull; Active
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-medium hidden md:block">
+                Director: <span className="text-slate-200">{activeClient.primaryContact}</span> &bull; Accounting Period: FY 2024/25 (Ending 31 Mar)
               </p>
             </div>
           </div>
 
-          {/* Authenticated Client Actions */}
-          <div className="flex items-center space-x-2.5">
-            {currentView === "dropzone" && (
-              <button
-                type="button"
-                onClick={() => setMobileFrameEnabled(!mobileFrameEnabled)}
-                className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-neutral-100 hover:bg-neutral-200 text-neutral-700 border border-neutral-200 transition whitespace-nowrap"
-              >
-                <Smartphone className="w-3.5 h-3.5 text-neutral-600" />
-                <span>{mobileFrameEnabled ? "Full Responsive" : "375px Phone Bezel"}</span>
-              </button>
-            )}
-
-            <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 text-xs border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
-              <span className="font-semibold">{currentUser?.name || activeClient.primaryContact}</span>
-            </div>
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <button
+              type="button"
+              onClick={() => setCurrentView("client_tax_pack")}
+              className="touch-target-44 inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-[#0077C8] hover:bg-[#0284C7] text-white transition shadow-sm"
+            >
+              <FileCheck2 className="w-3.5 h-3.5" />
+              <span>CT600 Tax Pack</span>
+            </button>
 
             <button
               type="button"
               onClick={logout}
-              className="btn-tactile px-3 py-2 rounded-lg text-xs font-semibold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition inline-flex items-center space-x-1.5 whitespace-nowrap"
-              title="Sign out of client session"
+              className="touch-target-44 px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition inline-flex items-center space-x-1.5"
             >
-              <LogOut className="w-3.5 h-3.5 text-red-600" />
-              <span>Sign Out</span>
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
         </div>
 
-        {/* Client Subtabs */}
-        <nav className="flex space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-neutral-100 pt-1 text-xs">
+        {/* Client Subtabs (Xero Parity Tab Bar) */}
+        <nav className="flex space-x-1 overflow-x-auto pb-1 sm:pb-0 scrollbar-none border-t border-slate-800/80 pt-1 text-xs">
           {clientNav.map((item) => {
             const isActive = currentView === item.id;
             return (
@@ -521,19 +462,14 @@ export default function Navbar() {
                 key={item.id}
                 type="button"
                 onClick={() => setCurrentView(item.id)}
-                className={`flex items-center space-x-1.5 px-3 py-2 font-medium border-b-2 whitespace-nowrap transition-all ${
+                className={`touch-target-44 flex items-center space-x-2 px-3.5 py-2 font-medium border-b-2 whitespace-nowrap transition-colors ${
                   isActive
-                    ? "border-emerald-700 text-emerald-800 font-bold bg-emerald-50"
-                    : "border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300"
+                    ? "border-[#0077C8] text-white font-bold bg-[#0077C8]/10"
+                    : "border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-700"
                 }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
-                {item.id === "dropzone" && metrics.missingDocumentsCount > 0 && (
-                  <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-                    {metrics.missingDocumentsCount}
-                  </span>
-                )}
               </button>
             );
           })}

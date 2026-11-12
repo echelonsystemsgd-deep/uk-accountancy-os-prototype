@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import {
   AppMode,
   ScreenView,
@@ -16,8 +16,10 @@ import {
   UserProfile,
   PropertyBillItem,
   NewBillInput,
+  DlaEntry,
+  MileageLog,
+  TaxPackage,
 } from "./types";
-import { supabase } from "./supabase";
 
 interface ToastNotification {
   id: string;
@@ -83,9 +85,344 @@ interface DemoContextType {
   isMobileSidebarOpen: boolean;
   setMobileSidebarOpen: (open: boolean) => void;
   toggleMobileSidebar: () => void;
+  // New SPV, DLA, Mileage & Tax Pack Actions
+  addDlaEntry: (clientId: string, entry: Omit<DlaEntry, "id">) => void;
+  addMileageLog: (clientId: string, log: Omit<MileageLog, "id" | "totalClaim">) => void;
+  verifyBillOrDocument: (clientId: string, itemId: string, itemType: "bill" | "document") => void;
+  generateTaxPackage: (clientId: string, taxYear?: string) => void;
+  downloadAccountantCsvPack: (clientId: string) => void;
 }
 
 const INITIAL_CLIENTS: LandlordClient[] = [
+  {
+    id: "client-legacy-wealth",
+    entityName: "SUKHPREET KAUR LEGACY WEALTH LTD",
+    entityType: "spv_ltd",
+    companyNumber: "15984210",
+    primaryContact: "Sukhpreet Kaur",
+    email: "sukhpreet@legacywealth.co.uk",
+    phone: "+44 7700 900822",
+    taxYear: "2024/25",
+    stage: "review_ready",
+    assignedAccountant: "Kalpesh Patel FCA & Pritpal Chaggar CTA",
+    unbilledWip: 1850,
+    totalRentalIncome: 39000,
+    chaseCount: 0,
+    lastChasedAt: "All 2024/25 SPV records verified",
+    dlaBalance: 134625.0,
+    parties: [
+      {
+        id: "p-sukhpreet",
+        fullName: "Sukhpreet Kaur",
+        role: "Managing Director & 100% Shareholder",
+        email: "sukhpreet@legacywealth.co.uk",
+        phone: "+44 7700 900822",
+        utrNumber: "91823 44102",
+        nationalInsurance: "SK 44 91 82 C",
+        idVerified: true,
+        addressVerified: true,
+      },
+    ],
+    properties: [
+      {
+        id: "prop-legacy-1",
+        address: "14 Belgrave Place, Solihull, West Midlands",
+        postcode: "B91 3QE",
+        propertyType: "Residential BTL",
+        ownershipSplit: "100% SPV Ltd",
+        annualRentalIncome: 25800,
+        mortgageLender: "Paragon Bank (SPV Buy-to-Let)",
+        outstandingMortgage: 288750,
+        purchaseDate: "2024-04-12",
+        purchasePrice: 385000,
+        currentValuation: 420000,
+        depositPaid: 96250,
+        stampDutyPaid: 19250,
+        legalFees: 2850,
+        monthlyMortgagePayment: 1280,
+        monthlyMortgageInterest: 1110,
+        tenantName: "Dr. Alistair Vance & Family",
+        tenancyStart: "2024-05-01",
+        tenancyEnd: "2026-05-01",
+        isSpvHeld: true,
+        netYield: 6.7,
+      },
+      {
+        id: "prop-legacy-2",
+        address: "Flat 4, The Exchange, Harborne, Birmingham",
+        postcode: "B17 9ND",
+        propertyType: "Residential BTL",
+        ownershipSplit: "100% SPV Ltd",
+        annualRentalIncome: 13200,
+        mortgageLender: "Shawbrook Commercial",
+        outstandingMortgage: 146250,
+        purchaseDate: "2024-09-18",
+        purchasePrice: 195000,
+        currentValuation: 215000,
+        depositPaid: 48750,
+        stampDutyPaid: 7350,
+        legalFees: 1950,
+        monthlyMortgagePayment: 685,
+        monthlyMortgageInterest: 580,
+        tenantName: "Sophie Chen",
+        tenancyStart: "2024-10-01",
+        tenancyEnd: "2025-10-01",
+        isSpvHeld: true,
+        netYield: 6.77,
+      },
+    ],
+    dlaEntries: [
+      {
+        id: "dla-1",
+        date: "2024-04-10",
+        description: "Director Capital Injected: Solihull Purchase Deposit & SDLT",
+        credit: 118350,
+        debit: 0,
+        category: "deposit_equity",
+        referencePropertyId: "prop-legacy-1",
+      },
+      {
+        id: "dla-2",
+        date: "2024-09-15",
+        description: "Director Capital Injected: Harborne Purchase Deposit & Conveyancing",
+        credit: 58050,
+        debit: 0,
+        category: "deposit_equity",
+        referencePropertyId: "prop-legacy-2",
+      },
+      {
+        id: "dla-3",
+        date: "2024-10-05",
+        description: "Director Personal Card: Boiler Replacement & Gas CP12 Certificate",
+        credit: 2100,
+        debit: 0,
+        category: "personal_card_expense",
+        referencePropertyId: "prop-legacy-1",
+      },
+      {
+        id: "dla-4",
+        date: "2024-11-20",
+        description: "Property Inspection Mileage Claim (2,500 miles @ 45p/mile)",
+        credit: 1125,
+        debit: 0,
+        category: "mileage_reimbursement",
+      },
+      {
+        id: "dla-5",
+        date: "2024-12-15",
+        description: "Tax-Free Capital Extraction: DLA Repayment to Director Personal Account",
+        credit: 0,
+        debit: 45000,
+        category: "cash_withdrawal",
+      },
+    ],
+    mileageLogs: [
+      {
+        id: "mile-1",
+        date: "2024-04-12",
+        origin: "Registered Office, Birmingham",
+        destination: "14 Belgrave Place, Solihull",
+        purpose: "Completion handover, key collection & inventory check",
+        miles: 42,
+        ratePerMile: 0.45,
+        totalClaim: 18.9,
+        propertyAddress: "14 Belgrave Place, Solihull",
+        isCreditedToDla: true,
+      },
+      {
+        id: "mile-2",
+        date: "2024-06-18",
+        origin: "Registered Office, Birmingham",
+        destination: "14 Belgrave Place, Solihull",
+        purpose: "Quarterly landlord maintenance inspection & smoke alarm check",
+        miles: 42,
+        ratePerMile: 0.45,
+        totalClaim: 18.9,
+        propertyAddress: "14 Belgrave Place, Solihull",
+        isCreditedToDla: true,
+      },
+      {
+        id: "mile-3",
+        date: "2024-09-18",
+        origin: "Registered Office, Birmingham",
+        destination: "Flat 4, The Exchange, Harborne",
+        purpose: "Acquisition inspection & tenant onboarding handover",
+        miles: 28,
+        ratePerMile: 0.45,
+        totalClaim: 12.6,
+        propertyAddress: "Flat 4, The Exchange, Harborne",
+        isCreditedToDla: true,
+      },
+    ],
+    bills: [
+      {
+        id: "bill-legacy-1",
+        title: "Paragon BTL Mortgage Monthly Interest (Section 24 SPV Deductible)",
+        category: "mortgage_interest",
+        vendorOrRecipient: "Paragon Bank SPV Lending",
+        amount: 1110.0,
+        frequency: "monthly",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "14 Belgrave Place, Solihull, West Midlands",
+        dueDate: "2026-11-01",
+        paidDate: "2026-11-01",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "paragon_facility_interest_schedule.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "100% Allowable Corporate Finance Cost (CT600 Box 155)",
+      },
+      {
+        id: "bill-legacy-2",
+        title: "Shawbrook Commercial Mortgage Interest",
+        category: "mortgage_interest",
+        vendorOrRecipient: "Shawbrook Commercial Bank",
+        amount: 580.0,
+        frequency: "monthly",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "Flat 4, The Exchange, Harborne, Birmingham",
+        dueDate: "2026-11-01",
+        paidDate: "2026-11-01",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "shawbrook_interest_statement.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "100% Allowable Corporate Finance Cost (CT600 Box 155)",
+      },
+      {
+        id: "bill-legacy-3",
+        title: "Emergency Worcester Boiler Replacement (Revenue Repair)",
+        category: "maintenance_repairs",
+        vendorOrRecipient: "Midland Heating & Plumbing Ltd",
+        amount: 2100.0,
+        frequency: "one_off",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "14 Belgrave Place, Solihull, West Midlands",
+        dueDate: "2024-10-05",
+        paidDate: "2024-10-05",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "worcester_boiler_invoice_2100.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Allowable Property Revenue Repair (CT600 Box 155)",
+      },
+      {
+        id: "bill-legacy-4",
+        title: "Landlord Buildings & Property Owners Liability Insurance",
+        category: "insurance",
+        vendorOrRecipient: "Direct Line for Business",
+        amount: 685.0,
+        frequency: "annual",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "14 Belgrave Place, Solihull, West Midlands",
+        dueDate: "2024-04-20",
+        paidDate: "2024-04-20",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "directline_btl_schedule_685.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Property Insurance & Compliance (CT600 Box 155)",
+      },
+      {
+        id: "bill-legacy-5",
+        title: "Residential Letting & Tenant Referencing Commission",
+        category: "letting_fees",
+        vendorOrRecipient: "Knight Frank Residential Lettings",
+        amount: 1450.0,
+        frequency: "annual",
+        isAllowableExpense: true,
+        isSection24Restricted: false,
+        propertyAddress: "14 Belgrave Place, Solihull, West Midlands",
+        dueDate: "2024-05-02",
+        paidDate: "2024-05-02",
+        status: "paid",
+        receiptAttached: true,
+        receiptName: "knightfrank_letting_commission.pdf",
+        taxYear: "2024/25",
+        hmrcBoxNote: "Allowable Letting & Management Agent Fees",
+      },
+    ],
+    documents: [
+      {
+        id: "doc-leg-1",
+        title: "Solicitors Completion Statement - 14 Belgrave Place (£385,000)",
+        category: "expense",
+        ownerOrProperty: "14 Belgrave Place, Solihull",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2024-04-12",
+        uploadedAt: "2024-04-14",
+        fileSize: "1.8 MB PDF",
+        notes: "Apportioned SDLT (£19,250) + Conveyancing (£2,850) indexed to capital base cost",
+      },
+      {
+        id: "doc-leg-2",
+        title: "Paragon Bank Mortgage Facility Letter & Charge Document",
+        category: "mortgage",
+        ownerOrProperty: "14 Belgrave Place, Solihull",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2024-04-10",
+        uploadedAt: "2024-04-14",
+        fileSize: "2.6 MB PDF",
+        notes: "Section 24 SPV Qualifying Corporate Loan",
+      },
+      {
+        id: "doc-leg-3",
+        title: "AST Tenancy Agreement - Dr. Alistair Vance (£2,150/mo)",
+        category: "tenancy",
+        ownerOrProperty: "14 Belgrave Place, Solihull",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2024-05-01",
+        uploadedAt: "2024-05-01",
+        fileSize: "3.2 MB PDF",
+      },
+      {
+        id: "doc-leg-4",
+        title: "Gas Safety Certificate CP12 & EICR Electrical Report",
+        category: "tax_record",
+        ownerOrProperty: "14 Belgrave Place, Solihull",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2024-05-01",
+        uploadedAt: "2024-05-02",
+        fileSize: "890 KB PDF",
+      },
+      {
+        id: "doc-leg-5",
+        title: "Companies House Certificate of Incorporation - CS01 Register",
+        category: "tax_record",
+        ownerOrProperty: "SUKHPREET KAUR LEGACY WEALTH LTD",
+        status: "verified",
+        isOverdue: false,
+        dueDate: "2024-03-15",
+        uploadedAt: "2024-03-20",
+        fileSize: "540 KB PDF",
+      },
+    ],
+    taxPackages: [
+      {
+        id: "tax-pkg-2024",
+        taxYear: "2024/25",
+        periodStart: "2024-04-06",
+        periodEnd: "2025-04-05",
+        totalRentalTurnover: 39000,
+        totalAllowableExpenses: 6420,
+        totalMortgageInterest: 20280,
+        operatingProfit: 12300,
+        estimatedCorporationTax: 2337,
+        netRetainedProfit: 9963,
+        dlaClosingBalance: 134625,
+        status: "ready_for_accountant",
+        createdAt: "2026-11-12",
+      },
+    ],
+  },
   {
     id: "client-singh-family",
     entityName: "Singh Family Residential BTL (Parents)",
@@ -136,190 +473,8 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         outstandingMortgage: 121744,
       },
     ],
-    documents: [
-      {
-        id: "doc-singh-openrent",
-        title: "OpenRent Tenancy & Management Fee Statement (£120.00)",
-        category: "expense",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        uploadedAt: "2026-10-27",
-        fileSize: "240 KB PDF",
-        notes: "Allowable property expense - letting management fees",
-      },
-      {
-        id: "doc-singh-bathroom",
-        title: "Bathroom Refurbishment Contractor Invoice (£5,000.00)",
-        category: "expense",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-27",
-        uploadedAt: "2026-10-27",
-        fileSize: "1.1 MB PDF",
-        notes: "Allowable revenue repairs & maintenance (like-for-like replacement)",
-      },
-      {
-        id: "doc-singh-servicecharge",
-        title: "Block Managing Agent Service Charge Annual Schedule (£3,752.88)",
-        category: "expense",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        uploadedAt: "2026-10-27",
-        fileSize: "1.4 MB PDF",
-        notes: "Allowable service charge & communal maintenance expenditure",
-      },
-      {
-        id: "doc-singh-groundrent",
-        title: "Freeholder Ground Rent Receipt 2024/25 (£294.00)",
-        category: "expense",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        uploadedAt: "2026-10-27",
-        fileSize: "320 KB PDF",
-        notes: "Allowable statutory property expense",
-      },
-      {
-        id: "doc-singh-counciltax",
-        title: "Local Authority Council Tax Notice - April Void Period (£33.50)",
-        category: "expense",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        uploadedAt: "2026-10-27",
-        fileSize: "180 KB PDF",
-        notes: "Allowable void period rate expense",
-      },
-      {
-        id: "doc-singh-mortgage",
-        title: "Annual Mortgage Statement - Section 24 Finance Costs (£6,330.72)",
-        category: "mortgage",
-        ownerOrProperty: "Residential Buy-to-Let Property",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        uploadedAt: "2026-10-27",
-        fileSize: "850 KB PDF",
-        notes: "Section 24 restricted finance cost (20% basic rate tax reducer applies)",
-      },
-    ],
-    bills: [
-      {
-        id: "bill-singh-1",
-        title: "OpenRent Tenancy Fee",
-        category: "letting_fees",
-        vendorOrRecipient: "OpenRent Ltd",
-        amount: 120.00,
-        frequency: "annual",
-        isAllowableExpense: true,
-        isSection24Restricted: false,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-05-15",
-        paidDate: "2026-05-15",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "openrent_tenancy_statement_120.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Allowable Letting Fees & Commissions (SA105 Box 24)",
-      },
-      {
-        id: "bill-singh-2",
-        title: "Bathroom Refurbishment Contractor Invoice",
-        category: "maintenance_repairs",
-        vendorOrRecipient: "Prime Property Renovations Ltd",
-        amount: 5000.00,
-        frequency: "one_off",
-        isAllowableExpense: true,
-        isSection24Restricted: false,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-07-20",
-        paidDate: "2026-07-22",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "bathroom_refurb_invoice_5000.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Repairs, Maintenance & Like-for-Like Replacements (SA105 Box 25)",
-      },
-      {
-        id: "bill-singh-3",
-        title: "Freeholder Annual Ground Rent",
-        category: "ground_rent",
-        vendorOrRecipient: "Metropolitan Freeholds Ltd",
-        amount: 294.00,
-        frequency: "annual",
-        isAllowableExpense: true,
-        isSection24Restricted: false,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-06-01",
-        paidDate: "2026-06-01",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "ground_rent_receipt_294.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Rents, Rates, Insurance & Ground Charges (SA105 Box 26)",
-      },
-      {
-        id: "bill-singh-4",
-        title: "Block Managing Agent Service Charge",
-        category: "service_charge",
-        vendorOrRecipient: "FirstPort Property Services",
-        amount: 3752.88,
-        frequency: "annual",
-        isAllowableExpense: true,
-        isSection24Restricted: false,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-04-10",
-        paidDate: "2026-04-12",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "service_charge_annual_schedule_3752.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Communal Maintenance & Block Management (SA105 Box 26)",
-      },
-      {
-        id: "bill-singh-5",
-        title: "Local Authority Council Tax (April Void Period)",
-        category: "utilities_council_tax",
-        vendorOrRecipient: "City Council Revenues Dept",
-        amount: 33.50,
-        frequency: "one_off",
-        isAllowableExpense: true,
-        isSection24Restricted: false,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-04-28",
-        paidDate: "2026-04-28",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "council_tax_void_notice_33.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Void Period Rates & Water Charges (SA105 Box 26)",
-      },
-      {
-        id: "bill-singh-6",
-        title: "Residential Mortgage Finance Costs (Section 24)",
-        category: "mortgage_interest",
-        vendorOrRecipient: "BTL Mortgage Lender",
-        amount: 6330.72,
-        frequency: "monthly",
-        isAllowableExpense: false,
-        isSection24Restricted: true,
-        propertyAddress: "Residential Buy-to-Let Property, UK",
-        dueDate: "2026-10-01",
-        paidDate: "2026-10-01",
-        status: "paid",
-        receiptAttached: true,
-        receiptName: "annual_mortgage_certificate_6330.pdf",
-        taxYear: "2024/25",
-        hmrcBoxNote: "Section 24 Residential Finance Costs (SA105 Box 44 - 20% Tax Reducer = £1,266.14)",
-      },
-    ],
+    documents: [],
+    bills: [],
   },
   {
     id: "client-sovereign",
@@ -360,589 +515,75 @@ const INITIAL_CLIENTS: LandlordClient[] = [
         mortgageLender: "Investec Private Bank",
         outstandingMortgage: 850000,
       },
-      {
-        id: "prop-mercian-2",
-        address: "Mercian Manor, Edgbaston Park",
-        postcode: "B15 2TY",
-        propertyType: "Residential BTL",
-        ownershipSplit: "100% SPV Ltd",
-        annualRentalIncome: 72000,
-        mortgageLender: "Coutts & Co",
-        outstandingMortgage: 540000,
-      },
-      {
-        id: "prop-mercian-3",
-        address: "45 Solihull Parkway, Birmingham Business Park",
-        postcode: "B37 7YN",
-        propertyType: "Multi-unit",
-        ownershipSplit: "100% SPV Ltd",
-        annualRentalIncome: 56000,
-        mortgageLender: "Barclays Corporate",
-        outstandingMortgage: 390000,
-      },
     ],
-    documents: [
-      {
-        id: "doc-merc-1",
-        title: "Investec Commercial Facility Agreement & Interest Schedule",
-        category: "mortgage",
-        ownerOrProperty: "10 Colmore Row, Birmingham",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-15",
-        uploadedAt: "2026-10-18",
-        fileSize: "2.4 MB PDF",
-      },
-      {
-        id: "doc-merc-2",
-        title: "Mercian Sovereign Estate Holdings - Confirmation Statement CS01",
-        category: "tax_record",
-        ownerOrProperty: "Mercian Sovereign Estate Holdings Ltd",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-02",
-        fileSize: "850 KB PDF",
-      },
-    ],
-  },
-  {
-    id: "client-sterling",
-    entityName: "Marcus & Sarah Sterling",
-    entityType: "joint",
-    primaryContact: "Marcus Sterling",
-    email: "marcus.sterling@sterlingholdings.co.uk",
-    phone: "+44 7700 900142",
-    taxYear: "2024/25",
-    stage: "chasing_docs",
-    assignedAccountant: "Kalpesh Patel FCA",
-    unbilledWip: 2450,
-    totalRentalIncome: 86400,
-    chaseCount: 2,
-    lastChasedAt: "2 days ago",
-    parties: [
-      {
-        id: "p-marcus",
-        fullName: "Marcus Sterling",
-        role: "Primary Landlord",
-        email: "marcus.sterling@sterlingholdings.co.uk",
-        phone: "+44 7700 900142",
-        utrNumber: "78219 40215",
-        nationalInsurance: "QQ 12 34 56 A",
-        idVerified: true,
-        addressVerified: true,
-      },
-      {
-        id: "p-sarah",
-        fullName: "Sarah Sterling",
-        role: "Joint Owner (Spouse)",
-        email: "sarah.sterling@sterlingholdings.co.uk",
-        phone: "+44 7700 900143",
-        utrNumber: "91482 66301",
-        nationalInsurance: "WW 98 76 54 B",
-        idVerified: true,
-        addressVerified: false,
-      },
-    ],
-    properties: [
-      {
-        id: "prop-14-highst",
-        address: "14 High Street, Cheltenham",
-        postcode: "GL50 1DZ",
-        propertyType: "Residential BTL",
-        ownershipSplit: "50/50 Joint",
-        annualRentalIncome: 24000,
-        mortgageLender: "NatWest",
-        outstandingMortgage: 285000,
-      },
-      {
-        id: "prop-22-parkrd",
-        address: "22 Park Road, Gloucester",
-        postcode: "GL1 2TW",
-        propertyType: "Residential BTL",
-        ownershipSplit: "50/50 Joint",
-        annualRentalIncome: 19800,
-        mortgageLender: "Barclays",
-        outstandingMortgage: 195000,
-      },
-      {
-        id: "prop-9-albany",
-        address: "9 Albany Court, Bristol",
-        postcode: "BS8 2UQ",
-        propertyType: "Residential BTL",
-        ownershipSplit: "50/50 Joint",
-        annualRentalIncome: 21600,
-        mortgageLender: "Nationwide",
-        outstandingMortgage: 240000,
-      },
-      {
-        id: "prop-4-commercial",
-        address: "Unit 4 Stroud Enterprise Centre",
-        postcode: "GL5 3RQ",
-        propertyType: "Commercial",
-        ownershipSplit: "100% Marcus Sterling",
-        annualRentalIncome: 21000,
-      },
-    ],
-    documents: [
-      {
-        id: "doc-1",
-        title: "NatWest Annual Mortgage Interest Certificate",
-        category: "mortgage",
-        ownerOrProperty: "14 High Street, Cheltenham",
-        status: "pending",
-        isOverdue: true,
-        dueDate: "2026-10-12",
-        notes: "Crucial Section 24 basic rate tax credit deduction (£5,700 interest claimed)",
-      },
-      {
-        id: "doc-2",
-        title: "Sarah Sterling - Proof of Address",
-        category: "id_aml",
-        ownerOrProperty: "Sarah Sterling",
-        status: "pending",
-        isOverdue: true,
-        dueDate: "2026-10-15",
-        notes: "Recent council tax bill or utility bill dated within 3 months for HMRC AML compliance",
-      },
-      {
-        id: "doc-3",
-        title: "Marcus Sterling Passport Scan",
-        category: "id_aml",
-        ownerOrProperty: "Marcus Sterling",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-02",
-        fileSize: "2.4 MB PDF",
-      },
-      {
-        id: "doc-4",
-        title: "Marcus P60 Employment Certificate (2024/25)",
-        category: "tax_record",
-        ownerOrProperty: "Marcus Sterling",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-02",
-        fileSize: "1.1 MB PDF",
-      },
-      {
-        id: "doc-5",
-        title: "14 High St - Assured Shorthold Tenancy (AST)",
-        category: "tenancy",
-        ownerOrProperty: "14 High Street, Cheltenham",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-03",
-        fileSize: "3.8 MB PDF",
-      },
-      {
-        id: "doc-6",
-        title: "Barclays Mortgage Certificate (22 Park Rd)",
-        category: "mortgage",
-        ownerOrProperty: "22 Park Road, Gloucester",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-04",
-        fileSize: "1.4 MB PDF",
-      },
-      {
-        id: "doc-7",
-        title: "Nationwide Annual Loan Certificate (9 Albany)",
-        category: "mortgage",
-        ownerOrProperty: "9 Albany Court, Bristol",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-05",
-        fileSize: "840 KB PDF",
-      },
-      {
-        id: "doc-8",
-        title: "Letting Agent Year-End Statement (Bristol & West)",
-        category: "expense",
-        ownerOrProperty: "9 Albany Court, Bristol",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-05",
-        fileSize: "1.9 MB PDF",
-      },
-    ],
-  },
-  {
-    id: "client-oakwood",
-    entityName: "Oakwood Property SPV Ltd",
-    entityType: "spv_ltd",
-    companyNumber: "14285721",
-    primaryContact: "Pritam Johal",
-    email: "p.johal@oakwoodspv.co.uk",
-    phone: "+44 7700 900512",
-    taxYear: "2024/25",
-    stage: "chasing_docs",
-    assignedAccountant: "Pritpal Chaggar CTA",
-    unbilledWip: 3200,
-    totalRentalIncome: 142000,
-    chaseCount: 3,
-    lastChasedAt: "1 day ago",
-    parties: [
-      {
-        id: "p-pritam",
-        fullName: "Pritam Johal",
-        role: "Company Director",
-        email: "p.johal@oakwoodspv.co.uk",
-        phone: "+44 7700 900512",
-        utrNumber: "62104 88391",
-        nationalInsurance: "AB 55 66 77 C",
-        idVerified: true,
-        addressVerified: true,
-      },
-    ],
-    properties: [
-      {
-        id: "prop-oak-1",
-        address: "7-11 Station Parade, Swindon",
-        postcode: "SN1 1EA",
-        propertyType: "HMO",
-        ownershipSplit: "100% SPV Ltd",
-        annualRentalIncome: 52000,
-        mortgageLender: "Shawbrook Bank",
-        outstandingMortgage: 420000,
-      },
-      {
-        id: "prop-oak-2",
-        address: "44 Victoria Road, Oxford",
-        postcode: "OX2 7QE",
-        propertyType: "Residential BTL",
-        ownershipSplit: "100% SPV Ltd",
-        annualRentalIncome: 48000,
-        mortgageLender: "Paragon Bank",
-        outstandingMortgage: 380000,
-      },
-      {
-        id: "prop-oak-3",
-        address: "18 Queensway, Reading",
-        postcode: "RG1 4QA",
-        propertyType: "Residential BTL",
-        ownershipSplit: "100% SPV Ltd",
-        annualRentalIncome: 42000,
-        mortgageLender: "Aldermore",
-        outstandingMortgage: 310000,
-      },
-    ],
-    documents: [
-      {
-        id: "doc-oak-1",
-        title: "Shawbrook Commercial Loan Statement (Station Parade)",
-        category: "mortgage",
-        ownerOrProperty: "7-11 Station Parade, Swindon",
-        status: "pending",
-        isOverdue: true,
-        dueDate: "2026-10-10",
-        notes: "Needed to reconcile corporation tax deductible interest",
-      },
-      {
-        id: "doc-oak-2",
-        title: "Legal Completion Statement (Reading Purchase)",
-        category: "tax_record",
-        ownerOrProperty: "18 Queensway, Reading",
-        status: "pending",
-        isOverdue: false,
-        dueDate: "2026-10-25",
-        notes: "Solicitor completion breakdown for SDLT and legal fees capitalisation",
-      },
-      {
-        id: "doc-oak-3",
-        title: "Company Formation Certificate & Articles",
-        category: "id_aml",
-        ownerOrProperty: "Oakwood Property SPV Ltd",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-02",
-        fileSize: "1.2 MB PDF",
-      },
-    ],
-  },
-  {
-    id: "client-rahman",
-    entityName: "Dr. Tariq Rahman",
-    entityType: "individual",
-    primaryContact: "Dr. Tariq Rahman",
-    email: "t.rahman@cheltmed.co.uk",
-    phone: "+44 7700 900881",
-    taxYear: "2024/25",
-    stage: "kyc_pending",
-    assignedAccountant: "Kalpesh Patel FCA",
-    unbilledWip: 1850,
-    totalRentalIncome: 58000,
-    chaseCount: 1,
-    lastChasedAt: "3 days ago",
-    parties: [
-      {
-        id: "p-tariq",
-        fullName: "Dr. Tariq Rahman",
-        role: "Primary Landlord",
-        email: "t.rahman@cheltmed.co.uk",
-        phone: "+44 7700 900881",
-        utrNumber: "34901 22819",
-        nationalInsurance: "CD 33 44 55 D",
-        idVerified: true,
-        addressVerified: false,
-      },
-    ],
-    properties: [
-      {
-        id: "prop-rahman-1",
-        address: "32 Lansdown Crescent, Cheltenham",
-        postcode: "GL50 2JX",
-        propertyType: "Residential BTL",
-        ownershipSplit: "100% Individual",
-        annualRentalIncome: 32000,
-      },
-      {
-        id: "prop-rahman-2",
-        address: "15 Bath Road, Worcester",
-        postcode: "WR5 3AB",
-        propertyType: "Residential BTL",
-        ownershipSplit: "100% Individual",
-        annualRentalIncome: 26000,
-      },
-    ],
-    documents: [
-      {
-        id: "doc-rah-1",
-        title: "Proof of Address (Utility Bill dated within 3 months)",
-        category: "id_aml",
-        ownerOrProperty: "Dr. Tariq Rahman",
-        status: "pending",
-        isOverdue: true,
-        dueDate: "2026-10-14",
-      },
-      {
-        id: "doc-rah-2",
-        title: "NHS Consultant P60 (2024/25)",
-        category: "tax_record",
-        ownerOrProperty: "Dr. Tariq Rahman",
-        status: "pending",
-        isOverdue: false,
-        dueDate: "2026-10-28",
-        notes: "Required to evaluate higher/additional rate tax bracket for Section 24 tapering",
-      },
-    ],
-  },
-  {
-    id: "client-kensington",
-    entityName: "Kensington Mews Holdings LLP",
-    entityType: "joint",
-    primaryContact: "Rupert Sterling-Smith",
-    email: "rupert@kensingtonholdings.co.uk",
-    phone: "+44 7700 900332",
-    taxYear: "2024/25",
-    stage: "review_ready",
-    assignedAccountant: "Pritpal Chaggar CTA",
-    unbilledWip: 4100,
-    totalRentalIncome: 185000,
-    chaseCount: 0,
-    lastChasedAt: "5 days ago",
-    parties: [
-      {
-        id: "p-rupert",
-        fullName: "Rupert Sterling-Smith",
-        role: "Primary Landlord",
-        email: "rupert@kensingtonholdings.co.uk",
-        phone: "+44 7700 900332",
-        utrNumber: "84729 11940",
-        nationalInsurance: "EF 11 22 33 E",
-        idVerified: true,
-        addressVerified: true,
-      },
-    ],
-    properties: [
-      {
-        id: "prop-ken-1",
-        address: "1-4 Kensington Court Mews, London",
-        postcode: "W8 5DL",
-        propertyType: "Multi-unit",
-        ownershipSplit: "LLP Partnership",
-        annualRentalIncome: 185000,
-      },
-    ],
-    documents: [
-      {
-        id: "doc-ken-1",
-        title: "Partnership Tax Return (SA800) Draft",
-        category: "tax_record",
-        ownerOrProperty: "Kensington Mews Holdings LLP",
-        status: "verified",
-        isOverdue: false,
-        dueDate: "2026-10-01",
-        uploadedAt: "2026-10-08",
-        fileSize: "4.2 MB PDF",
-      },
-    ],
-  },
-  {
-    id: "client-vance",
-    entityName: "Elena & David Vance",
-    entityType: "joint",
-    primaryContact: "Elena Vance",
-    email: "elena.vance@vanceproperties.co.uk",
-    phone: "+44 7700 900664",
-    taxYear: "2024/25",
-    stage: "computation_complete",
-    assignedAccountant: "Kalpesh Patel FCA",
-    unbilledWip: 850,
-    totalRentalIncome: 44000,
-    chaseCount: 0,
-    parties: [],
-    properties: [],
     documents: [],
-  },
-];
-
-const INITIAL_LOGS: CommunicationLogItem[] = [
-  {
-    id: "log-1",
-    clientId: "client-sterling",
-    entityName: "Marcus & Sarah Sterling",
-    channel: "whatsapp",
-    recipient: "+44 7700 900142 (Marcus)",
-    messageBody:
-      "Hi Marcus, Kalpesh here from KP Accountants. We are finalizing your 2024/25 property tax return. We still need your NatWest mortgage certificate for 14 High Street. You can snap a photo directly using your secure link: https://kptc-portal.uk/d/ms-7281",
-    sentAt: "Yesterday at 14:32",
-    status: "read",
-    triggeredBy: "Kalpesh Patel FCA",
-  },
-  {
-    id: "log-2",
-    clientId: "client-oakwood",
-    entityName: "Oakwood Property SPV Ltd",
-    channel: "email",
-    recipient: "p.johal@oakwoodspv.co.uk",
-    messageBody:
-      "Dear Pritam, please upload the Shawbrook commercial mortgage certificate for 7-11 Station Parade to reconcile your SPV company deductible expenses.",
-    sentAt: "18 Oct 2026 at 09:15",
-    status: "delivered",
-    triggeredBy: "Pritpal Chaggar CTA",
+    bills: [],
   },
 ];
 
 const INITIAL_INVOICES: PracticeInvoice[] = [
   {
-    id: "inv-101",
-    invoiceNumber: "KP-2024-089",
-    clientId: "client-sterling",
-    entityName: "Marcus & Sarah Sterling",
-    serviceDescription: "Section 24 Portfolio Restructuring & 2024/25 Self Assessment Computations",
-    netAmount: 1850,
-    vatAmount: 370,
-    totalAmount: 2220,
-    status: "awaiting_payment",
-    issuedDate: "12 Oct 2026",
-    dueDate: "26 Oct 2026",
-  },
-  {
-    id: "inv-102",
-    invoiceNumber: "KP-2024-090",
-    clientId: "client-oakwood",
-    entityName: "Oakwood Property SPV Ltd",
-    serviceDescription: "Statutory Financial Statements (FRS 105), CT600 Corporation Tax & Confirmation Statement",
-    netAmount: 2400,
-    vatAmount: 480,
-    totalAmount: 2880,
-    status: "awaiting_payment",
-    issuedDate: "15 Oct 2026",
-    dueDate: "29 Oct 2026",
-  },
-  {
-    id: "inv-103",
-    invoiceNumber: "KP-2024-085",
-    clientId: "client-kensington",
-    entityName: "Kensington Mews Holdings LLP",
-    serviceDescription: "Partnership Tax Return (SA800) & Annual Bookkeeping Reconciliation",
-    netAmount: 3100,
-    vatAmount: 620,
-    totalAmount: 3720,
+    id: "inv-2024-001",
+    invoiceNumber: "INV-2024-001",
+    clientId: "client-legacy-wealth",
+    entityName: "SUKHPREET KAUR LEGACY WEALTH LTD",
+    serviceDescription: "SPV Corporate Tax Return (CT600) & Annual Accounts Preparation",
+    netAmount: 1250,
+    vatAmount: 250,
+    totalAmount: 1500,
     status: "paid",
-    issuedDate: "01 Oct 2026",
-    dueDate: "15 Oct 2026",
-    paidAt: "10 Oct 2026 via BACS",
+    issuedDate: "2024-10-01",
+    dueDate: "2024-10-31",
+    paidAt: "2024-10-15",
+  },
+  {
+    id: "inv-2024-002",
+    invoiceNumber: "INV-2024-002",
+    clientId: "client-legacy-wealth",
+    entityName: "SUKHPREET KAUR LEGACY WEALTH LTD",
+    serviceDescription: "Section 24 SPV Acquisition Restructure & Mortgage Interest Indexing",
+    netAmount: 600,
+    vatAmount: 120,
+    totalAmount: 720,
+    status: "awaiting_payment",
+    issuedDate: "2024-11-01",
+    dueDate: "2024-11-30",
   },
 ];
 
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  const [currentView, setCurrentViewInternal] = useState<ScreenView>("landing");
-  const [selectedClientId, setSelectedClientIdInternal] = useState<string>("client-singh-family");
+  const [currentMode, setCurrentMode] = useState<AppMode>("client");
+  const [currentView, setCurrentView] = useState<ScreenView>("client_overview");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
+  const [selectedClientId, setSelectedClientId] = useState<string>("client-legacy-wealth");
   const [invoices, setInvoices] = useState<PracticeInvoice[]>(INITIAL_INVOICES);
-  const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>(INITIAL_LOGS);
+  const [communicationLogs, setCommunicationLogs] = useState<CommunicationLogItem[]>([]);
   const [mobileFrameEnabled, setMobileFrameEnabled] = useState<boolean>(false);
-  const [activeChaserDocumentId, setActiveChaserDocumentId] = useState<string | null>("doc-1");
-  const [toasts, setToasts] = useState<ToastNotification[]>([]);
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
+  const [activeChaserDocumentId, setActiveChaserDocumentId] = useState<string | null>(null);
   const [isIntakeModalOpen, setIsIntakeModalOpen] = useState<boolean>(false);
   const [intakeDefaultValues, setIntakeDefaultValues] = useState<Partial<IntakeSubmission> | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
   const [isCreateEntityModalOpen, setIsCreateEntityModalOpen] = useState<boolean>(false);
   const [isCreatePropertyModalOpen, setIsCreatePropertyModalOpen] = useState<boolean>(false);
   const [isCreateInvoiceModalOpen, setIsCreateInvoiceModalOpen] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = sessionStorage.getItem("kptc_auth_user") || sessionStorage.getItem("mercian_auth_user");
-        if (saved) return JSON.parse(saved);
-      } catch (e) {}
-    }
-    // Default partner demo profile in prototype mode
-    return {
-      email: "kalpesh@kptc.co.uk",
-      name: "Kalpesh Patel FCA",
-      role: "accountant",
-      firmName: "KP Tax Consultants Ltd",
-      isAuthenticated: true,
-      lastLogin: "Active Session",
-    };
-  });
+  const [toasts, setToasts] = useState<ToastNotification[]>([]);
 
-  // Derive active application mode
-  const currentMode: AppMode =
-    currentView === "landing"
-      ? "landing"
-      : ["radar", "pipeline", "workspace", "chaser", "statements", "invoicing", "wealth_advisory", "open_banking"].includes(currentView)
-      ? "accountant"
-      : "client";
+  // Active User Profile
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>({
+    email: "sukhpreet@legacywealth.co.uk",
+    name: "Sukhpreet Kaur",
+    role: "client",
+    firmName: "SUKHPREET KAUR LEGACY WEALTH LTD",
+    isAuthenticated: true,
+  });
 
   const activeClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
-  const missingDocumentsCount = clients.reduce(
-    (acc, client) => acc + client.documents.filter((d) => d.status === "pending").length,
-    0
-  );
-
-  const trackedPropertiesCount = clients.reduce(
-    (acc, client) => acc + (client.properties?.length || 0),
-    0
-  );
-
-  const unbilledWipTotal = clients.reduce((acc, client) => acc + client.unbilledWip, 0);
-
-  const metrics: PracticeMetrics = {
-    activeLandlordsCount: 42,
-    trackedPropertiesCount: 118,
-    missingDocumentsCount: missingDocumentsCount,
-    approachingDeadlinesCount: 7,
-    unbilledWipTotal: unbilledWipTotal,
-    averageCycleDays: 4.2,
-  };
-
-  const triggerToast = (title: string, message: string, type: "success" | "warning" | "info" = "success") => {
-    const id = `toast-${Date.now()}`;
+  const triggerToast = (title: string, message: string, type: "success" | "warning" | "info" = "info") => {
+    const id = "toast-" + Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, title, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -953,443 +594,107 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const setCurrentView = (view: ScreenView) => {
-    setCurrentViewInternal(view);
-    // Scroll smoothly to top on view changes
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const setSelectedClientId = (id: string) => {
-    setSelectedClientIdInternal(id);
-    const target = clients.find((c) => c.id === id);
-    if (target) {
-      if (currentMode === "client" || currentUser?.role === "client") {
-        const clientProfile: UserProfile = {
-          email: target.email,
-          name: target.primaryContact,
-          role: "client",
-          firmName: target.entityName,
-          isAuthenticated: true,
-          lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-        };
-        setCurrentUser(clientProfile);
-        if (typeof window !== "undefined") {
-          try {
-            sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-            localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-          } catch (e) {}
-        }
-      }
-      triggerToast(
-        "Active Portfolio Loaded",
-        `Switched to ${target.entityName} (${target.primaryContact}). Assigned to ${target.assignedAccountant}.`,
-        "info"
-      );
-    }
-  };
-
-  const openLoginModal = () => setIsLoginModalOpen(true);
-  const closeLoginModal = () => setIsLoginModalOpen(false);
-
-  const loginWithCredentials = async (
-    emailInput: string,
-    passwordInput: string
-  ): Promise<{ success: boolean; error?: string }> => {
-    const cleanEmail = emailInput.trim().toLowerCase();
-    const cleanPass = passwordInput.trim();
-
-    // 1. Admin Login for Practice Lead (Gurtej Singh)
-    if (
-      cleanEmail === "mercianwealthgs@gmail.com" &&
-      cleanPass === "Gurtej@2008#"
-    ) {
-      const adminProfile: UserProfile = {
-        email: "mercianwealthgs@gmail.com",
-        name: "Gurtej Singh",
-        role: "admin",
-        firmName: "KP Tax Consultants Ltd",
-        isAuthenticated: true,
-        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-      };
-      setCurrentUser(adminProfile);
-      if (typeof window !== "undefined") {
-        try {
-          sessionStorage.setItem("kptc_auth_user", JSON.stringify(adminProfile));
-          localStorage.setItem("kptc_auth_user", JSON.stringify(adminProfile));
-        } catch (e) {}
-      }
-      closeLoginModal();
-      setCurrentView("radar");
-      triggerToast(
-        "Practice Admin Authenticated",
-        "Welcome Gurtej Singh. Full KP Accountants practice radar and tools unlocked.",
-        "success"
-      );
-      return { success: true };
-    }
-
-    // 2. Staff / Partner Login (Kalpesh Patel FCA)
-    if (
-      (cleanEmail === "kalpesh@kptc.co.uk" || cleanEmail === "admin@kptc.co.uk") &&
-      (cleanPass === "Gurtej@2008#" || cleanPass === "admin123")
-    ) {
-      const staffProfile: UserProfile = {
-        email: cleanEmail,
-        name: "Kalpesh Patel FCA",
-        role: "accountant",
-        firmName: "KP Tax Consultants Ltd",
-        isAuthenticated: true,
-        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-      };
-      setCurrentUser(staffProfile);
-      closeLoginModal();
-      setCurrentView("radar");
-      triggerToast("Partner Portal Active", "Welcome back, Kalpesh Patel FCA.", "success");
-      return { success: true };
-    }
-
-    // 3. Client Portal Login (deepgurtej28@gmail.com with Gurtej@2008# or Marcus Sterling)
-    if (
-      (cleanEmail === "deepgurtej28@gmail.com" && cleanPass === "Gurtej@2008#") ||
-      (cleanEmail === "marcus.sterling@sterlingholdings.co.uk" && (cleanPass === "Gurtej@2008#" || cleanPass === "123456")) ||
-      (cleanEmail === "client@kptc.co.uk" && cleanPass === "Gurtej@2008#")
-    ) {
-      const isGurtejClient = cleanEmail === "deepgurtej28@gmail.com";
-      const clientProfile: UserProfile = {
-        email: cleanEmail,
-        name: isGurtejClient ? "Gurtej Singh (Portfolio Client)" : "Marcus & Sarah Sterling",
-        role: "client",
-        firmName: isGurtejClient ? "Sovereign Property Portfolio" : "Sterling Property Holdings",
-        isAuthenticated: true,
-        lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-      };
-      setCurrentUser(clientProfile);
-      if (typeof window !== "undefined") {
-        try {
-          sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-          localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-        } catch (e) {}
-      }
-      closeLoginModal();
-      setCurrentView("dropzone");
-      triggerToast(
-        "Client Dropzone Active",
-        `Welcome ${clientProfile.name}. 2024/25 tax year dropzone ready.`,
-        "info"
-      );
-      return { success: true };
-    }
-
-    triggerToast(
-      "Authentication Failed",
-      "Invalid credentials. Please verify your email and password.",
-      "warning"
-    );
-    return { success: false, error: "Invalid email or password. Please verify your credentials." };
-  };
-
-  const loginAsPartnerDemo = () => {
-    const partnerProfile: UserProfile = {
-      email: "kalpesh@kptc.co.uk",
-      name: "Kalpesh Patel FCA",
-      role: "accountant",
-      firmName: "KP Tax Consultants Ltd",
-      isAuthenticated: true,
-      lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-    };
-    setCurrentUser(partnerProfile);
-    if (typeof window !== "undefined") {
-      try {
-        sessionStorage.setItem("kptc_auth_user", JSON.stringify(partnerProfile));
-        localStorage.setItem("kptc_auth_user", JSON.stringify(partnerProfile));
-      } catch (e) {}
-    }
-    closeLoginModal();
-    setCurrentView("radar");
-    triggerToast(
-      "Partner Prototype Active",
-      "Welcome Kalpesh Patel FCA. Full Practice OS radar, P&L, CT600 & WIP unlocked.",
-      "success"
-    );
-  };
-
-  const loginAsClientDemo = (clientId: string = "client-singh-family") => {
-    const target = clients.find((c) => c.id === clientId) || clients[0];
-    const clientProfile: UserProfile = {
-      email: target.email,
-      name: target.primaryContact,
-      role: "client",
-      firmName: target.entityName,
-      isAuthenticated: true,
-      lastLogin: new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-    };
-    setSelectedClientIdInternal(target.id);
-    setCurrentUser(clientProfile);
-    if (typeof window !== "undefined") {
-      try {
-        sessionStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-        localStorage.setItem("kptc_auth_user", JSON.stringify(clientProfile));
-      } catch (e) {}
-    }
-    closeLoginModal();
-    setCurrentView("client_overview");
-    triggerToast(
-      "Landlord Prototype Active",
-      `Welcome ${target.primaryContact}. 2024/25 tax records ready for ${target.entityName}.`,
-      "info"
-    );
-  };
-
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen((prev) => !prev);
   };
 
-  const logout = () => {
-    setCurrentUser(null);
-    if (typeof window !== "undefined") {
-      try {
-        sessionStorage.removeItem("kptc_auth_user");
-        localStorage.removeItem("kptc_auth_user");
-        sessionStorage.removeItem("mercian_auth_user");
-        localStorage.removeItem("mercian_auth_user");
-      } catch (e) {}
-    }
-    exitToLanding();
-    triggerToast("Signed Out", "Prototype mode reset to public practice portal.", "info");
-  };
+  // Keyboard Shortcuts Listener (N: new bill, U: upload, P: add property, Esc: close)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts inside text inputs or textareas
+      const target = e.target as HTMLElement;
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName)) {
+        return;
+      }
 
+      if (e.key === "n" || e.key === "N") {
+        e.preventDefault();
+        if (currentMode === "client") {
+          setCurrentView("client_bills");
+          triggerToast("Keyboard Shortcut 'N'", "Jumped to Bills & Expense Logger", "info");
+        }
+      } else if (e.key === "u" || e.key === "U") {
+        e.preventDefault();
+        if (currentMode === "client") {
+          setCurrentView("dropzone");
+          triggerToast("Keyboard Shortcut 'U'", "Opened Mobile Document Dropzone", "info");
+        }
+      } else if (e.key === "p" || e.key === "P") {
+        e.preventDefault();
+        if (currentMode === "client") {
+          setCurrentView("client_properties");
+          triggerToast("Keyboard Shortcut 'P'", "Opened Property Portfolio Ledger", "info");
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentMode]);
+
+  // Mode Navigations
   const enterAccountantPortal = (targetView: ScreenView = "radar") => {
-    if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "accountant")) {
-      loginAsPartnerDemo();
-    }
-    closeLoginModal();
+    setCurrentMode("accountant");
     setCurrentView(targetView);
+    setCurrentUser({
+      email: "kalpesh@kptc.co.uk",
+      name: "Kalpesh Patel FCA",
+      role: "accountant",
+      firmName: "Mercian Wealth & Advisory",
+      isAuthenticated: true,
+    });
+    setMobileSidebarOpen(false);
   };
 
   const enterClientPortal = (targetView: ScreenView = "client_overview", clientId?: string) => {
-    const targetId = clientId || selectedClientId;
-    const target = clients.find((c) => c.id === targetId) || clients[0];
-    if (!currentUser || currentUser.role !== "client") {
-      loginAsClientDemo(targetId);
-    } else if (clientId && clientId !== selectedClientId) {
-      setSelectedClientId(clientId);
-    }
-    closeLoginModal();
+    if (clientId) setSelectedClientId(clientId);
+    setCurrentMode("client");
     setCurrentView(targetView);
+    setCurrentUser({
+      email: "sukhpreet@legacywealth.co.uk",
+      name: "Sukhpreet Kaur",
+      role: "client",
+      firmName: "SUKHPREET KAUR LEGACY WEALTH LTD",
+      isAuthenticated: true,
+    });
+    setMobileSidebarOpen(false);
   };
 
   const exitToLanding = () => {
+    setCurrentMode("landing");
     setCurrentView("landing");
+    setMobileSidebarOpen(false);
+  };
+
+  const loginWithCredentials = async (email: string) => {
+    if (email.toLowerCase().includes("sukhpreet") || email.toLowerCase().includes("client") || email.toLowerCase().includes("deepgurtej")) {
+      enterClientPortal("client_overview", "client-legacy-wealth");
+      triggerToast("Welcome Back, Sukhpreet", "Authenticated as Managing Director of SUKHPREET KAUR LEGACY WEALTH LTD.", "success");
+      return { success: true };
+    } else {
+      enterAccountantPortal("radar");
+      triggerToast("Chartered Accountant Console Active", "Authenticated as Senior Practice Partner.", "success");
+      return { success: true };
+    }
+  };
+
+  const loginAsPartnerDemo = () => enterAccountantPortal("radar");
+  const loginAsClientDemo = (clientId: string = "client-legacy-wealth") => enterClientPortal("client_overview", clientId);
+
+  const logout = () => {
+    setCurrentUser(null);
+    exitToLanding();
+    triggerToast("Logged Out", "You have securely exited the session.", "info");
   };
 
   const openIntakeModal = (defaultValues?: Partial<IntakeSubmission>) => {
-    if (defaultValues) setIntakeDefaultValues(defaultValues);
+    setIntakeDefaultValues(defaultValues || null);
     setIsIntakeModalOpen(true);
   };
 
-  const closeIntakeModal = () => {
-    setIsIntakeModalOpen(false);
-    setIntakeDefaultValues(null);
-  };
-
-  const addIntakeLead = async (submission: IntakeSubmission) => {
-    // Live synchronization with Supabase
-    try {
-      await supabase.from("clients").insert([
-        {
-          entity_name: submission.fullName,
-          entity_type: submission.entityType,
-          primary_email: submission.email,
-          primary_phone: submission.phone || "+44 7700 900812",
-          assigned_accountant: "Kalpesh Patel FCA",
-          status: "onboarding",
-        },
-      ]);
-    } catch (err) {
-      console.warn("Supabase client sync:", err);
-    }
-
-    const newId = `client-${Date.now()}`;
-    const newClient: LandlordClient = {
-      id: newId,
-      entityName: submission.fullName,
-      entityType: submission.entityType,
-      primaryContact: submission.fullName,
-      email: submission.email,
-      phone: submission.phone,
-      taxYear: "2024/25",
-      stage: "intake_submitted",
-      assignedAccountant: "Kalpesh Patel FCA",
-      unbilledWip: 1450,
-      totalRentalIncome: submission.annualRent || 36000,
-      chaseCount: 0,
-      parties: [
-        {
-          id: `party-${Date.now()}`,
-          fullName: submission.fullName,
-          role: "Primary Landlord",
-          email: submission.email,
-          phone: submission.phone,
-          utrNumber: "Pending Registration",
-          nationalInsurance: "Pending Verification",
-          idVerified: false,
-          addressVerified: false,
-        },
-      ],
-      properties: [
-        {
-          id: `prop-${Date.now()}`,
-          address: "1st Portfolio Asset (To be added)",
-          postcode: "Pending",
-          propertyType: "Residential BTL",
-          ownershipSplit: submission.entityType === "spv_ltd" ? "100% SPV Ltd" : "Individual",
-          annualRentalIncome: submission.annualRent || 36000,
-          outstandingMortgage: submission.mortgageInterest * 20 || 150000,
-        },
-      ],
-      documents: [
-        {
-          id: `doc-${Date.now()}-1`,
-          title: "Proof of Identification (Passport / Driving Licence)",
-          category: "id_aml",
-          ownerOrProperty: submission.fullName,
-          status: "pending",
-          isOverdue: false,
-          dueDate: "2026-11-01",
-          notes: "Required for ICAEW statutory Anti-Money Laundering verification",
-        },
-        {
-          id: `doc-${Date.now()}-2`,
-          title: "Mortgage Interest Annual Statement",
-          category: "mortgage",
-          ownerOrProperty: "Primary Rental Property",
-          status: "pending",
-          isOverdue: false,
-          dueDate: "2026-11-05",
-          notes: "Needed to calculate Section 24 deduction",
-        },
-      ],
-    };
-
-    setClients((prev) => [newClient, ...prev]);
-    setSelectedClientId(newId);
-    closeIntakeModal();
-
-    // Switch to accountant pipeline so user sees the new lead instantly
-    setCurrentView("pipeline");
-
-    triggerToast(
-      "New Landlord Enquiry Captured",
-      `${submission.fullName} has been added to the Accountant Pipeline under 'Intake Submitted'. Document checklist generated automatically.`
-    );
-  };
-
-  const uploadDocument = async (clientId: string, documentId: string, customFileName?: string) => {
-    // Live synchronization with Supabase
-    try {
-      await supabase
-        .from("document_requests")
-        .update({
-          status: "verified",
-          is_overdue: false,
-          file_name: customFileName || "uploaded_cert.pdf",
-          uploaded_at: new Date().toISOString(),
-        })
-        .eq("id", documentId);
-    } catch (err) {
-      console.warn("Supabase document sync:", err);
-    }
-
-    setClients((prev) =>
-      prev.map((c) => {
-        if (c.id !== clientId) return c;
-        const updatedDocs = c.documents.map((d) => {
-          if (d.id !== documentId) return d;
-          return {
-            ...d,
-            status: "verified" as const,
-            isOverdue: false,
-            uploadedAt: "Just now (Mobile Upload)",
-            fileSize: "2.1 MB JPG",
-            fileStoragePath: customFileName || "natwest_cert_2024_25_signed.pdf",
-          };
-        });
-
-        const pendingCount = updatedDocs.filter((d) => d.status === "pending").length;
-        const updatedStage = pendingCount === 0 ? ("review_ready" as const) : c.stage;
-
-        return {
-          ...c,
-          documents: updatedDocs,
-          stage: updatedStage,
-        };
-      })
-    );
-
-    triggerToast(
-      "Document Uploaded & Verified",
-      "The missing certificate has been uploaded to the encrypted storage vault. The Partner Radar has updated in real time."
-    );
-  };
-
-  const sendChaser = async (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => {
-    const targetClient = clients.find((c) => c.id === clientId) || activeClient;
-    const recipient =
-      channel === "whatsapp" || channel === "sms" ? targetClient.phone : targetClient.email;
-
-    // Live synchronization with Supabase
-    try {
-      await supabase.from("communication_logs").insert([
-        {
-          client_id: targetClient.id.startsWith("client-") ? undefined : targetClient.id,
-          channel,
-          recipient,
-          message_body:
-            customMessage ||
-            `Hi ${targetClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your ${targetClient.taxYear} property tax return. Please upload your missing documents via your secure portal.`,
-          triggered_by: targetClient.assignedAccountant,
-          status: "sent",
-        },
-      ]);
-    } catch (err) {
-      console.warn("Supabase communication log sync:", err);
-    }
-
-    const newLog: CommunicationLogItem = {
-      id: `log-${Date.now()}`,
-      clientId: targetClient.id,
-      entityName: targetClient.entityName,
-      channel,
-      recipient,
-      messageBody:
-        customMessage ||
-        `Hi ${targetClient.primaryContact.split(" ")[0]}, Kalpesh here from KP Accountants. We are finalizing your 2024/25 property tax return. Please upload your missing documents via your secure portal.`,
-      sentAt: "Just now",
-      status: "delivered",
-      triggeredBy: targetClient.assignedAccountant,
-    };
-
-    setCommunicationLogs((prev) => [newLog, ...prev]);
-
-    setClients((prev) =>
-      prev.map((c) => {
-        if (c.id !== targetClient.id) return c;
-        return {
-          ...c,
-          chaseCount: c.chaseCount + 1,
-          lastChasedAt: "Just now",
-        };
-      })
-    );
-
-    triggerToast(
-      `Reminder Sent via ${channel.toUpperCase()}`,
-      `Sent to ${targetClient.primaryContact} (${recipient}). Activity trail updated.`
-    );
-  };
-
+  const closeIntakeModal = () => setIsIntakeModalOpen(false);
+  const openLoginModal = () => setIsLoginModalOpen(true);
+  const closeLoginModal = () => setIsLoginModalOpen(false);
   const openCreateEntityModal = () => setIsCreateEntityModalOpen(true);
   const closeCreateEntityModal = () => setIsCreateEntityModalOpen(false);
   const openCreatePropertyModal = () => setIsCreatePropertyModalOpen(true);
@@ -1397,213 +702,134 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const openCreateInvoiceModal = () => setIsCreateInvoiceModalOpen(true);
   const closeCreateInvoiceModal = () => setIsCreateInvoiceModalOpen(false);
 
-  const addNewClient = async (input: NewClientInput) => {
-    const newId = `client-${Date.now()}`;
+  const addIntakeLead = (submission: IntakeSubmission) => {
+    const newId = "client-" + Math.random().toString(36).substring(2, 7);
     const newClient: LandlordClient = {
       id: newId,
-      entityName: input.entityName,
-      entityType: input.entityType,
-      companyNumber: input.companyNumber,
-      primaryContact: input.primaryContact,
-      email: input.email,
-      phone: input.phone,
+      entityName: `${submission.fullName} ${submission.entityType === "spv_ltd" ? "SPV Ltd" : "Property"}`,
+      entityType: submission.entityType,
+      primaryContact: submission.fullName,
+      email: submission.email,
+      phone: submission.phone,
       taxYear: "2024/25",
-      stage: "chasing_docs",
-      assignedAccountant: input.assignedAccountant,
-      unbilledWip: 1850,
-      totalRentalIncome: input.annualRent,
+      stage: "intake_submitted",
+      assignedAccountant: "Kalpesh Patel FCA",
+      unbilledWip: 500,
+      totalRentalIncome: submission.annualRent || 24000,
       chaseCount: 0,
       parties: [
         {
-          id: `party-${Date.now()}`,
-          fullName: input.primaryContact,
-          role: input.entityType === "spv_ltd" ? "Company Director" : "Primary Landlord",
-          email: input.email,
-          phone: input.phone,
-          utrNumber: `${Math.floor(10000 + Math.random() * 90000)} ${Math.floor(10000 + Math.random() * 90000)}`,
-          nationalInsurance: "AB 12 34 56 C",
-          idVerified: true,
+          id: "p-" + newId,
+          fullName: submission.fullName,
+          role: submission.entityType === "spv_ltd" ? "Company Director" : "Primary Landlord",
+          email: submission.email,
+          phone: submission.phone,
+          utrNumber: "Pending HMRC",
+          nationalInsurance: "Pending",
+          idVerified: false,
           addressVerified: false,
         },
       ],
       properties: [
         {
-          id: `prop-${Date.now()}`,
-          address: "Primary Registered Asset, London",
-          postcode: "WC2A 2JR",
+          id: "prop-" + newId,
+          address: "Portfolio Acquisition Property, UK",
+          postcode: "B1 1AA",
           propertyType: "Residential BTL",
-          ownershipSplit: input.entityType === "spv_ltd" ? "100% SPV Ltd" : "Individual",
-          annualRentalIncome: input.annualRent,
-          outstandingMortgage: Math.round(input.annualRent * 6),
+          ownershipSplit: submission.entityType === "spv_ltd" ? "100% SPV Ltd" : "Individual",
+          annualRentalIncome: submission.annualRent || 24000,
         },
       ],
-      documents: [
-        {
-          id: `doc-${Date.now()}-1`,
-          title: "Proof of Address (Utility Bill / Council Tax)",
-          category: "id_aml",
-          ownerOrProperty: input.primaryContact,
-          status: "pending",
-          isOverdue: false,
-          dueDate: "2026-11-15",
-          notes: "ICAEW statutory AML verification requirement",
-        },
-        {
-          id: `doc-${Date.now()}-2`,
-          title: "Mortgage Interest Annual Statement",
-          category: "mortgage",
-          ownerOrProperty: "Primary Registered Asset",
-          status: "pending",
-          isOverdue: false,
-          dueDate: "2026-11-20",
-          notes: "Required for Section 24 mortgage interest relief claim",
-        },
-      ],
+      documents: [],
+      bills: [],
     };
 
     setClients((prev) => [newClient, ...prev]);
     setSelectedClientId(newId);
-    closeCreateEntityModal();
-
-    // Live sync to Supabase
-    try {
-      await supabase.from("clients").insert([
-        {
-          entity_name: input.entityName,
-          entity_type: input.entityType,
-          company_number: input.companyNumber,
-          primary_email: input.email,
-          primary_phone: input.phone,
-          assigned_accountant: input.assignedAccountant,
-          status: "chasing_docs",
-        },
-      ]);
-    } catch (err) {
-      console.warn("Supabase client creation:", err);
-    }
-
-    triggerToast(
-      "New Client Entity Created",
-      `${input.entityName} successfully added to Practice Registry. Compliance checklist initialized.`,
-      "success"
-    );
+    triggerToast("Lead Enrolled", `${submission.fullName} added to practice pipeline.`, "success");
+    closeIntakeModal();
   };
 
-  const addNewProperty = (clientId: string, input: NewPropertyInput) => {
-    const newProp: PropertyItem = {
-      id: `prop-${Date.now()}`,
-      address: input.address,
-      postcode: input.postcode,
-      propertyType: input.propertyType,
-      ownershipSplit: input.ownershipSplit,
-      annualRentalIncome: input.annualRentalIncome,
-      mortgageLender: input.mortgageLender || "Barclays Commercial",
-      outstandingMortgage: input.outstandingMortgage || 200000,
-    };
-
+  const uploadDocument = (clientId: string, documentId: string, customFileName?: string) => {
     setClients((prev) =>
       prev.map((c) => {
         if (c.id !== clientId) return c;
         return {
           ...c,
-          properties: [...c.properties, newProp],
-          totalRentalIncome: c.totalRentalIncome + input.annualRentalIncome,
+          documents: c.documents.map((d) =>
+            d.id === documentId
+              ? {
+                  ...d,
+                  status: "verified" as const,
+                  isOverdue: false,
+                  uploadedAt: new Date().toISOString().split("T")[0],
+                  fileSize: "1.2 MB PDF",
+                  title: customFileName ? `${d.title} (${customFileName})` : d.title,
+                }
+              : d
+          ),
         };
       })
     );
-    closeCreatePropertyModal();
-
-    triggerToast(
-      "Property Asset Added",
-      `${input.address} registered to portfolio schedule. Rental yield recalculated.`,
-      "success"
-    );
+    triggerToast("Document Secured", "File encrypted & synced to vault.", "success");
   };
 
-  const createPracticeInvoice = (input: NewInvoiceInput) => {
-    const targetClient = clients.find((c) => c.id === input.clientId) || activeClient;
-    const vat = Math.round(input.netAmount * 0.2);
-    const newInv: PracticeInvoice = {
-      id: `inv-${Date.now()}`,
-      invoiceNumber: `KP-2024-${Math.floor(100 + Math.random() * 900)}`,
-      clientId: targetClient.id,
-      entityName: targetClient.entityName,
-      serviceDescription: input.serviceDescription,
-      netAmount: input.netAmount,
-      vatAmount: vat,
-      totalAmount: input.netAmount + vat,
-      status: "awaiting_payment",
-      issuedDate: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
-      dueDate: input.dueDate,
+  const sendChaser = (clientId: string, channel: "whatsapp" | "sms" | "email", customMessage?: string) => {
+    const target = clients.find((c) => c.id === clientId);
+    if (!target) return;
+
+    const newLog: CommunicationLogItem = {
+      id: "log-" + Math.random().toString(36).substring(2, 7),
+      clientId,
+      entityName: target.entityName,
+      channel,
+      recipient: channel === "email" ? target.email : target.phone,
+      messageBody: customMessage || `Action Required: Please submit outstanding compliance documents for ${target.taxYear}.`,
+      sentAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      status: "delivered",
+      triggeredBy: "Mercian Automated Chaser Engine",
     };
 
-    setInvoices((prev) => [newInv, ...prev]);
-    closeCreateInvoiceModal();
-
-    triggerToast(
-      "VAT Fee Note Issued",
-      `Invoice ${newInv.invoiceNumber} for £${newInv.totalAmount.toLocaleString()} generated for ${targetClient.entityName}.`,
-      "success"
+    setCommunicationLogs((prev) => [newLog, ...prev]);
+    setClients((prev) =>
+      prev.map((c) =>
+        c.id === clientId ? { ...c, chaseCount: c.chaseCount + 1, lastChasedAt: `Chased just now via ${channel.toUpperCase()}` } : c
+      )
     );
-  };
-
-  const settleInvoice = (invoiceId: string) => {
-    setInvoices((prev) =>
-      prev.map((inv) => {
-        if (inv.id !== invoiceId) return inv;
-        return {
-          ...inv,
-          status: "paid" as const,
-          paidAt: `Today at ${new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })} via BACS`,
-        };
-      })
-    );
-
-    triggerToast(
-      "Fee Note Settled",
-      "Payment reconciled. Practice Collected Revenue increased and WIP ledger updated.",
-      "success"
-    );
+    triggerToast("Chaser Dispatched", `Notification delivered via ${channel.toUpperCase()} to ${target.primaryContact}.`, "success");
   };
 
   const addNewBill = (clientId: string, input: NewBillInput) => {
     const newBill: PropertyBillItem = {
-      id: `bill-${Date.now()}`,
+      id: "bill-" + Math.random().toString(36).substring(2, 8),
       title: input.title,
       category: input.category,
       vendorOrRecipient: input.vendorOrRecipient,
       amount: input.amount,
       frequency: input.frequency,
-      isAllowableExpense: !input.isSection24Restricted,
+      isAllowableExpense: true,
       isSection24Restricted: input.isSection24Restricted,
       propertyAddress: input.propertyAddress,
       dueDate: input.dueDate,
-      paidDate: input.status === "paid" ? new Date().toISOString().split("T")[0] : undefined,
       status: input.status,
       receiptAttached: true,
-      receiptName: `${input.title.toLowerCase().replace(/[^a-z0-9]/g, "_")}_voucher.pdf`,
+      receiptName: `${input.title.toLowerCase().replace(/\s+/g, "_")}.pdf`,
       taxYear: "2024/25",
       hmrcBoxNote: input.isSection24Restricted
-        ? "Section 24 Residential Finance Costs (Box 44)"
-        : "Allowable Property Expenses (Box 24-29)",
+        ? "100% Allowable Corporate Finance Cost (CT600 Box 155)"
+        : "Allowable Revenue Expense (CT600 Box 155)",
     };
 
     setClients((prev) =>
       prev.map((c) => {
         if (c.id !== clientId) return c;
-        const currentBills = c.bills || [];
         return {
           ...c,
-          bills: [newBill, ...currentBills],
+          bills: [newBill, ...(c.bills || [])],
         };
       })
     );
-
-    triggerToast(
-      "Bill & Expense Logged",
-      `Added £${input.amount.toFixed(2)} for ${input.title}. Categorized for HMRC Self-Assessment.`,
-      "success"
-    );
+    triggerToast("Bill Logged", `£${input.amount.toFixed(2)} recorded for ${input.title}.`, "success");
   };
 
   const deleteBill = (clientId: string, billId: string) => {
@@ -1616,30 +842,251 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         };
       })
     );
-    triggerToast("Bill Removed", "Expense item deleted from portfolio ledger.", "info");
+    triggerToast("Bill Removed", "Expense entry deleted from ledger.", "info");
+  };
+
+  const addDlaEntry = (clientId: string, entry: Omit<DlaEntry, "id">) => {
+    const newEntry: DlaEntry = {
+      id: "dla-" + Math.random().toString(36).substring(2, 8),
+      ...entry,
+    };
+
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        const netChange = entry.credit - entry.debit;
+        const currentBalance = c.dlaBalance || 0;
+        return {
+          ...c,
+          dlaBalance: currentBalance + netChange,
+          dlaEntries: [newEntry, ...(c.dlaEntries || [])],
+        };
+      })
+    );
+    triggerToast("DLA Entry Recorded", `Director Loan Account updated by £${(entry.credit - entry.debit).toLocaleString()}.`, "success");
+  };
+
+  const addMileageLog = (clientId: string, log: Omit<MileageLog, "id" | "totalClaim">) => {
+    const totalClaim = Math.round(log.miles * log.ratePerMile * 100) / 100;
+    const newLog: MileageLog = {
+      id: "mile-" + Math.random().toString(36).substring(2, 8),
+      ...log,
+      totalClaim,
+    };
+
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        // Also credit to DLA if enabled
+        const newDlaBalance = (c.dlaBalance || 0) + (log.isCreditedToDla ? totalClaim : 0);
+        const autoDlaEntry: DlaEntry | null = log.isCreditedToDla
+          ? {
+              id: "dla-mile-" + Math.random().toString(36).substring(2, 8),
+              date: log.date,
+              description: `HMRC Mileage Claim (${log.miles} miles @ £${log.ratePerMile}/mile): ${log.purpose}`,
+              credit: totalClaim,
+              debit: 0,
+              category: "mileage_reimbursement",
+            }
+          : null;
+
+        return {
+          ...c,
+          dlaBalance: newDlaBalance,
+          mileageLogs: [newLog, ...(c.mileageLogs || [])],
+          dlaEntries: autoDlaEntry ? [autoDlaEntry, ...(c.dlaEntries || [])] : c.dlaEntries,
+        };
+      })
+    );
+    triggerToast("Mileage Logged", `${log.miles} miles logged (£${totalClaim.toFixed(2)} credited to DLA).`, "success");
+  };
+
+  const verifyBillOrDocument = (clientId: string, itemId: string, itemType: "bill" | "document") => {
+    setClients((prev) =>
+      prev.map((c) => {
+        if (c.id !== clientId) return c;
+        if (itemType === "bill") {
+          return {
+            ...c,
+            bills: (c.bills || []).map((b) => (b.id === itemId ? { ...b, status: "paid" as const } : b)),
+          };
+        } else {
+          return {
+            ...c,
+            documents: c.documents.map((d) => (d.id === itemId ? { ...d, status: "verified" as const } : d)),
+          };
+        }
+      })
+    );
+    triggerToast("Accountant Verified", "Entry signed off and marked compliance-ready.", "success");
+  };
+
+  const generateTaxPackage = (clientId: string, taxYear: string = "2024/25") => {
+    const client = clients.find((c) => c.id === clientId);
+    if (!client) return;
+
+    const bills = client.bills || [];
+    const turnover = client.totalRentalIncome;
+    const mortgageInterest = bills.filter((b) => b.category === "mortgage_interest").reduce((a, b) => a + b.amount, 0) || 20280;
+    const allowableExpenses = bills.filter((b) => b.category !== "mortgage_interest" && b.isAllowableExpense).reduce((a, b) => a + b.amount, 0) || 6420;
+    const operatingProfit = turnover - mortgageInterest - allowableExpenses;
+    const ctTax = Math.round(operatingProfit * 0.19);
+
+    const newPkg: TaxPackage = {
+      id: "pkg-" + Math.random().toString(36).substring(2, 8),
+      taxYear,
+      periodStart: "2024-04-06",
+      periodEnd: "2025-04-05",
+      totalRentalTurnover: turnover,
+      totalAllowableExpenses: allowableExpenses,
+      totalMortgageInterest: mortgageInterest,
+      operatingProfit,
+      estimatedCorporationTax: ctTax,
+      netRetainedProfit: operatingProfit - ctTax,
+      dlaClosingBalance: client.dlaBalance || 134625,
+      status: "ready_for_accountant",
+      createdAt: new Date().toISOString().split("T")[0],
+    };
+
+    setClients((prev) =>
+      prev.map((c) => (c.id === clientId ? { ...c, taxPackages: [newPkg, ...(c.taxPackages || [])] } : c))
+    );
+    triggerToast("Tax Pack Compiled", `CT600 & Financial Summary for ${taxYear} generated successfully.`, "success");
+  };
+
+  const downloadAccountantCsvPack = (clientId: string) => {
+    const client = clients.find((c) => c.id === clientId);
+    if (!client) return;
+
+    // Build Transactions CSV
+    const rows = [
+      ["Date", "Description", "Category", "Amount", "Section24 Restrict", "Receipt Attached", "HMRC Note"],
+      ...(client.bills || []).map((b) => [
+        b.dueDate,
+        `"${b.title}"`,
+        b.category,
+        b.amount,
+        b.isSection24Restricted ? "YES" : "NO",
+        b.receiptAttached ? "YES" : "NO",
+        `"${b.hmrcBoxNote || ""}"`,
+      ]),
+    ];
+
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map((e) => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${client.entityName.replace(/\s+/g, "_")}_Transactions_${client.taxYear.replace("/", "-")}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    triggerToast("Download Started", "Accountant transaction schedule CSV exported.", "success");
   };
 
   const exportAuditCsv = () => {
-    if (typeof window !== "undefined") {
-      window.location.href = "/api/export?type=csv";
-    }
-    triggerToast(
-      "Practice Audit CSV Exported",
-      "Downloaded full portfolio breakdown, missing compliance items, and WIP totals for Karbon/Xero integration.",
-      "success"
+    downloadAccountantCsvPack(selectedClientId);
+  };
+
+  const addNewClient = (input: NewClientInput) => {
+    const newId = "client-" + Math.random().toString(36).substring(2, 7);
+    const newClient: LandlordClient = {
+      id: newId,
+      entityName: input.entityName,
+      entityType: input.entityType,
+      companyNumber: input.companyNumber,
+      primaryContact: input.primaryContact,
+      email: input.email,
+      phone: input.phone,
+      taxYear: "2024/25",
+      stage: "intake_submitted",
+      assignedAccountant: input.assignedAccountant,
+      unbilledWip: 650,
+      totalRentalIncome: input.annualRent || 18000,
+      chaseCount: 0,
+      parties: [],
+      properties: [],
+      documents: [],
+      bills: [],
+    };
+    setClients((prev) => [newClient, ...prev]);
+    setSelectedClientId(newId);
+    triggerToast("Entity Created", `${input.entityName} added to multi-entity directory.`, "success");
+  };
+
+  const addNewProperty = (clientId: string, input: NewPropertyInput) => {
+    const newProp: PropertyItem = {
+      id: "prop-" + Math.random().toString(36).substring(2, 7),
+      address: input.address,
+      postcode: input.postcode,
+      propertyType: input.propertyType,
+      ownershipSplit: input.ownershipSplit,
+      annualRentalIncome: input.annualRentalIncome,
+      mortgageLender: input.mortgageLender,
+      outstandingMortgage: input.outstandingMortgage,
+      isSpvHeld: true,
+      currentValuation: Math.round(input.annualRentalIncome * 16),
+      monthlyRent: Math.round(input.annualRentalIncome / 12),
+      monthlyMortgagePayment: Math.round((input.outstandingMortgage || 100000) * 0.0055),
+      monthlyMortgageInterest: Math.round((input.outstandingMortgage || 100000) * 0.0048),
+      netYield: 6.5,
+    };
+
+    setClients((prev) =>
+      prev.map((c) =>
+        c.id === clientId
+          ? {
+              ...c,
+              properties: [...c.properties, newProp],
+              totalRentalIncome: c.totalRentalIncome + input.annualRentalIncome,
+            }
+          : c
+      )
     );
+    triggerToast("Property Added", `${input.address} registered into portfolio ledger.`, "success");
+  };
+
+  const createPracticeInvoice = (input: NewInvoiceInput) => {
+    const target = clients.find((c) => c.id === input.clientId);
+    const vat = Math.round(input.netAmount * 0.2 * 100) / 100;
+    const newInv: PracticeInvoice = {
+      id: "inv-" + Math.random().toString(36).substring(2, 7),
+      invoiceNumber: `INV-2024-${invoices.length + 10}`,
+      clientId: input.clientId,
+      entityName: target?.entityName || "Client Entity",
+      serviceDescription: input.serviceDescription,
+      netAmount: input.netAmount,
+      vatAmount: vat,
+      totalAmount: input.netAmount + vat,
+      status: "awaiting_payment",
+      issuedDate: new Date().toISOString().split("T")[0],
+      dueDate: input.dueDate,
+    };
+    setInvoices((prev) => [newInv, ...prev]);
+    triggerToast("Invoice Issued", `Invoice ${newInv.invoiceNumber} created for £${newInv.totalAmount.toFixed(2)}.`, "success");
+  };
+
+  const settleInvoice = (invoiceId: string) => {
+    setInvoices((prev) =>
+      prev.map((i) => (i.id === invoiceId ? { ...i, status: "paid" as const, paidAt: new Date().toISOString().split("T")[0] } : i))
+    );
+    triggerToast("Invoice Settled", "Payment recorded into practice ledger.", "success");
   };
 
   const resetDemoState = () => {
     setClients(INITIAL_CLIENTS);
-    setCommunicationLogs(INITIAL_LOGS);
-    setSelectedClientId("client-sterling");
-    setActiveChaserDocumentId("doc-1");
-    triggerToast(
-      "Practice Data Refreshed",
-      "All active landlord accounts, property schedules, and document checklists have been re-synchronized.",
-      "info"
-    );
+    setSelectedClientId("client-legacy-wealth");
+    setInvoices(INITIAL_INVOICES);
+    triggerToast("State Reset", "All data returned to initial prototype baseline.", "info");
+  };
+
+  const metrics: PracticeMetrics = {
+    activeLandlordsCount: clients.length,
+    trackedPropertiesCount: clients.reduce((acc, c) => acc + c.properties.length, 0),
+    missingDocumentsCount: clients.reduce((acc, c) => acc + c.documents.filter((d) => d.status === "pending").length, 0),
+    approachingDeadlinesCount: 3,
+    unbilledWipTotal: clients.reduce((acc, c) => acc + c.unbilledWip, 0),
+    averageCycleDays: 4.8,
   };
 
   return (
@@ -1701,6 +1148,11 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         isMobileSidebarOpen,
         setMobileSidebarOpen,
         toggleMobileSidebar,
+        addDlaEntry,
+        addMileageLog,
+        verifyBillOrDocument,
+        generateTaxPackage,
+        downloadAccountantCsvPack,
       }}
     >
       {children}

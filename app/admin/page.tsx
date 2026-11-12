@@ -6,7 +6,6 @@ import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import PortalSidebar from "@/components/shared/PortalSidebar";
-import EnvironmentSwitcherBar from "@/components/shared/EnvironmentSwitcherBar";
 import LiveRoleDock from "@/components/shared/LiveRoleDock";
 import PartnerRadar from "@/components/admin/PartnerRadar";
 import LandlordPipeline from "@/components/admin/LandlordPipeline";
@@ -17,13 +16,13 @@ import PracticeInvoicingHub from "@/components/admin/PracticeInvoicingHub";
 import WealthAdvisoryHub from "@/components/admin/WealthAdvisoryHub";
 import OpenBankingHub from "@/components/admin/OpenBankingHub";
 import CreateEntityModal from "@/components/admin/CreateEntityModal";
-import { Lock, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
+import { Lock, ShieldCheck, ArrowRight, AlertCircle, Eye, EyeOff, Crown } from "lucide-react";
 
 export default function AdminPage() {
-  const { currentView, setCurrentView, currentUser, loginWithCredentials, loginAsPartnerDemo } = useDemoStore();
+  const { currentView, setCurrentView, currentUser, loginWithCredentials, loginAsPartnerDemo, activeClient } = useDemoStore();
 
   const [email, setEmail] = useState<string>("kalpesh@kptc.co.uk");
-  const [password, setPassword] = useState<string>("admin123");
+  const [password, setPassword] = useState<string>("Partner@2024#");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -60,153 +59,130 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-obsidian-500 text-neutral-100 flex flex-col justify-between">
       <ToastContainer />
-      <EnvironmentSwitcherBar />
       <Navbar />
 
       {!isAuthenticated ? (
         <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-          <div className="accountant-card max-w-md w-full p-6 sm:p-8 bg-white space-y-6 shadow-xl rounded-2xl border border-neutral-200">
+          <div className="accountant-card max-w-md w-full p-6 sm:p-8 bg-cardSurface border border-gold/30 space-y-6 shadow-2xl rounded-2xl">
             <div className="text-center space-y-2">
-              <img
-                src="/logo.png"
-                alt="KP Tax Consultants Official Emblem"
-                width={140}
-                height={40}
-                className="h-11 w-auto object-contain mx-auto"
-              />
-              <h1 className="text-xl font-extrabold text-neutral-900 tracking-tight">
-                KP Accountants Practice OS
+              <span className="text-xs font-bold text-gold uppercase tracking-wider block font-crest">
+                MERCIAN WEALTH TAX & LEDGER
+              </span>
+              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                Chartered Practice Console
               </h1>
-              <p className="text-xs text-neutral-500">
-                UK Practice Cockpit &bull; Kalpesh Patel FCA &bull; ICAEW Regulated
+              <p className="text-xs text-neutral-400">
+                Senior Partner Review &bull; Kalpesh Patel FCA &bull; ICAEW Regulated
               </p>
             </div>
 
-            {/* 1-Click Prototype Review Access for KPTC Accountants */}
-            <div className="bg-amber-50 border border-amber-200/90 rounded-xl p-3.5 space-y-2">
+            {/* 1-Click Instant Access */}
+            <div className="bg-gold/10 border border-gold/30 rounded-xl p-3.5 space-y-2">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-amber-950 flex items-center space-x-1.5">
-                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                  <span>KPTC Partner Review Mode</span>
+                <span className="font-bold text-gold flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+                  <span>Partner Instant Prototype Mode</span>
                 </span>
-                <span className="text-[10px] font-bold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold text-obsidian bg-gold px-2 py-0.5 rounded">
                   Instant
                 </span>
               </div>
-              <p className="text-[11px] text-amber-800">
-                Bypass manual passwords and enter Practice OS immediately as senior partner.
+              <p className="text-[11px] text-neutral-300">
+                Bypass manual passwords and enter Practice Console immediately as senior partner.
               </p>
               <button
                 type="button"
-                onClick={loginAsPartnerDemo}
-                className="w-full py-2.5 px-3 rounded-lg bg-neutral-900 text-amber-300 hover:bg-neutral-800 font-bold text-xs flex items-center justify-center space-x-2 shadow-sm transition active:scale-95"
+                onClick={() => loginAsPartnerDemo()}
+                className="w-full py-2.5 px-3 rounded-lg bg-gold hover:bg-gold-hover text-obsidian font-bold text-xs flex items-center justify-between shadow-gold transition active:scale-95"
               >
-                <span>⚡ Enter as Partner (Kalpesh Patel FCA)</span>
-                <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+                <span>Enter as Senior Partner (Kalpesh Patel FCA)</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            {errorMessage && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-2 text-xs text-red-700 animate-in fade-in">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleLogin} className="space-y-4">
+            {/* Login Form */}
+            <form onSubmit={handleLogin} className="space-y-4 text-xs">
               <div>
-                <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Practice Work Email
+                <label className="block text-neutral-300 font-semibold mb-1">
+                  Practitioner Email
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. name@firm.co.uk"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-medium"
+                  placeholder="kalpesh@kptc.co.uk"
+                  className="w-full px-3 py-2.5 rounded-lg bg-obsidian-400 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold"
                 />
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-neutral-700">
-                    Master Password
-                  </label>
+                <label className="block text-neutral-300 font-semibold mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full px-3 py-2.5 rounded-lg bg-obsidian-400 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-gold pr-10"
+                  />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] text-neutral-500 hover:text-neutral-700 flex items-center space-x-1"
+                    className="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-200"
                   >
-                    {showPassword ? (
-                      <>
-                        <EyeOff className="w-3 h-3" />
-                        <span>Hide</span>
-                      </>
-                    ) : (
-                      <>
-                        <Eye className="w-3 h-3" />
-                        <span>Show</span>
-                      </>
-                    )}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="w-full px-3 py-2.5 text-xs border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none font-mono"
-                />
               </div>
+
+              {errorMessage && (
+                <div className="p-3 rounded-lg bg-ruby/15 border border-ruby/30 text-ruby text-xs flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 bg-primary hover:bg-neutral-800 text-white font-semibold text-xs rounded-lg shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
+                className="w-full py-2.5 px-4 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-xs transition border border-neutral-700 flex items-center justify-center space-x-2"
               >
-                {isSubmitting ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <Lock className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Unlock Practice Cockpit</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </>
-                )}
+                <Lock className="w-3.5 h-3.5 text-gold" />
+                <span>{isSubmitting ? "Authenticating..." : "Sign In to Practice OS"}</span>
               </button>
             </form>
-
-            <div className="pt-2 border-t border-neutral-100 flex items-center justify-center space-x-1.5 text-[11px] text-neutral-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>TLS 1.3 Encrypted &bull; London AWS / Supabase Node</span>
-            </div>
           </div>
         </div>
       ) : (
-        <div className="flex-1 w-full max-w-[1600px] mx-auto flex">
+        <div className="flex-1 flex max-w-7xl w-full mx-auto">
+          {/* Permanent Desktop Sidebar */}
           <PortalSidebar />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-x-hidden">
+
+          {/* Main Content Area */}
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            {currentView === "radar" && <PartnerRadar />}
             {currentView === "pipeline" && <LandlordPipeline />}
-            {currentView === "statements" && <FinancialStatementsHub />}
-            {currentView === "invoicing" && <PracticeInvoicingHub />}
-            {currentView === "open_banking" && <OpenBankingHub />}
-            {currentView === "wealth_advisory" && <WealthAdvisoryHub />}
             {currentView === "workspace" && <PropertyWorkspace />}
             {currentView === "chaser" && <ChaserView />}
-            {(currentView === "radar" || !["pipeline", "statements", "invoicing", "open_banking", "wealth_advisory", "workspace", "chaser"].includes(currentView)) && (
-              <PartnerRadar />
-            )}
+            {currentView === "statements" && <FinancialStatementsHub />}
+            {currentView === "invoicing" && <PracticeInvoicingHub />}
+            {currentView === "wealth_advisory" && <WealthAdvisoryHub />}
+            {currentView === "open_banking" && <OpenBankingHub />}
           </main>
         </div>
       )}
 
-      <Footer />
-      <CreateEntityModal />
+      {/* Floating Role Dock */}
       <LiveRoleDock />
+
+      <CreateEntityModal />
+      <Footer />
     </div>
   );
 }

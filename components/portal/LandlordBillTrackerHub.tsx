@@ -3,32 +3,35 @@
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { BillCategory, PropertyBillItem, NewBillInput } from "@/lib/types";
-import UserNextStepBar from "@/components/shared/UserNextStepBar";
 import {
   Receipt,
   Plus,
   Printer,
-  FileSpreadsheet,
   CheckCircle2,
-  AlertTriangle,
-  Clock,
   Trash2,
   Building2,
   Calendar,
   PoundSterling,
   ShieldCheck,
-  ArrowRight,
-  Filter,
-  ExternalLink,
+  Coins,
+  Sparkles,
+  UploadCloud,
   X,
   FileText,
+  Filter,
+  ArrowRight,
+  Download,
 } from "lucide-react";
 
 export default function LandlordBillTrackerHub() {
-  const { activeClient, addNewBill, deleteBill, triggerToast, setCurrentView } = useDemoStore();
+  const { activeClient, addNewBill, deleteBill, addDlaEntry, triggerToast } = useDemoStore();
 
-  const [selectedFilter, setSelectedFilter] = useState<"all" | "allowable" | "section24" | "paid" | "due">("all");
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "mortgage" | "repairs" | "paid" | "due">("all");
+  const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+  const [isOcrProcessing, setIsOcrProcessing] = useState(false);
+  const [ocrDetected, setOcrDetected] = useState<{ vendor: string; amount: number; vat: number; date: string; category: BillCategory } | null>(null);
 
   // Form states for new bill modal
   const [title, setTitle] = useState("");
@@ -36,351 +39,431 @@ export default function LandlordBillTrackerHub() {
   const [vendor, setVendor] = useState("");
   const [amount, setAmount] = useState<number | "">("");
   const [frequency, setFrequency] = useState<"monthly" | "quarterly" | "annual" | "one_off">("one_off");
-  const [isSection24, setIsSection24] = useState(false);
   const [propertyAddress, setPropertyAddress] = useState(
-    activeClient.properties[0]?.address || "Residential Buy-to-Let Property, UK"
+    activeClient.properties[0]?.address || "14 Belgrave Place, Solihull"
   );
-  const [dueDate, setDueDate] = useState("2026-11-01");
+  const [dueDate, setDueDate] = useState(new Date().toISOString().split("T")[0]);
   const [status, setStatus] = useState<"paid" | "due" | "scheduled">("paid");
+  const [creditToDla, setCreditToDla] = useState(false);
 
   const bills = activeClient.bills || [];
 
   // Summary Calculations
-  const grossRent = activeClient.totalRentalIncome;
   const allowableExpensesTotal = bills
-    .filter((b) => b.isAllowableExpense)
+    .filter((b) => b.isAllowableExpense && b.category !== "mortgage_interest")
     .reduce((acc, b) => acc + b.amount, 0);
 
-  const section24FinanceCostsTotal = bills
-    .filter((b) => b.isSection24Restricted)
+  const spvMortgageInterestTotal = bills
+    .filter((b) => b.category === "mortgage_interest")
     .reduce((acc, b) => acc + b.amount, 0);
 
-  const netCashflow = grossRent - allowableExpensesTotal - section24FinanceCostsTotal;
-  const section24TaxReducer = Math.round(section24FinanceCostsTotal * 0.20 * 100) / 100;
+  const totalSpend = allowableExpensesTotal + spvMortgageInterestTotal;
+  const netRentalIncome = (activeClient.totalRentalIncome || 39000) - totalSpend;
 
-  // Filtered Bills
+  // Filtered Bills by category and month
   const filteredBills = bills.filter((bill) => {
-    if (selectedFilter === "allowable") return bill.isAllowableExpense;
-    if (selectedFilter === "section24") return bill.isSection24Restricted;
-    if (selectedFilter === "paid") return bill.status === "paid";
-    if (selectedFilter === "due") return bill.status === "due";
+    if (selectedFilter === "mortgage" && bill.category !== "mortgage_interest") return false;
+    if (selectedFilter === "repairs" && bill.category !== "maintenance_repairs") return false;
+    if (selectedFilter === "paid" && bill.status !== "paid") return false;
+    if (selectedFilter === "due" && bill.status !== "due") return false;
+
+    if (selectedMonth !== "all") {
+      const billMonth = bill.dueDate.substring(0, 7); // e.g. "2024-10"
+      if (billMonth !== selectedMonth) return false;
+    }
+
     return true;
   });
 
-  const handlePrintStatement = () => {
-    triggerToast(
-      "Preparing Month-End Statement",
-      "Launching print-ready property cashflow schedule for landlord records.",
-      "info"
-    );
-    if (typeof window !== "undefined") {
-      setTimeout(() => {
-        window.print();
-      }, 300);
-    }
+  // Extract unique months from bills for monthly print filter
+  const availableMonths = Array.from(new Set(bills.map((b) => b.dueDate.substring(0, 7)))).sort().reverse();
+
+  // Simulated Heuristic OCR File Drop
+  const handleSimulateOcrDrop = (fileName: string, detectedVendor: string, detectedAmount: number, detectedCat: BillCategory) => {
+    setIsOcrProcessing(true);
+    triggerToast("OCR Scanning Document", `Extracting text from ${fileName}...`, "info");
+
+    setTimeout(() => {
+      const vat = Math.round(detectedAmount * 0.20 * 100) / 100;
+      const detected = {
+        vendor: detectedVendor,
+        amount: detectedAmount,
+        vat,
+        date: new Date().toISOString().split("T")[0],
+        category: detectedCat,
+      };
+
+      setOcrDetected(detected);
+      setTitle(`${detectedVendor} Invoice`);
+      setVendor(detectedVendor);
+      setAmount(detectedAmount);
+      setCategory(detectedCat);
+      setIsOcrProcessing(false);
+      setIsAddModalOpen(true);
+
+      triggerToast(
+        "OCR Extraction Complete",
+        `Identified ${detectedVendor} (£${detectedAmount.toFixed(2)}). Category: ${detectedCat.replace(/_/g, " ")}.`,
+        "success"
+      );
+    }, 600);
   };
 
   const handleCreateBill = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !amount || amount <= 0) {
+    if (!title || !amount || Number(amount) <= 0) {
       triggerToast("Invalid Input", "Please provide a valid bill title and amount.", "warning");
       return;
     }
 
+    const numAmount = Number(amount);
     const input: NewBillInput = {
       title,
       category,
       vendorOrRecipient: vendor || "Service Contractor",
-      amount: Number(amount),
+      amount: numAmount,
       frequency,
-      isSection24Restricted: isSection24,
+      isSection24Restricted: category === "mortgage_interest",
       propertyAddress,
       dueDate,
       status,
     };
 
     addNewBill(activeClient.id, input);
+
+    if (creditToDla) {
+      addDlaEntry(activeClient.id, {
+        date: dueDate,
+        description: `Personal Card Paid Company Bill: ${title} (${vendor || "Contractor"})`,
+        credit: numAmount,
+        debit: 0,
+        category: "personal_card_expense",
+      });
+      triggerToast("DLA Credited", `£${numAmount.toFixed(2)} added to your Director’s Loan buffer.`, "success");
+    }
+
     setIsAddModalOpen(false);
-    // Reset Form
     setTitle("");
     setVendor("");
     setAmount("");
-  };
-
-  const handlePreviewReceipt = (bill: PropertyBillItem) => {
-    triggerToast(
-      "Secure Receipt Preview",
-      `Opened encrypted statutory voucher for ${bill.title}.`,
-      "info"
-    );
-    if (typeof window !== "undefined") {
-      window.open(
-        `/api/preview?title=${encodeURIComponent(bill.title)}&entity=${encodeURIComponent(activeClient.entityName)}`,
-        "_blank"
-      );
-    }
+    setCreditToDla(false);
+    setOcrDetected(null);
   };
 
   return (
-    <div className="space-y-6 text-left">
-      {/* 1. Header with Actions & Print Trigger */}
-      <div className="accountant-card p-5 sm:p-6 space-y-4 print:border-none print:shadow-none">
+    <div className="space-y-6 text-left pb-16">
+      {/* 1. Header (No Useless Orange Eyebrow Text) */}
+      <div className="accountant-card p-5 sm:p-6 bg-[#162032] border border-[#1F293D] rounded-xl">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-neutral-100 text-neutral-800 border border-neutral-200 uppercase tracking-wider font-mono">
-                Tax Year {activeClient.taxYear}
-              </span>
-              <span className="text-neutral-400 text-xs">&bull;</span>
-              <span className="text-xs text-neutral-600 font-medium">
-                Portfolio: <strong className="text-neutral-900">{activeClient.entityName}</strong>
-              </span>
-            </div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight flex items-center space-x-2">
-              <Receipt className="w-6 h-6 text-emerald-700" />
-              <span>Property Bill & Outgoings Hub</span>
+            <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              SPV Property Bills, Expenses &amp; OCR Ingest
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-600 max-w-2xl">
-              Track allowable maintenance, management fees, and Section 24 finance costs for statutory HMRC reconciliation. Print month-end cashflow records with 1 click.
+            <p className="text-xs text-slate-400">
+              Operating Entity: <strong className="text-slate-200">{activeClient.entityName}</strong> &bull; Section 24 Mortgage Relief &amp; Allowable Revenue Classification
             </p>
           </div>
 
-          {/* Quick Header CTAs */}
-          <div className="flex flex-wrap items-center gap-2 print:hidden">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
-              onClick={handlePrintStatement}
-              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold bg-white text-neutral-800 border border-neutral-300 hover:bg-neutral-50 transition inline-flex items-center space-x-1.5 shadow-2xs"
+              onClick={() => setIsPrintModalOpen(true)}
+              className="touch-target-44 px-3.5 py-2 rounded-lg font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center space-x-2 transition shadow-sm active:scale-95"
             >
-              <Printer className="w-3.5 h-3.5 text-neutral-600" />
-              <span>Print Month-End Ledger</span>
+              <Printer className="w-4 h-4 text-sky-400" />
+              <span>Print Monthly Record</span>
             </button>
+
             <button
               type="button"
               onClick={() => setIsAddModalOpen(true)}
-              className="touch-target-44 btn-tactile px-3.5 py-2 rounded-lg text-xs font-semibold bg-primary hover:bg-neutral-800 text-white transition inline-flex items-center space-x-1.5 shadow-xs"
+              className="touch-target-44 px-3.5 py-2 rounded-lg font-semibold text-xs bg-[#0077C8] hover:bg-[#0284C7] text-white flex items-center space-x-2 shadow-sm transition active:scale-95"
             >
-              <Plus className="w-3.5 h-3.5 text-amber-400" />
-              <span>+ Log Bill / Expense</span>
+              <Plus className="w-4 h-4 text-white" />
+              <span>Log Bill / Receipt</span>
             </button>
           </div>
         </div>
-
-        {/* 2. Embedded Guided Next-Step Prompt */}
-        <div className="print:hidden">
-          <UserNextStepBar
-            stepNumber={2}
-            totalSteps={4}
-            title="Reconcile Property Bills Against Bank Statements"
-            description="All 6 allowable expenses and mortgage finance costs have been itemized. Print your monthly physical record or verify voucher attachments for your year-end computation."
-            actionLabel="View Statutory Statements & P&L"
-            targetView="statements"
-            statusBadge="Reconciliation Ready"
-            variant="emerald"
-          />
-        </div>
       </div>
 
-      {/* 3. 4-Pillar Financial Summary Cards (8px grid spacing) */}
+      {/* 2. Rexora-Style Metric Cards (with icons in top right pills, bold figures, inner shadows) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Gross Rental Turnover */}
-        <div className="accountant-card p-4 space-y-1 bg-white border border-neutral-200">
-          <div className="flex items-center justify-between text-xs text-neutral-500 font-medium">
-            <span>Gross Rental Turnover</span>
-            <Building2 className="w-4 h-4 text-neutral-400" />
+        {/* Metric 1: SPV Mortgage Interest */}
+        <div className="accountant-card p-5 bg-[#162032] border border-[#1F293D] rounded-xl flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-slate-400 text-xs font-semibold">Mortgage Finance Costs</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
           </div>
-          <div className="text-2xl font-extrabold text-neutral-900 font-mono tracking-tight">
-            £{grossRent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-neutral-500">
-            £{(grossRent / 12).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / month
-          </div>
-        </div>
-
-        {/* Allowable Property Expenses */}
-        <div className="accountant-card p-4 space-y-1 bg-emerald-50/50 border border-emerald-200">
-          <div className="flex items-center justify-between text-xs text-emerald-900 font-medium">
-            <span>Allowable Expenses</span>
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-          </div>
-          <div className="text-2xl font-extrabold text-emerald-800 font-mono tracking-tight">
-            £{allowableExpensesTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-emerald-700">
-            100% Tax Deductible (SA105 Boxes 24–29)
-          </div>
-        </div>
-
-        {/* Section 24 Finance Costs */}
-        <div className="accountant-card p-4 space-y-1 bg-amber-50/50 border border-amber-200">
-          <div className="flex items-center justify-between text-xs text-amber-900 font-medium">
-            <span>Section 24 Finance Costs</span>
-            <AlertTriangle className="w-4 h-4 text-amber-600" />
-          </div>
-          <div className="text-2xl font-extrabold text-amber-900 font-mono tracking-tight">
-            £{section24FinanceCostsTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-amber-800 font-medium">
-            20% Tax Reducer: <strong className="text-amber-950 font-mono">£{section24TaxReducer.toFixed(2)}</strong>
-          </div>
-        </div>
-
-        {/* Net Monthly Cashflow Profit */}
-        <div className="accountant-card p-4 space-y-1 bg-slate-900 text-white border border-slate-800">
-          <div className="flex items-center justify-between text-xs text-slate-300 font-medium">
-            <span>Net Landlord Cashflow</span>
-            <PoundSterling className="w-4 h-4 text-amber-400" />
-          </div>
-          <div className="text-2xl font-extrabold text-amber-300 font-mono tracking-tight">
-            £{netCashflow.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <div className="text-[11px] text-slate-400">
-            Retained profit after all bills & mortgages
-          </div>
-        </div>
-      </div>
-
-      {/* 4. Filter Selector Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 print:hidden">
-        <div className="flex items-center space-x-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs">
-          <button
-            type="button"
-            onClick={() => setSelectedFilter("all")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap ${
-              selectedFilter === "all"
-                ? "bg-neutral-900 text-white shadow-2xs font-semibold"
-                : "bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-100"
-            }`}
-          >
-            All Bills ({bills.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setSelectedFilter("allowable")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap ${
-              selectedFilter === "allowable"
-                ? "bg-emerald-700 text-white shadow-2xs font-semibold"
-                : "bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-100"
-            }`}
-          >
-            Allowable Expenses ({bills.filter((b) => b.isAllowableExpense).length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setSelectedFilter("section24")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap ${
-              selectedFilter === "section24"
-                ? "bg-amber-700 text-white shadow-2xs font-semibold"
-                : "bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-100"
-            }`}
-          >
-            Section 24 Mortgage ({bills.filter((b) => b.isSection24Restricted).length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setSelectedFilter("paid")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition whitespace-nowrap ${
-              selectedFilter === "paid"
-                ? "bg-neutral-800 text-white font-semibold"
-                : "bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-100"
-            }`}
-          >
-            Reconciled & Paid
-          </button>
-        </div>
-
-        <span className="text-[11px] text-neutral-500 font-medium font-mono">
-          Showing {filteredBills.length} of {bills.length} bills
-        </span>
-      </div>
-
-      {/* 5. Itemized Bill Table (Desktop) & Cards (Mobile) */}
-      <div className="accountant-card overflow-hidden bg-white border border-neutral-200 shadow-xs">
-        <div className="p-4 sm:p-5 border-b border-neutral-200 flex items-center justify-between bg-neutral-50/60">
-          <div className="flex items-center space-x-2">
-            <h2 className="text-sm font-bold text-neutral-900 tracking-tight">
-              Itemized Portfolio Outgoings & Statutory Tax Mapping
-            </h2>
-            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-neutral-200 text-neutral-800">
-              ICAEW Compliant
+          <div>
+            <span className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tabular-nums font-mono block">
+              £{spvMortgageInterestTotal.toLocaleString()}
             </span>
+            <div className="flex items-center justify-between pt-2.5 mt-1 border-t border-[#1F293D] text-[11px]">
+              <span className="px-1.5 py-0.5 rounded text-emerald-400 bg-emerald-500/10 font-bold">
+                100% CT600 Deductible
+              </span>
+              <span className="text-slate-400">Section 24 SPV</span>
+            </div>
           </div>
-          <span className="text-xs text-neutral-500 hidden sm:inline">
-            Direct matching with HMRC SA105 / CT600
-          </span>
         </div>
 
-        {/* Responsive Table for Desktop (lg+) */}
+        {/* Metric 2: Operating Expenses */}
+        <div className="accountant-card p-5 bg-[#162032] border border-[#1F293D] rounded-xl flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-slate-400 text-xs font-semibold">Allowable Expenses</span>
+            <div className="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+              <Receipt className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <span className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums font-mono block">
+              £{allowableExpensesTotal.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between pt-2.5 mt-1 border-t border-[#1F293D] text-[11px]">
+              <span className="px-1.5 py-0.5 rounded text-slate-300 bg-slate-800 font-medium">
+                Repairs, Insurance &amp; Letting
+              </span>
+              <span className="text-slate-400">{bills.length} Invoices</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Metric 3: Total Outgoings */}
+        <div className="accountant-card p-5 bg-[#162032] border border-[#1F293D] rounded-xl flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-slate-400 text-xs font-semibold">Total Property Outgoings</span>
+            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <PoundSterling className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <span className="text-2xl sm:text-3xl font-extrabold text-[#38BDF8] tabular-nums font-mono block">
+              £{totalSpend.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between pt-2.5 mt-1 border-t border-[#1F293D] text-[11px]">
+              <span className="px-1.5 py-0.5 rounded text-slate-300 bg-slate-800 font-medium">
+                Annual Spending
+              </span>
+              <span className="text-emerald-400 font-bold">100% Tax Indexed</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Metric 4: Net Retained Rental Cashflow */}
+        <div className="accountant-card p-5 bg-[#162032] border border-[#1F293D] rounded-xl flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-slate-400 text-xs font-semibold">Net Retained Cashflow</span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <Coins className="w-4 h-4" />
+            </div>
+          </div>
+          <div>
+            <span className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums font-mono block">
+              £{netRentalIncome.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between pt-2.5 mt-1 border-t border-[#1F293D] text-[11px]">
+              <span className="px-1.5 py-0.5 rounded text-emerald-400 bg-emerald-500/10 font-bold">
+                Tax-Free DLA Extractable
+              </span>
+              <span className="text-slate-400">Post-Finance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Smart Receipt & Invoice Dropzone (Zero-Cost OCR) */}
+      <div className="accountant-card p-6 bg-[#162032] border-2 border-dashed border-[#1F293D] hover:border-sky-500/50 rounded-xl transition-all text-center space-y-3">
+        <div className="w-11 h-11 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center mx-auto border border-sky-500/20">
+          <UploadCloud className="w-5 h-5" />
+        </div>
+        <div className="space-y-1">
+          <h3 className="text-sm font-bold text-white">
+            Smart Receipt &amp; Invoice Ingestion (OCR Extractor)
+          </h3>
+          <p className="text-xs text-slate-400 max-w-md mx-auto">
+            Drop PDF, PNG, or JPG invoices. Text heuristics automatically parse Supplier, Gross, 20% VAT, and map to HMRC CT600 expense accounts.
+          </p>
+        </div>
+
+        {/* Quick OCR Samples Drop Trigger */}
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+          <span className="text-[11px] text-slate-500">Test Sample OCR Scans:</span>
+          <button
+            type="button"
+            onClick={() =>
+              handleSimulateOcrDrop(
+                "british_gas_boiler_service.pdf",
+                "British Gas Commercial",
+                320.00,
+                "maintenance_repairs"
+              )
+            }
+            className="touch-target-44 px-3 py-1.5 rounded-md text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 transition flex items-center space-x-1"
+          >
+            <Sparkles className="w-3 h-3 text-sky-400" />
+            <span>British Gas (£320)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              handleSimulateOcrDrop(
+                "screwfix_plumbing_supplies.pdf",
+                "Screwfix Spares Ltd",
+                145.80,
+                "maintenance_repairs"
+              )
+            }
+            className="touch-target-44 px-3 py-1.5 rounded-md text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 transition flex items-center space-x-1"
+          >
+            <Sparkles className="w-3 h-3 text-sky-400" />
+            <span>Screwfix Parts (£145.80)</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              handleSimulateOcrDrop(
+                "directline_insurance_renewal.pdf",
+                "Direct Line Landlord Insurance",
+                710.00,
+                "insurance"
+              )
+            }
+            className="touch-target-44 px-3 py-1.5 rounded-md text-[11px] font-semibold bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 transition flex items-center space-x-1"
+          >
+            <Sparkles className="w-3 h-3 text-sky-400" />
+            <span>Landlord Insurance (£710)</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 4. Filter & Month Selection Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Category Filter Pills */}
+          <div className="flex items-center space-x-1 bg-[#111827] p-1 rounded-lg border border-[#1F293D] text-xs">
+            <button
+              type="button"
+              onClick={() => setSelectedFilter("all")}
+              className={`px-3 py-1.5 rounded-md font-semibold transition ${
+                selectedFilter === "all" ? "bg-[#0077C8] text-white shadow-sm" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              All Outgoings ({bills.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedFilter("mortgage")}
+              className={`px-3 py-1.5 rounded-md font-semibold transition ${
+                selectedFilter === "mortgage" ? "bg-[#0077C8] text-white shadow-sm" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Mortgage Interest
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedFilter("repairs")}
+              className={`px-3 py-1.5 rounded-md font-semibold transition ${
+                selectedFilter === "repairs" ? "bg-[#0077C8] text-white shadow-sm" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Repairs &amp; Maintenance
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedFilter("paid")}
+              className={`px-3 py-1.5 rounded-md font-semibold transition ${
+                selectedFilter === "paid" ? "bg-[#0077C8] text-white shadow-sm" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              Reconciled
+            </button>
+          </div>
+
+          {/* Month Selector Filter */}
+          <select
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="px-3 py-1.5 rounded-lg bg-[#111827] border border-[#1F293D] text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+          >
+            <option value="all">All Months</option>
+            {availableMonths.map((m) => (
+              <option key={m} value={m}>
+                {new Date(`${m}-01`).toLocaleString("default", { month: "long", year: "numeric" })}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsPrintModalOpen(true)}
+          className="touch-target-44 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center space-x-1.5 shadow-sm"
+        >
+          <Printer className="w-3.5 h-3.5 text-sky-400" />
+          <span>Print Monthly Record</span>
+        </button>
+      </div>
+
+      {/* 5. Bills Ledger Table */}
+      <div className="accountant-card bg-[#162032] border border-[#1F293D] rounded-xl overflow-hidden space-y-3 p-4">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-neutral-100/70 text-neutral-600 font-semibold border-b border-neutral-200 uppercase tracking-wider text-[10px]">
-              <tr>
-                <th className="py-3 px-4">Bill / Expense Title</th>
-                <th className="py-3 px-4">Vendor & Property</th>
-                <th className="py-3 px-4">Tax Classification</th>
-                <th className="py-3 px-4 text-right">Amount</th>
-                <th className="py-3 px-4 text-center">Status</th>
-                <th className="py-3 px-4 text-right print:hidden">Voucher / Action</th>
+            <thead>
+              <tr className="border-b border-[#1F293D] text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+                <th className="py-2.5 px-3">Date</th>
+                <th className="py-2.5 px-3">Description &amp; Vendor</th>
+                <th className="py-2.5 px-3">Property Asset</th>
+                <th className="py-2.5 px-3">HMRC Classification</th>
+                <th className="py-2.5 px-3 text-right">Amount (£)</th>
+                <th className="py-2.5 px-3 text-center">Receipt</th>
+                <th className="py-2.5 px-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-200 font-normal">
+            <tbody className="divide-y divide-[#1F293D]/60">
               {filteredBills.map((bill) => (
-                <tr key={bill.id} className="hover:bg-neutral-50/70 transition">
-                  <td className="py-3.5 px-4 font-semibold text-neutral-900">
-                    <div className="flex items-center space-x-2">
-                      <span>{bill.title}</span>
-                      {bill.isSection24Restricted && (
-                        <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
-                          Sec 24
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-neutral-500 block mt-0.5">
-                      {bill.hmrcBoxNote}
-                    </span>
+                <tr key={bill.id} className="hover:bg-[#1A263C] transition">
+                  <td className="py-3 px-3 text-slate-400 whitespace-nowrap font-mono tabular-nums">
+                    {bill.dueDate}
                   </td>
-                  <td className="py-3.5 px-4 text-neutral-600">
-                    <span className="font-medium text-neutral-800 block">{bill.vendorOrRecipient}</span>
-                    <span className="text-[10px] text-neutral-500 block truncate max-w-[200px]">
-                      {bill.propertyAddress}
-                    </span>
+                  <td className="py-3 px-3">
+                    <div className="font-bold text-white">{bill.title}</div>
+                    <div className="text-[11px] text-slate-400">{bill.vendorOrRecipient}</div>
                   </td>
-                  <td className="py-3.5 px-4">
+                  <td className="py-3 px-3 text-slate-300">
+                    <span className="truncate max-w-[180px] block">{bill.propertyAddress}</span>
+                  </td>
+                  <td className="py-3 px-3">
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                        bill.isSection24Restricted
-                          ? "bg-amber-50 text-amber-900 border-amber-200"
-                          : "bg-emerald-50 text-emerald-900 border-emerald-200"
+                      className={`px-2 py-0.5 rounded text-[10px] font-semibold ${
+                        bill.category === "mortgage_interest"
+                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          : "bg-slate-800 text-slate-300 border border-slate-700"
                       }`}
                     >
-                      {bill.isSection24Restricted ? "Finance Cost (Restricted)" : "Allowable Expense (100%)"}
+                      {bill.category === "mortgage_interest" ? "Section 24 SPV (100% Allowable)" : bill.category.replace(/_/g, " ")}
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 text-right font-mono font-bold text-neutral-900 text-sm">
-                    £{bill.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  <td className="py-3 px-3 text-right font-bold text-white font-mono tabular-nums whitespace-nowrap">
+                    £{bill.amount.toFixed(2)}
                   </td>
-                  <td className="py-3.5 px-4 text-center">
-                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                      <span>Paid</span>
+                  <td className="py-3 px-3 text-center">
+                    <span className="inline-flex items-center space-x-1 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                      <CheckCircle2 className="w-3 h-3" />
+                      <span>Verified</span>
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 text-right space-x-1.5 print:hidden">
-                    <button
-                      type="button"
-                      onClick={() => handlePreviewReceipt(bill)}
-                      className="px-2.5 py-1 rounded text-[11px] font-medium bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-300 transition inline-flex items-center space-x-1"
-                    >
-                      <ExternalLink className="w-3 h-3 text-neutral-500" />
-                      <span>Receipt</span>
-                    </button>
+                  <td className="py-3 px-3 text-right">
                     <button
                       type="button"
                       onClick={() => deleteBill(activeClient.id, bill.id)}
-                      className="p-1 rounded text-neutral-400 hover:text-red-600 hover:bg-red-50 transition"
-                      title="Remove from ledger"
+                      className="touch-target-44 p-1.5 rounded text-slate-400 hover:text-red-400 transition"
+                      title="Delete expense"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-4 h-4" />
                     </button>
                   </td>
                 </tr>
@@ -390,147 +473,275 @@ export default function LandlordBillTrackerHub() {
         </div>
       </div>
 
-      {/* 6. Modal: Add New Property Bill / Expense */}
-      {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-900/70 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="accountant-card max-w-lg w-full p-6 bg-white space-y-5 rounded-xl shadow-2xl relative border border-neutral-200">
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+      {/* 6. Printable Monthly Statement Modal (Full End-of-Month Record Printable Format) */}
+      {isPrintModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="accountant-card max-w-3xl w-full p-6 sm:p-8 bg-[#111827] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-6 text-left max-h-[90vh] overflow-y-auto">
+            {/* Modal Controls Bar */}
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4 no-print">
               <div>
-                <h3 className="font-bold text-base text-neutral-900">
-                  Log New Property Bill or Outgoing
-                </h3>
-                <p className="text-xs text-neutral-500">
-                  Adds directly to {activeClient.entityName} statutory schedule
-                </p>
+                <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
+                  End-of-Month Record Keeping
+                </span>
+                <h2 className="text-lg font-bold text-white">Printable Spending Statement</h2>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="touch-target-44 px-4 py-2 rounded-lg text-xs font-bold bg-[#0077C8] hover:bg-[#0284C7] text-white flex items-center space-x-1.5 shadow-sm transition active:scale-95"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Print Statement</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsPrintModalOpen(false)}
+                  className="touch-target-44 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Printable Statement Sheet (A4 Structured Format) */}
+            <div className="p-6 rounded-xl bg-white text-slate-900 space-y-6 shadow-sm border border-slate-200">
+              {/* Document Header */}
+              <div className="flex items-start justify-between border-b-2 border-slate-900 pb-4">
+                <div>
+                  <h1 className="text-xl font-extrabold tracking-tight text-slate-950 uppercase font-mono">
+                    {activeClient.entityName}
+                  </h1>
+                  <p className="text-xs text-slate-600 mt-0.5">
+                    Co. Reg: 14892011 &bull; Registered in England &amp; Wales &bull; Section 24 SPV
+                  </p>
+                  <p className="text-xs text-slate-600">
+                    Director: {activeClient.primaryContact} &bull; Tax Year: {activeClient.taxYear}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+                    Monthly Expense Ledger
+                  </span>
+                  <span className="text-sm font-bold text-slate-900">
+                    {selectedMonth === "all" ? "Full Financial Year 2024/25" : new Date(`${selectedMonth}-01`).toLocaleString("default", { month: "long", year: "numeric" })}
+                  </span>
+                  <span className="text-[10px] text-slate-500 block mt-1">
+                    Generated: {new Date().toLocaleDateString("en-GB")}
+                  </span>
+                </div>
+              </div>
+
+              {/* Summary Cards in Print */}
+              <div className="grid grid-cols-3 gap-4 text-xs">
+                <div className="p-3 rounded border border-slate-300 bg-slate-50">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Mortgage Interest</span>
+                  <span className="text-lg font-bold font-mono text-slate-900">
+                    £{spvMortgageInterestTotal.toLocaleString()}
+                  </span>
+                  <span className="text-[10px] text-emerald-700 block">100% Corporate Relief</span>
+                </div>
+                <div className="p-3 rounded border border-slate-300 bg-slate-50">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Allowable Expenses</span>
+                  <span className="text-lg font-bold font-mono text-slate-900">
+                    £{allowableExpensesTotal.toLocaleString()}
+                  </span>
+                  <span className="text-[10px] text-slate-600 block">Repairs, Lettings, Admin</span>
+                </div>
+                <div className="p-3 rounded border border-slate-300 bg-slate-50">
+                  <span className="text-slate-500 text-[10px] uppercase font-bold block">Total Outgoings</span>
+                  <span className="text-lg font-bold font-mono text-slate-950">
+                    £{totalSpend.toLocaleString()}
+                  </span>
+                  <span className="text-[10px] text-slate-600 block">HMRC Indexed</span>
+                </div>
+              </div>
+
+              {/* Items Breakdown Table */}
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b-2 border-slate-400 text-slate-700 font-bold uppercase text-[10px]">
+                    <th className="py-2">Date</th>
+                    <th className="py-2">Vendor / Payee</th>
+                    <th className="py-2">Description</th>
+                    <th className="py-2">HMRC Category</th>
+                    <th className="py-2 text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {filteredBills.map((b) => (
+                    <tr key={b.id}>
+                      <td className="py-2 font-mono text-slate-600">{b.dueDate}</td>
+                      <td className="py-2 font-bold text-slate-900">{b.vendorOrRecipient}</td>
+                      <td className="py-2 text-slate-700">{b.title}</td>
+                      <td className="py-2 text-[10px] text-slate-600">{b.category.replace(/_/g, " ")}</td>
+                      <td className="py-2 text-right font-mono font-bold text-slate-900">£{b.amount.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Sign-off box for monthly book binder */}
+              <div className="pt-6 border-t border-slate-300 flex items-center justify-between text-[11px] text-slate-600">
+                <div>
+                  <p>Certified complete for HMRC CT600 &amp; Section 24 compliance.</p>
+                  <p className="mt-4">Director Signature: ___________________________</p>
+                </div>
+                <div className="text-right">
+                  <p>Supervising Practice: Mercian Wealth Tax &amp; Ledger</p>
+                  <p className="mt-4">Date Signed: _____ / _____ / 202___</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. Manual & OCR Log Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="accountant-card max-w-md w-full p-6 bg-[#162032] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-5 text-left">
+            <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
+              <div className="space-y-0.5">
+                <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider">
+                  Expense &amp; Invoice Ingestion
+                </span>
+                <h3 className="text-lg font-bold text-white">Record Property Outgoing</h3>
               </div>
               <button
                 type="button"
-                onClick={() => setIsAddModalOpen(false)}
-                className="text-neutral-400 hover:text-neutral-700 p-1 rounded-lg"
+                onClick={() => {
+                  setIsAddModalOpen(false);
+                  setOcrDetected(null);
+                }}
+                className="touch-target-44 p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
+            {ocrDetected && (
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-300 space-y-1">
+                <span className="font-bold flex items-center space-x-1">
+                  <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                  <span>OCR Heuristic Auto-Fill Applied</span>
+                </span>
+                <p>Extracted Supplier: {ocrDetected.vendor} &bull; Net: £{(ocrDetected.amount - ocrDetected.vat).toFixed(2)} &bull; 20% VAT: £{ocrDetected.vat.toFixed(2)}</p>
+              </div>
+            )}
+
             <form onSubmit={handleCreateBill} className="space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-neutral-700 mb-1">
-                  Bill / Expense Title
-                </label>
+                <label className="block text-slate-300 font-semibold mb-1">Bill / Expense Title *</label>
                 <input
                   type="text"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Gas Safety Inspection (CP12) or Boiler Repair"
-                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                  placeholder="e.g. Worcester Boiler Replacement / CP12 Gas Certificate"
+                  className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-neutral-700 mb-1">
-                    Expense Category
-                  </label>
+                  <label className="block text-slate-300 font-semibold mb-1">HMRC Expense Account *</label>
                   <select
                     value={category}
-                    onChange={(e) => {
-                      const cat = e.target.value as BillCategory;
-                      setCategory(cat);
-                      if (cat === "mortgage_interest") {
-                        setIsSection24(true);
-                      } else {
-                        setIsSection24(false);
-                      }
-                    }}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary outline-none bg-white"
+                    onChange={(e) => setCategory(e.target.value as BillCategory)}
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white focus:outline-none focus:border-sky-500"
                   >
-                    <option value="maintenance_repairs">Repairs & Maintenance</option>
-                    <option value="letting_fees">Letting Agent Management Fee</option>
-                    <option value="service_charge">Block Service Charge</option>
-                    <option value="ground_rent">Freeholder Ground Rent</option>
-                    <option value="mortgage_interest">Mortgage Finance Costs</option>
-                    <option value="insurance">Landlord Insurance</option>
-                    <option value="utilities_council_tax">Council Tax / Void Rates</option>
-                    <option value="statutory_compliance">Gas Safety / EPC / EICR</option>
+                    <option value="maintenance_repairs">Repairs &amp; Maintenance (Allowable)</option>
+                    <option value="mortgage_interest">Paragon Mortgage Interest (Section 24)</option>
+                    <option value="insurance">Landlord Property Insurance</option>
+                    <option value="legal_professional">Accountancy &amp; Conveyancing</option>
+                    <option value="lettings_management">Agent Management Fee</option>
+                    <option value="ground_rent_service">Ground Rent &amp; Service Charge</option>
+                    <option value="utilities">Council Tax &amp; Water Rates</option>
+                    <option value="capital_improvement">Capital Enhancement (CGT Base Cost)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-neutral-700 mb-1">
-                    Total Amount (£)
-                  </label>
+                  <label className="block text-slate-300 font-semibold mb-1">Gross Amount (£) *</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={amount}
-                    onChange={(e) => setAmount(e.target.value === "" ? "" : parseFloat(e.target.value))}
-                    placeholder="0.00"
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono font-bold"
+                    onChange={(e) => setAmount(e.target.value === "" ? "" : Number(e.target.value))}
+                    placeholder="e.g. 320.00"
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 font-mono"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-semibold text-neutral-700 mb-1">
-                    Contractor / Vendor Name
-                  </label>
+                  <label className="block text-slate-300 font-semibold mb-1">Vendor / Payee</label>
                   <input
                     type="text"
                     value={vendor}
                     onChange={(e) => setVendor(e.target.value)}
-                    placeholder="e.g. Gas Safe Engineer Ltd"
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+                    placeholder="e.g. British Gas / Screwfix"
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white placeholder-slate-500 focus:outline-none focus:border-sky-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-neutral-700 mb-1">
-                    Payment Date / Due Date
-                  </label>
+                  <label className="block text-slate-300 font-semibold mb-1">Invoice Date</label>
                   <input
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono"
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white focus:outline-none focus:border-sky-500 font-mono"
                   />
                 </div>
               </div>
 
-              {/* Section 24 Toggle */}
-              <div className="p-3 rounded-lg bg-neutral-50 border border-neutral-200 flex items-center justify-between">
-                <div>
-                  <span className="font-bold text-neutral-900 block">
-                    Section 24 Restricted Finance Cost
-                  </span>
-                  <span className="text-[11px] text-neutral-500 block">
-                    Check if this is residential mortgage interest restricted to 20% basic rate tax credit.
-                  </span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={isSection24}
-                  onChange={(e) => setIsSection24(e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
-                />
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">Property Allocation</label>
+                <select
+                  value={propertyAddress}
+                  onChange={(e) => setPropertyAddress(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg bg-[#111827] border border-[#1F293D] text-white focus:outline-none focus:border-sky-500"
+                >
+                  {activeClient.properties.map((p) => (
+                    <option key={p.id} value={p.address}>
+                      {p.address}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <div className="flex items-center justify-end space-x-2 pt-2 border-t border-neutral-100">
+              {/* DLA Credit Checkbox (Crucial for Directors paying out of personal pocket) */}
+              <div className="p-3 rounded-lg bg-[#111827] border border-[#1F293D] flex items-start space-x-3">
+                <input
+                  type="checkbox"
+                  id="creditToDla"
+                  checked={creditToDla}
+                  onChange={(e) => setCreditToDla(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded text-[#0077C8] focus:ring-sky-500 bg-slate-800 border-slate-700"
+                />
+                <label htmlFor="creditToDla" className="text-slate-300 cursor-pointer text-xs">
+                  <strong className="text-white block">Paid from Personal Director Card?</strong>
+                  Credit this expense amount to Director’s Loan Account (DLA) so it can be extracted tax-free later.
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end space-x-2 pt-2 border-t border-[#1F293D]">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 rounded-lg text-neutral-700 hover:bg-neutral-100 font-semibold"
+                  className="touch-target-44 px-4 py-2 rounded-lg text-slate-400 hover:text-white transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-primary hover:bg-neutral-800 text-white font-bold inline-flex items-center space-x-1.5 shadow-sm"
+                  className="touch-target-44 px-4 py-2 rounded-lg font-bold bg-[#0077C8] hover:bg-[#0284C7] text-white shadow-sm transition active:scale-95"
                 >
-                  <Plus className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Save to Landlord Ledger</span>
+                  Confirm &amp; Record Outgoing
                 </button>
               </div>
             </form>
