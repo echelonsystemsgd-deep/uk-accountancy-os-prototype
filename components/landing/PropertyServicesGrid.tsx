@@ -65,17 +65,17 @@ export default function PropertyServicesGrid() {
   ];
 
   return (
-    <section id="specialisms" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
+    <section id="specialisms" className="py-14 sm:py-20 bg-[#0c1813] border-b border-[#1e382b] text-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
         {/* Section Header */}
         <div className="max-w-3xl space-y-2">
-          <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-mono">
+          <span className="text-[10px] font-bold text-[#a4f4cf] uppercase tracking-widest block font-mono">
             CORE INFRASTRUCTURE CAPABILITIES
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
             Specialized UK Property &amp; Wealth Accountancy Engine
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#8a9d94] leading-relaxed">
             Every feature is purpose-built to maximize allowable statutory claims, protect director wealth, and eliminate compliance bottlenecks.
           </p>
         </div>
@@ -85,29 +85,29 @@ export default function PropertyServicesGrid() {
           {services.map((service, idx) => (
             <div
               key={idx}
-              className="accountant-card p-6 bg-[#162032] border border-[#1F293D] hover:border-slate-700 rounded-xl space-y-4 transition-all flex flex-col justify-between"
+              className="p-6 bg-[#14241d] border border-[#1e382b] hover:border-[#a4f4cf]/40 rounded-xl space-y-4 transition-all flex flex-col justify-between shadow-sm"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="p-2.5 rounded-lg bg-[#111827] border border-[#1F293D]">
+                  <div className="p-2.5 rounded-lg bg-[#0c1813] border border-[#1e382b]">
                     {service.icon}
                   </div>
-                  <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-wider font-mono">
+                  <span className="text-[10px] font-semibold text-[#a4f4cf] bg-[#a4f4cf]/10 px-2.5 py-0.5 rounded-full border border-[#a4f4cf]/20 uppercase tracking-wider font-mono">
                     {service.tag}
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-white leading-snug">
+                <h3 className="text-base font-display font-bold text-white leading-snug">
                   {service.title}
                 </h3>
 
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-[#8a9d94] leading-relaxed">
                   {service.description}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#1F293D] text-[11px] text-emerald-400 font-medium flex items-start space-x-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="pt-3 border-t border-[#1e382b] text-[11px] text-[#a4f4cf] font-medium flex items-start space-x-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0 mt-0.5" />
                 <span>{service.outcome}</span>
               </div>
             </div>

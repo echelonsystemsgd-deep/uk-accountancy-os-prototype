@@ -20,7 +20,7 @@ export default function Home() {
   const { isIntakeModalOpen } = useDemoStore();
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-neutral-100 flex flex-col justify-between overflow-x-hidden">
+    <div className="min-h-screen bg-[#0c1813] text-neutral-100 flex flex-col justify-between overflow-x-hidden">
       {/* Global Notifications */}
       <ToastContainer />
 
@@ -30,13 +30,13 @@ export default function Home() {
       {/* Public Landing Viewport */}
       <main className="flex-1 w-full text-neutral-100">
         <div className="animate-in fade-in duration-200">
-          {/* Green Hero Section (First Bit in Green) */}
+          {/* British Forest Green Hero Section */}
           <LandingHero />
 
           {/* Sticky Lifecycle Sub-Nav */}
           <PinnedLifecycleNav />
 
-          {/* Rest of Landing Page (Kept in Institutional Slate & Blue) */}
+          {/* Unified British Forest Green & Parchment Landing Sections */}
           <section id="services">
             <PropertyServicesGrid />
           </section>

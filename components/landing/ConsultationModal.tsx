@@ -1,96 +1,51 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
-import { EntityType, IntakeSubmission } from "@/lib/types";
-import { X, Calendar, ShieldCheck, ArrowRight, Building2, CheckCircle2 } from "lucide-react";
+import { X, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function ConsultationModal() {
-  const { isIntakeModalOpen, closeIntakeModal, intakeDefaultValues, addIntakeLead } =
-    useDemoStore();
+  const { isIntakeModalOpen, closeIntakeModal, triggerToast } = useDemoStore();
 
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [entityName, setEntityName] = useState("");
   const [phone, setPhone] = useState("");
-  const [portfolioSize, setPortfolioSize] = useState("3-5 Properties");
-  const [entityType, setEntityType] = useState<EntityType>("joint");
-  const [annualRent, setAnnualRent] = useState(54000);
-  const [mortgageInterest, setMortgageInterest] = useState(18000);
+  const [email, setEmail] = useState("");
+  const [entityType, setEntityType] = useState<"individual" | "joint" | "spv_ltd">("spv_ltd");
   const [notes, setNotes] = useState("");
-
-  useEffect(() => {
-    if (intakeDefaultValues) {
-      if (intakeDefaultValues.portfolioSize) setPortfolioSize(intakeDefaultValues.portfolioSize);
-      if (intakeDefaultValues.annualRent) setAnnualRent(intakeDefaultValues.annualRent);
-      if (intakeDefaultValues.mortgageInterest) setMortgageInterest(intakeDefaultValues.mortgageInterest);
-      if (intakeDefaultValues.notes) setNotes(intakeDefaultValues.notes);
-    }
-  }, [intakeDefaultValues]);
-
-  useEffect(() => {
-    if (isIntakeModalOpen) {
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.classList.remove("modal-open");
-    };
-  }, [isIntakeModalOpen]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isIntakeModalOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fullName || !email) return;
-
-    // Background sync to intake API route
-    try {
-      await fetch("/api/intake", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName,
-          email,
-          phone: phone || "+44 7700 900812",
-          portfolioSize,
-          entityType,
-          annualRent,
-          mortgageInterest,
-          notes: notes || "Requested property tax portfolio review.",
-        }),
-      });
-    } catch (err) {
-      console.warn("Intake API sync:", err);
-    }
-
-    addIntakeLead({
-      fullName,
-      email,
-      phone: phone || "+44 7700 900812",
-      portfolioSize,
-      entityType,
-      annualRent,
-      mortgageInterest,
-      notes: notes || "Requested property tax portfolio review.",
-    });
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      closeIntakeModal();
+      triggerToast(
+        "Consultation Request Received",
+        `Thank you ${fullName}. Kalpesh Patel FCA and Pritpal Chaggar CTA will review your ${entityName || "property"} details.`,
+        "success"
+      );
+    }, 600);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
-      <div className="accountant-card max-w-lg w-full p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-5 shadow-2xl relative text-left">
+      <div className="max-w-lg w-full p-6 bg-[#14241d] border border-[#1e382b] rounded-2xl space-y-5 shadow-2xl relative text-left">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
+        <div className="flex items-center justify-between border-b border-[#1e382b] pb-3">
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shrink-0">
-              MW
+              KP
             </div>
             <div>
-              <h2 className="text-base font-bold text-white leading-tight font-display">
+              <h2 className="text-base font-display font-bold text-white leading-tight">
                 Book Initial Property Tax Consultation
               </h2>
-              <p className="text-xs text-slate-400 font-mono">
-                Mercian Wealth &bull; UK Property SPV Tax Specialists
+              <p className="text-xs text-[#8a9d94] font-mono">
+                KP Tax Consultants &bull; Chartered Tax Advisers
               </p>
             </div>
           </div>
@@ -108,79 +63,72 @@ export default function ConsultationModal() {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label htmlFor="intake-full-name" className="font-semibold text-slate-300 block">Your Full Name *</label>
+              <label className="font-semibold text-slate-300 block">Full Name *</label>
               <input
-                id="intake-full-name"
-                aria-label="Your Full Name"
                 type="text"
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="e.g. David Sterling"
-                className="w-full px-3 py-2 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-sky-500 text-white bg-[#111827]"
+                placeholder="e.g. Sukhpreet Kaur"
+                className="w-full px-3 py-2 text-xs border border-[#1e382b] rounded-lg bg-[#0c1813] text-white focus:outline-none focus:border-[#a4f4cf]"
               />
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="intake-email" className="font-semibold text-slate-300 block">Email Address *</label>
+              <label className="font-semibold text-slate-300 block">Property / Entity Name *</label>
               <input
-                id="intake-email"
-                aria-label="Email Address"
-                type="email"
+                type="text"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="david.sterling@sterlingholdings.co.uk"
-                className="w-full px-3 py-2 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-sky-500 text-white bg-[#111827]"
+                value={entityName}
+                onChange={(e) => setEntityName(e.target.value)}
+                placeholder="e.g. SUKHPREET KAUR LEGACY WEALTH LTD"
+                className="w-full px-3 py-2 text-xs border border-[#1e382b] rounded-lg bg-[#0c1813] text-white focus:outline-none focus:border-[#a4f4cf]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label htmlFor="intake-phone" className="font-semibold text-slate-300 block">UK Mobile Number</label>
+              <label className="font-semibold text-slate-300 block">Phone / WhatsApp *</label>
               <input
-                id="intake-phone"
-                aria-label="UK Mobile Number"
                 type="tel"
+                required
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+44 7700 900812"
-                className="w-full px-3 py-2 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-sky-500 text-white bg-[#111827]"
+                placeholder="+44 7851 055929"
+                className="w-full px-3 py-2 text-xs border border-[#1e382b] rounded-lg bg-[#0c1813] text-white focus:outline-none focus:border-[#a4f4cf] font-mono"
               />
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="intake-portfolio-size" className="font-semibold text-slate-300 block">Current Portfolio Size</label>
-              <select
-                value={portfolioSize}
-                onChange={(e) => setPortfolioSize(e.target.value)}
-                className="w-full px-3 py-2 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-sky-500 text-white bg-[#111827]"
-              >
-                <option value="1-2 Properties">1-2 Properties</option>
-                <option value="3-5 Properties">3-5 Properties</option>
-                <option value="6-10 Properties">6-10 Properties</option>
-                <option value="10+ Properties / Commercial">10+ Properties / Commercial</option>
-              </select>
+              <label className="font-semibold text-slate-300 block">Email Address *</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="sukhpreet@legacywealth.co.uk"
+                className="w-full px-3 py-2 text-xs border border-[#1e382b] rounded-lg bg-[#0c1813] text-white focus:outline-none focus:border-[#a4f4cf] font-mono"
+              />
             </div>
           </div>
 
           <div className="space-y-1">
-            <label className="font-semibold text-slate-300 block">Ownership Structure</label>
+            <label className="font-semibold text-slate-300 block">Holding Structure</label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: "individual", label: "Individual Name" },
-                { id: "joint", label: "Joint (Spouses)" },
-                { id: "spv_ltd", label: "SPV Ltd Company" },
+                { id: "spv_ltd", label: "SPV Ltd Co" },
+                { id: "personal", label: "Personal Name" },
+                { id: "joint", label: "Joint / Spouses" },
               ].map((opt) => (
                 <button
                   key={opt.id}
                   type="button"
-                  onClick={() => setEntityType(opt.id as any)}
-                  className={`py-2 px-2 rounded-md border text-center font-medium transition text-[11px] ${
+                  onClick={() => setEntityType(opt.id as "individual" | "joint" | "spv_ltd")}
+                  className={`py-2 px-2 rounded-lg border text-center font-medium transition text-[11px] font-mono ${
                     entityType === opt.id
-                      ? "border-emerald-400 bg-emerald-950/40 text-white font-bold"
-                      : "border-[#1F293D] hover:border-slate-700 text-slate-400 bg-[#111827]"
+                      ? "border-[#a4f4cf] bg-[#a4f4cf]/10 text-white font-bold"
+                      : "border-[#1e382b] hover:border-[#8a9d94] text-[#8a9d94] bg-[#0c1813]"
                   }`}
                 >
                   {opt.label}
@@ -196,21 +144,22 @@ export default function ConsultationModal() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Concerned about Section 24 higher-rate tax, looking to incorporate 4 buy-to-lets into an SPV company..."
-              className="w-full p-2.5 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-emerald-400 text-white bg-[#111827]"
+              className="w-full p-2.5 text-xs border border-[#1e382b] rounded-lg focus:outline-none focus:border-[#a4f4cf] text-white bg-[#0c1813]"
             />
           </div>
 
-          <div className="pt-2 border-t border-[#1F293D] flex items-center justify-between">
-            <div className="flex items-center space-x-1.5 text-[11px] text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="pt-2 border-t border-[#1e382b] flex items-center justify-between">
+            <div className="flex items-center space-x-1.5 text-[11px] text-[#8a9d94]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#a4f4cf]" />
               <span>Direct Partner Consultation</span>
             </div>
 
             <button
               type="submit"
-              className="touch-target-44 px-5 py-2.5 rounded-md text-xs font-semibold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm font-bold"
+              disabled={isSubmitting}
+              className="touch-target-44 px-5 py-2.5 rounded-lg text-xs font-semibold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm font-bold active:scale-95"
             >
-              <span>Submit &amp; Open Practice Pipeline</span>
+              <span>{isSubmitting ? "Dispatching..." : "Submit Confidential Intake"}</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#0c1813]" />
             </button>
           </div>

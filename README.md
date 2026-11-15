@@ -1,88 +1,42 @@
-# Mercian Wealth & Advisory | UK Accountancy OS & Property SPV Platform
+# KP Tax Consultants & Advisory | UK Property Accountancy OS
 
-Universal commercial operating system for UK chartered accountancy practices, SPV limited property companies, and landlord portfolios. Engineered with institutional high-density FinTech UI, Xero-grade reconciliation, vector A4 PDF monthly statement exports, and automated HMRC Making Tax Digital (MTD) engines.
+High-density, conversion-engineered accountancy operating system for UK chartered accountancy practices, SPV limited property companies, and landlord portfolios. 
+
+- **Visual Architecture:** Inspired by **XLANE (`xlane.xyz`)** — British Forest Green (`#0c1813`), unbleached tactile parchment cards (`#fbfbf8`), Mint (`#a4f4cf`) accents, and **Bricolage Grotesque** typography.
+- **Content Foundation:** Derived from **KP Tax Consultants (`kptc.co.uk`)** — Led by **Kalpesh Patel FCA** and **Pritpal Chaggar CTA**.
 
 ---
 
 ## 1. System Overview
 
-### The Mission
-Replaces generic "AI website slop" and disjointed spreadsheets with a unified, high-conversion accountancy operating system built for speed of decision, client trust, and frictionless practice workflows.
-
-- **Practice Administrator Cockpit (`/admin`):** Client reconciliation pipeline, Bklit SVG funnel visualization, live 9-box VAT calculations, automated document and receipt chasers, and Director's Loan Account (DLA) Section 455 monitors.
-- **SPV Client Portal (`/portal`):** Rexora high-density financial metrics, Bklit SVG cash flow trajectory area chart, landlord bill tracker with instant **vector A4 PDF export**, two-column bank reconciliation, and private document vault.
-- **Conversion Infrastructure (`/`):** Mobile-first conversion layout with 3-Tap Section 24 Mortgage Relief scoper and instant WhatsApp intake.
+### Core Modules
+- **Interactive Multi-Channel Demonstrator:** Toggle between `Paragon Bank Feed` and `Contractor OCR Invoice` with live nominal code auto-classification and Section 24 corporate tax relief indexing.
+- **Pinned 6-Step Lifecycle Header:** `01 Ingested` $\rightarrow$ `02 Matched` $\rightarrow$ `03 S24 Checked` $\rightarrow$ `04 DLA Reconciled` $\rightarrow$ `05 CT600 Ready` $\rightarrow$ `06 HMRC Filed`.
+- **Landlord Bill Tracker & A4 PDF Engine:** Client-side vector A4 statement export (`jspdf` + `jspdf-autotable`) replacing physical paper logs and Notion trackers with statutory audit trails.
+- **Dedicated Sub-Pages:** Dedicated routes for `/services`, `/calculator`, `/mtd`, `/about`, and `/faq`.
+- **Authentication Gateway (`/login`):** Role-based access for SPV clients and practice administrators.
 
 ---
 
-## 2. Authentication & User Credentials
+## 2. Authentication & Test Accounts
 
-The platform features unified, role-based security gateways configured directly in the environment:
-
-| User Type | Email | Password | Landing Route | Access Scope |
-| :--- | :--- | :--- | :--- | :--- |
-| **Practice Admin** | `mercianwealthgs@gmail.com` | `Gurtej@2008#` | `/admin` | Practice Radar, Client Roster, VAT Engine, Bank Feeds |
-| **SPV Client** | `deepgurtej28@gmail.com` | `Gurtej@2008#` | `/portal` | Spending Ledger, A4 PDF Statements, S24 Portfolio, Receipts |
+| Role | Email | Password | Direct Route |
+| :--- | :--- | :--- | :--- |
+| **Practice Admin** | `mercianwealthgs@gmail.com` | `Gurtej@2008#` | `/admin` |
+| **SPV Client** | `deepgurtej28@gmail.com` | `Gurtej@2008#` | `/portal` |
 
 ---
 
 ## 3. Technology Stack
 
-- **Frontend & App Router:** Next.js 14.2 (App Router), TypeScript, Tailwind CSS.
-- **Design System:** Origin UI & Shadcn UI tokens with **XLANE-inspired British editorial craftsmanship** (Forest Green `#0c1813`, Alabaster Parchment `#fbfbf8`, Mint `#a4f4cf`, Sage `#b8e291`).
-- **Typography:** `Bricolage Grotesque` (ink-trapped architectural display headings) paired with `Inter` (body) and `JetBrains Mono` (tabular ledger data).
-- **Interactive Demonstrator:** Two-channel live ingest (`Paragon Bank Feed` vs `Contractor OCR Invoice`) with side-by-side auto-classification and 1-click reconciliation.
-- **Pinned Workflow Navigation:** Sticky horizontal progress header tracking lifecycle stages from ingestion to HMRC filing.
-- **Data Graphics:** Custom Bklit composable SVG charts (`BklitAreaChart.tsx`, `BklitFunnelChart.tsx`).
-- **PDF Generation Engine:** `jspdf` + `jspdf-autotable` client-side vector A4 generation.
-- **Database & Storage:** Supabase PostgreSQL with encrypted private document vaults (`landlord-private-vault`).
-- **Email & Automation:** Resend API & n8n webhook webhooks.
+- **Framework:** Next.js 14.2 (App Router), TypeScript, Tailwind CSS.
+- **Typography:** `Bricolage Grotesque` (display), `Inter` (body), `JetBrains Mono` (tabular numbers).
+- **PDF Engine:** `jspdf` & `jspdf-autotable`.
+- **Database & Storage:** Supabase PostgreSQL with private document vaults.
 
 ---
 
-## 4. Landlord Bill Tracker & Monthly PDF Statement Export
-
-Designed specifically for landlords replacing physical notebooks and Notion logs with an institutional accounting audit trail:
-- **HMRC Allowable Expense Ledger:** Repairs, Paragon mortgage interest (Section 24), insurance, letting fees, service charges.
-- **Director's Loan Account (DLA) Integration:** Automatic credit to the Director's Loan balance when expenses are paid from personal cards.
-- **1-Click Vector A4 PDF Export:** Generates an official, high-resolution statement with:
-  - SPV company number and registered address.
-  - Mortgage interest (S24) 100% corporate relief pool.
-  - Reconciled transaction table with HMRC categories.
-  - Official Director Signature and Supervising Practice declaration blocks.
-
----
-
-## 5. Environment & Security Configuration
-
-All sensitive keys, database credentials, and personal data are strictly isolated in local environment files (`.env.local` and `.env`) and shielded by `.gitignore`.
-
-To configure locally:
-```bash
-cp .env.example .env.local
-```
-
-### Essential Environment Variables:
-```env
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_FIRM_NAME="Mercian Wealth & Advisory"
-
-# Supabase Database & Private Vault
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-DATABASE_URL=postgresql://postgres:...@db.your-project.supabase.co:5432/postgres
-SUPABASE_STORAGE_BUCKET_DOCS=landlord-private-vault
-
-# Security Credentials
-ADMIN_EMAIL=mercianwealthgs@gmail.com
-ADMIN_PASSWORD=Gurtej@2008#
-CLIENT_EMAIL=deepgurtej28@gmail.com
-CLIENT_PASSWORD=Gurtej@2008#
-```
-
----
-
-## 6. Development & Production Build
+## 4. Run Locally
 
 ```bash
 # Install dependencies
