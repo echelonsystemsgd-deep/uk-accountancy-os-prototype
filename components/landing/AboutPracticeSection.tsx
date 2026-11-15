@@ -14,11 +14,11 @@ export default function AboutPracticeSection() {
           {/* Trust Showcase (5 cols) */}
           <div className="lg:col-span-5 relative">
             <div className="accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-4">
-              <div className="w-10 h-10 rounded-lg bg-[#0077C8] text-white flex items-center justify-center font-bold text-sm">
+              <div className="w-10 h-10 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-sm">
                 MW
               </div>
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">
+                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-mono">
                   MERCIAN WEALTH
                 </span>
                 <h3 className="text-xl font-bold text-white">Digital Infrastructure for UK Accounting</h3>
@@ -47,7 +47,7 @@ export default function AboutPracticeSection() {
           {/* Practice Story (7 cols) */}
           <div className="lg:col-span-7 space-y-6">
             <div className="space-y-2">
-              <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-mono">
                 ENGINEERED CONVERSION INFRASTRUCTURE
               </span>
               <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">

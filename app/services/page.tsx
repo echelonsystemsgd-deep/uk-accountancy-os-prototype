@@ -24,12 +24,12 @@ export default function ServicesPage() {
             <span>Home</span>
           </Link>
           <span>/</span>
-          <span className="text-sky-400">SPV Property Solutions</span>
+          <span className="text-emerald-400 font-mono">SPV Property Solutions</span>
         </div>
 
         {/* Page Hero Header */}
         <div className="space-y-3 text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold font-mono">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Specialised Corporate Property Services</span>
           </div>
@@ -55,10 +55,10 @@ export default function ServicesPage() {
           <button
             type="button"
             onClick={() => openIntakeModal()}
-            className="touch-target-44 px-5 py-2.5 rounded-lg font-bold text-xs bg-[#0077C8] hover:bg-[#0284C7] text-white flex items-center space-x-2 shadow-sm transition active:scale-95 shrink-0"
+            className="touch-target-44 px-5 py-2.5 rounded-lg font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-[#0c1813] flex items-center space-x-2 shadow-sm transition active:scale-95 shrink-0"
           >
             <span>Book Consultation</span>
-            <ArrowRight className="w-4 h-4 text-white" />
+            <ArrowRight className="w-4 h-4 text-[#0c1813]" />
           </button>
         </div>
       </main>

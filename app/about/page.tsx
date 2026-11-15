@@ -24,12 +24,12 @@ export default function AboutPage() {
             <span>Home</span>
           </Link>
           <span>/</span>
-          <span className="text-sky-400">About Practice</span>
+          <span className="text-emerald-400 font-mono">About Practice</span>
         </div>
 
         {/* Page Hero Header */}
         <div className="space-y-3 text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold font-mono">
             <Building2 className="w-3.5 h-3.5" />
             <span>Chartered Practice &amp; Digital Infrastructure</span>
           </div>

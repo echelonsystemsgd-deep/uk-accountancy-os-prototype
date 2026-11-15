@@ -37,7 +37,7 @@ export default function PropertyFaqSection() {
     <section id="faqs" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left">
         <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">
+          <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-mono">
             STATUTORY GUIDANCE
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
@@ -56,11 +56,11 @@ export default function PropertyFaqSection() {
                 <button
                   type="button"
                   onClick={() => toggle(idx)}
-                  className="w-full text-left flex items-center justify-between text-xs sm:text-sm font-bold text-white hover:text-sky-400 transition touch-target-44"
+                  className="w-full text-left flex items-center justify-between text-xs sm:text-sm font-bold text-white hover:text-emerald-400 transition touch-target-44"
                 >
                   <span className="pr-4">{faq.q}</span>
                   {isOpen ? (
-                    <ChevronUp className="w-4 h-4 text-sky-400 shrink-0" />
+                    <ChevronUp className="w-4 h-4 text-emerald-400 shrink-0" />
                   ) : (
                     <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
                   )}

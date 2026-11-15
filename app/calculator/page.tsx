@@ -24,12 +24,12 @@ export default function CalculatorPage() {
             <span>Home</span>
           </Link>
           <span>/</span>
-          <span className="text-sky-400">Section 24 Engine</span>
+          <span className="text-emerald-400 font-mono">Section 24 Engine</span>
         </div>
 
         {/* Page Hero Header */}
         <div className="space-y-3 text-left">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold font-mono">
             <Zap className="w-3.5 h-3.5" />
             <span>HMRC Section 24 Finance Cost Simulation</span>
           </div>

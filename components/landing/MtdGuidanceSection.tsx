@@ -20,8 +20,8 @@ export default function MtdGuidanceSection() {
     <section id="mtd-guidance" className="py-14 sm:py-20 bg-[#0B0F19] border-b border-[#1F293D] text-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left">
         <div className="max-w-3xl space-y-2">
-          <div className="flex items-center space-x-2 text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 w-fit">
-            <Calendar className="w-3.5 h-3.5 text-sky-400" />
+          <div className="flex items-center space-x-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 w-fit font-mono">
+            <Calendar className="w-3.5 h-3.5 text-emerald-400" />
             <span>HMRC Statutory Mandate &amp; SPV Transition</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -37,10 +37,10 @@ export default function MtdGuidanceSection() {
           {/* Phase 1: April 2026 */}
           <div className="accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-4">
             <div className="flex items-center justify-between">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
                 Phase 1: April 2026
               </span>
-              <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-mono">
                 MTD Mandatory
               </span>
             </div>

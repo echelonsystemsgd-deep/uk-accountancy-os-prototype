@@ -82,14 +82,14 @@ export default function ConsultationModal() {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#0077C8] text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shrink-0">
               MW
             </div>
             <div>
-              <h2 className="text-base font-bold text-white leading-tight">
+              <h2 className="text-base font-bold text-white leading-tight font-display">
                 Book Initial Property Tax Consultation
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-400 font-mono">
                 Mercian Wealth &bull; UK Property SPV Tax Specialists
               </p>
             </div>
@@ -179,7 +179,7 @@ export default function ConsultationModal() {
                   onClick={() => setEntityType(opt.id as any)}
                   className={`py-2 px-2 rounded-md border text-center font-medium transition text-[11px] ${
                     entityType === opt.id
-                      ? "border-sky-400 bg-sky-950/40 text-white font-bold"
+                      ? "border-emerald-400 bg-emerald-950/40 text-white font-bold"
                       : "border-[#1F293D] hover:border-slate-700 text-slate-400 bg-[#111827]"
                   }`}
                 >
@@ -196,7 +196,7 @@ export default function ConsultationModal() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g. Concerned about Section 24 higher-rate tax, looking to incorporate 4 buy-to-lets into an SPV company..."
-              className="w-full p-2.5 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-sky-500 text-white bg-[#111827]"
+              className="w-full p-2.5 text-xs border border-[#1F293D] rounded-md focus:outline-none focus:border-emerald-400 text-white bg-[#111827]"
             />
           </div>
 
@@ -208,10 +208,10 @@ export default function ConsultationModal() {
 
             <button
               type="submit"
-              className="touch-target-44 px-5 py-2.5 rounded-md text-xs font-semibold text-white bg-[#0077C8] hover:bg-[#0284C7] transition inline-flex items-center space-x-1.5 shadow-sm"
+              className="touch-target-44 px-5 py-2.5 rounded-md text-xs font-semibold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm font-bold"
             >
               <span>Submit &amp; Open Practice Pipeline</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#0c1813]" />
             </button>
           </div>
         </form>

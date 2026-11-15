@@ -16,7 +16,7 @@ export default function PropertyServicesGrid() {
   const services = [
     {
       title: "Section 24 SPV Mortgage Relief",
-      icon: <TrendingUp className="w-5 h-5 text-sky-400" />,
+      icon: <TrendingUp className="w-5 h-5 text-emerald-400" />,
       tag: "Corporate Finance Shield",
       description:
         "Purchasing properties within an SPV Limited Company unlocks 100% mortgage interest deductibility at 19%–25% Corporation Tax, completely bypassing the individual Section 24 restriction.",
@@ -24,7 +24,7 @@ export default function PropertyServicesGrid() {
     },
     {
       title: "Director’s Loan Account (DLA) Architecture",
-      icon: <Coins className="w-5 h-5 text-indigo-400" />,
+      icon: <Coins className="w-5 h-5 text-emerald-400" />,
       tag: "Tax-Free Capital Extraction",
       description:
         "Index your initial property deposits, SDLT, and conveyancing legal costs into a dedicated DLA ledger. Withdraw rental profits 100% tax-free as loan repayments before triggering dividend taxes.",
@@ -32,7 +32,7 @@ export default function PropertyServicesGrid() {
     },
     {
       title: "1-Click CT600 & HMRC Year-End Tax Pack",
-      icon: <FileCheck2 className="w-5 h-5 text-sky-400" />,
+      icon: <FileCheck2 className="w-5 h-5 text-emerald-400" />,
       tag: "Statutory Reporting",
       description:
         "Automated preparation of your Profit & Loss Statement, Balance Sheet, Section 24 Finance Cost Schedule, and Capital Asset basis, formatted for instant submission to your Chartered Accountant.",
@@ -48,7 +48,7 @@ export default function PropertyServicesGrid() {
     },
     {
       title: "Zero-Cost Autonomous Document OCR",
-      icon: <Sparkles className="w-5 h-5 text-sky-400" />,
+      icon: <Sparkles className="w-5 h-5 text-emerald-400" />,
       tag: "Machine Extraction",
       description:
         "Drag-and-drop contractor invoices, utility bills, and mortgage schedules. Serverless heuristic OCR extracts vendor, date, 20% VAT, and automatically maps to HMRC CT600 expenditure accounts.",
@@ -69,7 +69,7 @@ export default function PropertyServicesGrid() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
         {/* Section Header */}
         <div className="max-w-3xl space-y-2">
-          <span className="text-[10px] font-bold text-sky-400 uppercase tracking-widest block">
+          <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block font-mono">
             CORE INFRASTRUCTURE CAPABILITIES
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -92,7 +92,7 @@ export default function PropertyServicesGrid() {
                   <div className="p-2.5 rounded-lg bg-[#111827] border border-[#1F293D]">
                     {service.icon}
                   </div>
-                  <span className="text-[10px] font-semibold text-sky-400 bg-sky-500/10 px-2.5 py-0.5 rounded-full border border-sky-500/20 uppercase tracking-wider">
+                  <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-wider font-mono">
                     {service.tag}
                   </span>
                 </div>

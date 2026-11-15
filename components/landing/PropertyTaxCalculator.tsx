@@ -59,8 +59,8 @@ export default function PropertyTaxCalculator() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 text-left">
         {/* Section Header */}
         <div className="max-w-3xl space-y-2">
-          <div className="flex items-center space-x-2 text-xs font-bold text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20 w-fit">
-            <Calculator className="w-3.5 h-3.5 text-sky-400" />
+          <div className="flex items-center space-x-2 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 w-fit font-mono">
+            <Calculator className="w-3.5 h-3.5 text-emerald-400" />
             <span>Interactive Section 24 &amp; SPV Estimator</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -86,7 +86,7 @@ export default function PropertyTaxCalculator() {
                 max={25}
                 value={propertiesCount}
                 onChange={(e) => setPropertiesCount(Number(e.target.value))}
-                className="w-full accent-[#0077C8] cursor-pointer"
+                className="w-full accent-emerald-400 cursor-pointer"
               />
             </div>
 
@@ -103,7 +103,7 @@ export default function PropertyTaxCalculator() {
                 step={1000}
                 value={grossRent}
                 onChange={(e) => setGrossRent(Number(e.target.value))}
-                className="w-full accent-[#0077C8] cursor-pointer"
+                className="w-full accent-emerald-400 cursor-pointer"
               />
             </div>
 
@@ -120,7 +120,7 @@ export default function PropertyTaxCalculator() {
                 step={500}
                 value={mortgageInterest}
                 onChange={(e) => setMortgageInterest(Number(e.target.value))}
-                className="w-full accent-[#0077C8] cursor-pointer"
+                className="w-full accent-emerald-400 cursor-pointer"
               />
             </div>
 
@@ -131,7 +131,7 @@ export default function PropertyTaxCalculator() {
                 id="calcHigherRate"
                 checked={isHigherRate}
                 onChange={(e) => setIsHigherRate(e.target.checked)}
-                className="rounded border-slate-700 text-[#0077C8] focus:ring-sky-500 bg-slate-800"
+                className="rounded border-slate-700 text-emerald-500 focus:ring-emerald-400 bg-slate-800"
               />
               <label htmlFor="calcHigherRate" className="text-slate-300 text-xs cursor-pointer">
                 I am a 40% Higher Rate Taxpayer in my personal name (Income over £50,270)
@@ -142,7 +142,7 @@ export default function PropertyTaxCalculator() {
           {/* Results Column (5 cols) */}
           <div className="lg:col-span-5 accountant-card p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-6">
             <div className="space-y-1 border-b border-[#1F293D] pb-4">
-              <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block font-mono">
                 Estimated Tax Comparison
               </span>
               <h3 className="text-lg font-bold text-white">Annual SPV Tax Shield</h3>
@@ -174,18 +174,10 @@ export default function PropertyTaxCalculator() {
               <button
                 type="button"
                 onClick={handleEnquireWithPortfolio}
-                className="touch-target-44 w-full py-2.5 px-4 rounded-lg font-bold text-xs bg-[#0077C8] hover:bg-[#0284C7] text-white transition flex items-center justify-center space-x-2 active:scale-95"
+                className="touch-target-44 w-full py-2.5 px-4 rounded-lg font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-[#0c1813] transition flex items-center justify-center space-x-2 active:scale-95 shadow-sm"
               >
                 <span>Book SPV Restructuring Diagnostic</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
-                className="w-full py-2 text-center text-xs text-slate-400 hover:text-white transition block"
-              >
-                &rarr; Or launch Sukhpreet Kaur SPV Live Dashboard
               </button>
             </div>
           </div>
