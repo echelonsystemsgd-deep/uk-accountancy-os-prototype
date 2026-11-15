@@ -554,8 +554,8 @@ const INITIAL_INVOICES: PracticeInvoice[] = [
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  const [currentMode, setCurrentMode] = useState<AppMode>("client");
-  const [currentView, setCurrentView] = useState<ScreenView>("client_overview");
+  const [currentMode, setCurrentMode] = useState<AppMode>("landing");
+  const [currentView, setCurrentView] = useState<ScreenView>("landing");
   const [clients, setClients] = useState<LandlordClient[]>(INITIAL_CLIENTS);
   const [selectedClientId, setSelectedClientId] = useState<string>("client-legacy-wealth");
   const [invoices, setInvoices] = useState<PracticeInvoice[]>(INITIAL_INVOICES);
@@ -571,14 +571,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [isCreateInvoiceModalOpen, setIsCreateInvoiceModalOpen] = useState<boolean>(false);
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
 
-  // Active User Profile
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>({
-    email: "sukhpreet@legacywealth.co.uk",
-    name: "Sukhpreet Kaur",
-    role: "client",
-    firmName: "SUKHPREET KAUR LEGACY WEALTH LTD",
-    isAuthenticated: true,
-  });
+  // Active User Profile (Defaults to null until explicit login)
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   const activeClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
