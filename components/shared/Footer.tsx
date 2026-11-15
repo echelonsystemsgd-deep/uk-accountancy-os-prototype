@@ -8,35 +8,34 @@ export default function Footer() {
   const { enterClientPortal } = useDemoStore();
 
   return (
-    <footer className="bg-[#0B0F19] border-t border-[#1F293D] mt-16 text-xs text-slate-400 text-left">
+    <footer className="bg-[#0c1813] border-t border-[#1e382b] mt-16 text-xs text-[#8a9d94] text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Col 1: Firm Overview */}
           <div className="space-y-3">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#0077C8] text-white flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shrink-0">
                 MW
               </div>
               <div>
-                <span className="font-bold text-white block text-sm tracking-tight">
+                <span className="font-display font-bold text-white block text-sm tracking-tight">
                   MERCIAN WEALTH
                 </span>
-                <span className="text-[11px] text-[#38BDF8] font-medium">Digital Infrastructure &amp; Tax Suite</span>
+                <span className="text-[11px] text-[#a4f4cf] font-medium">Digital Infrastructure &amp; Tax Suite</span>
               </div>
             </div>
-            <p className="text-slate-400 leading-relaxed text-[11px]">
-              Engineered in Berkshire, United Kingdom. Providing high-converting digital infrastructure, automated SPV property ledgers, and Section 24 corporate tax mitigation systems.
+            <p className="text-[#8a9d94] leading-relaxed text-[11px]">
+              Engineered in Berkshire &amp; City of London, United Kingdom. Providing high-converting digital infrastructure, automated SPV property ledgers, and Section 24 corporate tax mitigation systems.
             </p>
 
             <div className="pt-1 flex items-center space-x-2">
-              <button
-                type="button"
-                onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
-                className="touch-target-44 px-3 py-1.5 rounded-md text-[11px] font-bold text-white bg-[#0077C8] hover:bg-[#0284C7] transition inline-flex items-center space-x-1.5 shadow-sm"
+              <a
+                href="/login"
+                className="touch-target-44 px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm"
               >
-                <Lock className="w-3 h-3" />
+                <Lock className="w-3 h-3 text-[#0c1813]" />
                 <span>SPV Client Portal</span>
-              </button>
+              </a>
             </div>
           </div>
 

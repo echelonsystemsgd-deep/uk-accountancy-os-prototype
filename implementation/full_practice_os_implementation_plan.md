@@ -36,22 +36,27 @@ Security and access are unified through a clean `/login` route binding the exact
 
 ## 3. UI Token System & Anti-Slop Specifications
 
-Built with **Origin UI & Shadcn UI** design primitives in the slate/azure spectrum:
+Built with **Origin UI & Shadcn UI** design primitives blended with **XLANE-grade British editorial craftsmanship**:
 
-- **Canvas Background:** `#0B0F19` (Deep Slate Void)
-- **Container Workspace:** `#111827` (Charcoal Slate)
-- **Data Card Surface:** `#162032` (High-contrast card with inner specular highlight)
-- **Structural Borders:** `#1F293D` (1px subtle hairline divider)
-- **Primary Accent:** `#0077C8` (Xero Azure Trust)
-- **Success / Inflow:** `#10B981` (Verified Emerald)
-- **Pending / Due:** `#F59E0B` (Audit Amber)
+- **Display Typography:** `Bricolage Grotesque` (ink-trapped, variable weight display font for headings and key metrics).
+- **Interface & Transaction Typography:** `Inter` (high-contrast, legibility-first body text).
+- **Data & Numeric Alignment:** `JetBrains Mono` (`font-mono tabular-nums`).
+- **Canvas Background (Forest Dark):** `#0c1813` (Deep British Forest Green Void)
+- **Container Workspace:** `#14241d` (Elevated British Slate Container)
+- **Data Card Surface:** `#14241d` (Specular inner highlight, hairline border `#1e382b`)
+- **Parchment Paper Card Surface:** `#fbfbf8` (Tactile physical artifact surface, border `#e2e0d5`)
+- **Primary Brand Accent (Mint):** `#a4f4cf` (HMRC Reconciled / High-Trust Action)
+- **Secondary Accent (Sage):** `#b8e291` / `#e9ece2` (Mid-tone chapter wash)
+- **Pending / Due:** `#fef3c7` / `#d97706` (Audit Amber)
 - **Card Shadow (Strictly Scoped to Cards):**
   ```css
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-  border: 1px solid #1F293D;
+  border: 1px solid #1e382b;
   border-radius: 12px;
   ```
 - **Zero Eyebrow Badges:** Elimination of all decorative orange badges or pseudo-luxury marketing fluff.
+- **Interactive Demonstrator:** Two-channel live ingest (`Paragon Bank Feed` vs `Contractor OCR Invoice`) with side-by-side operational split and 1-click reconciliation preview.
+- **Pinned Lifecycle Nav:** Sticky horizontal progress bar (`01 Ingest` → `02 Match` → `03 VAT` → `04 DLA` → `05 CT600` → `06 Filed`).
 
 ---
 

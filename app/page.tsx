@@ -11,6 +11,7 @@ import MobileBottomDock from "@/components/shared/MobileBottomDock";
 
 // Landing Page Components (Public Acquisition)
 import LandingHero from "@/components/landing/LandingHero";
+import PinnedLifecycleNav from "@/components/landing/PinnedLifecycleNav";
 import PropertyServicesGrid from "@/components/landing/PropertyServicesGrid";
 import PropertyTaxCalculator from "@/components/landing/PropertyTaxCalculator";
 import MtdGuidanceSection from "@/components/landing/MtdGuidanceSection";
@@ -60,6 +61,7 @@ export default function Home() {
         <main className="flex-1 w-full text-neutral-100">
           <div className="animate-in fade-in duration-200">
             <LandingHero />
+            <PinnedLifecycleNav />
             <PropertyServicesGrid />
             <PropertyTaxCalculator />
             <MtdGuidanceSection />

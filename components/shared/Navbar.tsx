@@ -87,7 +87,7 @@ export default function Navbar() {
   if (currentMode === "landing") {
     return (
       <>
-        <header className="sticky top-0 z-40 bg-[#0B0F19]/95 backdrop-blur-md border-b border-[#1F293D] shadow-sm transition-all">
+        <header className="sticky top-0 z-40 bg-[#0c1813]/95 backdrop-blur-md border-b border-[#1e382b] shadow-sm transition-all">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 sm:h-18 gap-4">
               {/* Practice Branding */}
@@ -95,30 +95,30 @@ export default function Navbar() {
                 onClick={() => exitToLanding()}
                 className="flex items-center space-x-3 cursor-pointer group shrink-0"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#0077C8] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shadow-sm">
                   MW
                 </div>
                 <div className="space-y-0 text-left">
                   <div className="flex items-center space-x-1.5 whitespace-nowrap">
-                    <span className="font-bold text-white text-sm sm:text-base tracking-tight">
+                    <span className="font-display font-bold text-white text-sm sm:text-base tracking-tight">
                       MERCIAN WEALTH
                     </span>
-                    <span className="text-[#38BDF8] text-xs font-semibold">&bull; Tax &amp; Ledger OS</span>
+                    <span className="text-[#a4f4cf] text-xs font-semibold">&bull; Tax &amp; Ledger OS</span>
                   </div>
-                  <p className="text-[10px] text-slate-400 font-medium whitespace-nowrap hidden sm:block">
-                    UK Property SPV Infrastructure &bull; Berkshire, United Kingdom
+                  <p className="text-[10px] text-[#8a9d94] font-medium whitespace-nowrap hidden sm:block">
+                    UK Property SPV Infrastructure &bull; City of London &bull; Berkshire
                   </p>
                 </div>
               </div>
 
               {/* Desktop Navigation Links */}
-              <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-semibold text-slate-300 whitespace-nowrap">
+              <nav className="hidden lg:flex items-center space-x-6 text-xs sm:text-sm font-semibold text-[#8a9d94] whitespace-nowrap">
                 <button
                   type="button"
                   onClick={() => handleScrollTo("tax-calculator")}
                   className="hover:text-white transition py-1 flex items-center space-x-1"
                 >
-                  <Zap className="w-3.5 h-3.5 text-sky-400" />
+                  <Zap className="w-3.5 h-3.5 text-[#a4f4cf]" />
                   <span>3-Tap Section 24 Scoper</span>
                 </button>
                 <button
@@ -146,23 +146,21 @@ export default function Navbar() {
 
               {/* Right Action CTAs */}
               <div className="hidden sm:flex items-center space-x-2.5 shrink-0 whitespace-nowrap">
-                <button
-                  type="button"
-                  onClick={() => enterAccountantPortal("radar")}
-                  className="touch-target-44 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 transition inline-flex items-center space-x-1.5 border border-slate-700"
+                <a
+                  href="/login"
+                  className="touch-target-44 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-[#14241d] hover:bg-[#1e382b] text-white border border-[#1e382b] flex items-center space-x-1.5 transition"
                 >
-                  <Crown className="w-3.5 h-3.5 text-sky-400" />
-                  <span>Accountant Console</span>
-                </button>
+                  <Lock className="w-3.5 h-3.5 text-[#a4f4cf]" />
+                  <span>Portal Login</span>
+                </a>
 
                 <button
                   type="button"
-                  onClick={() => enterClientPortal("client_overview", "client-legacy-wealth")}
-                  className="touch-target-44 px-3.5 py-1.5 rounded-md text-xs font-bold text-white bg-[#0077C8] hover:bg-[#0284C7] transition inline-flex items-center space-x-1.5 shadow-sm active:scale-95"
+                  onClick={() => openIntakeModal()}
+                  className="touch-target-44 px-3.5 py-1.5 rounded-lg text-xs font-bold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm active:scale-95"
                 >
-                  <Building2 className="w-3.5 h-3.5 text-white" />
-                  <span>SPV Client Portal</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>Book Consultation</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#0c1813]" />
                 </button>
               </div>
 

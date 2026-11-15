@@ -8,7 +8,39 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['"Bricolage Grotesque"', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
+      },
       colors: {
+        forest: {
+          DEFAULT: "#0c1813",
+          50: "#1e382b",
+          100: "#192e24",
+          200: "#14241d",
+          300: "#101d17",
+          400: "#0e1b15",
+          500: "#0c1813",
+        },
+        mint: {
+          DEFAULT: "#a4f4cf",
+          light: "#d1fae5",
+          hover: "#8ae8bd",
+          dark: "#059669",
+        },
+        sage: {
+          DEFAULT: "#b8e291",
+          light: "#e9ece2",
+          dark: "#4d7c0f",
+        },
+        parchment: {
+          DEFAULT: "#fbfbf8",
+          card: "#f4f3ec",
+          border: "#e2e0d5",
+          text: "#111d1a",
+          muted: "#526058",
+        },
         obsidian: {
           DEFAULT: "#0B0F19",
           50: "#1E293D",

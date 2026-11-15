@@ -29,7 +29,10 @@ The platform features unified, role-based security gateways configured directly 
 ## 3. Technology Stack
 
 - **Frontend & App Router:** Next.js 14.2 (App Router), TypeScript, Tailwind CSS.
-- **Design System:** Origin UI & Shadcn UI tokens (Slate `#0B0F19`, Container `#111827`, Card `#162032`, Border `#1F293D`, Xero Azure `#0077C8`, Emerald `#10B981`).
+- **Design System:** Origin UI & Shadcn UI tokens with **XLANE-inspired British editorial craftsmanship** (Forest Green `#0c1813`, Alabaster Parchment `#fbfbf8`, Mint `#a4f4cf`, Sage `#b8e291`).
+- **Typography:** `Bricolage Grotesque` (ink-trapped architectural display headings) paired with `Inter` (body) and `JetBrains Mono` (tabular ledger data).
+- **Interactive Demonstrator:** Two-channel live ingest (`Paragon Bank Feed` vs `Contractor OCR Invoice`) with side-by-side auto-classification and 1-click reconciliation.
+- **Pinned Workflow Navigation:** Sticky horizontal progress header tracking lifecycle stages from ingestion to HMRC filing.
 - **Data Graphics:** Custom Bklit composable SVG charts (`BklitAreaChart.tsx`, `BklitFunnelChart.tsx`).
 - **PDF Generation Engine:** `jspdf` + `jspdf-autotable` client-side vector A4 generation.
 - **Database & Storage:** Supabase PostgreSQL with encrypted private document vaults (`landlord-private-vault`).
