@@ -1,116 +1,141 @@
 "use client";
 
 import React from "react";
-import { Mail, Phone, MapPin, CheckCircle2, Lock, Building2 } from "lucide-react";
-import { useDemoStore } from "@/lib/store";
+import Link from "next/link";
+import { Mail, Phone, MapPin, CheckCircle2, Lock, ShieldCheck } from "lucide-react";
 
 export default function Footer() {
-  const { enterClientPortal } = useDemoStore();
-
   return (
-    <footer className="bg-[#0c1813] border-t border-[#1e382b] mt-16 text-xs text-[#8a9d94] text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+    <footer className="bg-[#0c1813] border-t border-[#1e382b] text-xs text-[#8a9d94] text-left">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Col 1: Firm Overview */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold font-mono text-xs shrink-0">
                 MW
               </div>
               <div>
                 <span className="font-display font-bold text-white block text-sm tracking-tight">
                   MERCIAN WEALTH
                 </span>
-                <span className="text-[11px] text-[#a4f4cf] font-medium">Digital Infrastructure &amp; Tax Suite</span>
+                <span className="text-[11px] text-[#a4f4cf] font-mono">Tax &amp; Accountancy OS</span>
               </div>
             </div>
             <p className="text-[#8a9d94] leading-relaxed text-[11px]">
-              Engineered in Berkshire &amp; City of London, United Kingdom. Providing high-converting digital infrastructure, automated SPV property ledgers, and Section 24 corporate tax mitigation systems.
+              High-density digital accountancy infrastructure for UK property SPVs and chartered accountancy practices. Automated Section 24 mortgage relief, live bank feed reconciliation, and audit-proof CT600 tax packs.
             </p>
-
-            <div className="pt-1 flex items-center space-x-2">
-              <a
+            <div className="pt-1">
+              <Link
                 href="/login"
-                className="touch-target-44 px-3 py-1.5 rounded-lg text-[11px] font-bold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm"
+                className="px-3 py-1.5 rounded-lg text-[11px] font-mono font-bold text-[#0c1813] bg-[#a4f4cf] hover:bg-[#8ae8bd] transition inline-flex items-center space-x-1.5 shadow-sm"
               >
                 <Lock className="w-3 h-3 text-[#0c1813]" />
                 <span>SPV Client Portal</span>
-              </a>
+              </Link>
             </div>
           </div>
 
-          {/* Col 2: Core Property Tax Services */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-white text-xs uppercase tracking-wider">
-              Autonomous Systems
+          {/* Col 2: Core Solutions */}
+          <div className="space-y-3 font-mono text-[11px]">
+            <h3 className="font-bold text-white text-xs uppercase tracking-wider font-sans">
+              Property Solutions
             </h3>
-            <ul className="space-y-1.5 text-[11px] text-slate-400">
-              <li>&bull; Section 24 Corporate SPV Relief</li>
-              <li>&bull; Director’s Loan Account (DLA) Architecture</li>
-              <li>&bull; Capital vs Revenue Repairs Indexing</li>
-              <li>&bull; 1-Click HMRC CT600 Accountant Packs</li>
-              <li>&bull; Autonomous Zero-Cost OCR Receipt Ingest</li>
-            </ul>
-          </div>
-
-          {/* Col 3: Regulatory Accreditations */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-white text-xs uppercase tracking-wider">
-              Infrastructure Standards
-            </h3>
-            <ul className="space-y-1.5 text-[11px] text-slate-400">
-              <li className="flex items-center space-x-1.5 text-slate-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Sub-Second Edge Infrastructure</span>
+            <ul className="space-y-2 text-[#8a9d94]">
+              <li>
+                <Link href="/services" className="hover:text-white transition">
+                  • Section 24 SPV Corporate Relief
+                </Link>
               </li>
-              <li className="flex items-center space-x-1.5 text-slate-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>HMRC Making Tax Digital Standard</span>
+              <li>
+                <Link href="/services" className="hover:text-white transition">
+                  • Director’s Loan Account (DLA) Architecture
+                </Link>
               </li>
-              <li className="flex items-center space-x-1.5 text-slate-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Encrypted AES-256 Vault Architecture</span>
+              <li>
+                <Link href="/calculator" className="hover:text-white transition">
+                  • Section 24 Comparison Calculator
+                </Link>
               </li>
-              <li className="flex items-center space-x-1.5 text-slate-300">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>100% Client Asset Ownership</span>
+              <li>
+                <Link href="/mtd" className="hover:text-white transition">
+                  • Making Tax Digital (MTD ITSA) Readiness
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="hover:text-white transition">
+                  • 1-Click CT600 &amp; Micro-Entity FRS 105
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Operations & Contact */}
-          <div className="space-y-2">
-            <h3 className="font-bold text-white text-xs uppercase tracking-wider">
-              Operations &amp; Dispatch
+          {/* Col 3: Practice Regulatory Credentials */}
+          <div className="space-y-3 font-mono text-[11px]">
+            <h3 className="font-bold text-white text-xs uppercase tracking-wider font-sans">
+              Chartered Practice Standards
             </h3>
-            <div className="space-y-2 text-[11px] text-slate-400">
+            <ul className="space-y-2 text-[#8a9d94]">
+              <li className="flex items-center space-x-2 text-slate-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>ICAEW Regulated (Senior Partner)</span>
+              </li>
+              <li className="flex items-center space-x-2 text-slate-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>CIOT Accredited (Chartered Tax Adviser)</span>
+              </li>
+              <li className="flex items-center space-x-2 text-slate-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>HMRC Supervised &amp; AML Registered</span>
+              </li>
+              <li className="flex items-center space-x-2 text-slate-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>Companies House Authorised Presenter</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 4: Contact & Locations */}
+          <div className="space-y-3 font-mono text-[11px]">
+            <h3 className="font-bold text-white text-xs uppercase tracking-wider font-sans">
+              Offices &amp; Contact
+            </h3>
+            <div className="space-y-2 text-[#8a9d94]">
               <p className="flex items-start space-x-2">
-                <MapPin className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
-                <span>Berkshire, United Kingdom</span>
+                <MapPin className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0 mt-0.5" />
+                <span>14 New Street, London EC2M 4HE</span>
+              </p>
+              <p className="flex items-start space-x-2">
+                <MapPin className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0 mt-0.5" />
+                <span>Berkshire Practice Office, RG42</span>
               </p>
               <p className="flex items-center space-x-2">
-                <Mail className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                <span>contact@mercianwealth.com</span>
+                <Phone className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>+44 7851 055929</span>
               </p>
               <p className="flex items-center space-x-2">
-                <Phone className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                <span>WhatsApp: +44 7851 055929</span>
+                <Mail className="w-3.5 h-3.5 text-[#a4f4cf] shrink-0" />
+                <span>mercianwealthgs@gmail.com</span>
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Legal Row */}
-        <div className="pt-6 border-t border-[#1F293D] text-[10px] text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Statutory Disclaimers */}
+        <div className="pt-6 border-t border-[#1e382b] flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#8a9d94] font-mono">
           <p>
-            &copy; {new Date().getFullYear()} Mercian Wealth. Digital Infrastructure &amp; Autonomous Accounting OS.
+            &copy; 2026 Mercian Wealth Ltd &amp; KP Tax Consultants. Regulated by the ICAEW and CIOT. All rights reserved.
           </p>
           <div className="flex items-center space-x-4">
-            <a href="/privacy" className="hover:text-slate-300 transition">Privacy Policy</a>
-            <span>&bull;</span>
-            <a href="/terms" className="hover:text-slate-300 transition">Terms of Service</a>
-            <span>&bull;</span>
-            <a href="/dpa" className="hover:text-slate-300 transition">GDPR Compliance</a>
+            <Link href="/privacy" className="hover:text-white transition">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition">
+              Terms of Engagement
+            </Link>
+            <Link href="/dpa" className="hover:text-white transition">
+              Data Processing Agreement
+            </Link>
           </div>
         </div>
       </div>

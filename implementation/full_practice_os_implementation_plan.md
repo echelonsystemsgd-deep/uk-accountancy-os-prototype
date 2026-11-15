@@ -47,7 +47,69 @@ This platform replaces generic, low-converting website templates with a high-den
 
 ---
 
-## 3. Dedicated Route Architecture
+## 3. Dedicated Route & Narrative Architecture (1:1 XLANE Benchmark)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                 XLANE 1:1 LANDING PAGE NARRATIVE ARCHITECTURE               │
+├────────────────────┬────────────────────────────────────────────────────────┤
+│ Section Component  │ Functional & Statutory Purpose                         │
+├────────────────────┼────────────────────────────────────────────────────────┤
+│ LandingHero        │ Value headline, dual CTAs, live Open Banking ingest    │
+│ LossesSection      │ 01-04 Costs of manual accounting & Section 24 traps    │
+│ JourneySection     │ Pinned 6-step lifecycle (Ingest → Match → S24 → DLA →   │
+│                    │ CT600 Pack → HMRC Filed) with 2-column tactile cards   │
+│ AllSpvsDashboard   │ Multi-entity high-density portfolio ledger & filters   │
+│ RepeatCompliance   │ 3-pillar recurring MTD ITSA quarterly filing engine    │
+│ VideoWalkthrough   │ Interactive product tour player with chapter jumps     │
+│ OutcomesRoiSection │ 01-04 Tangible ROI: £4,850 avg annual tax saved/SPV    │
+│ TaxCalculator      │ Dynamic Section 24 vs SPV Corporation Tax slider       │
+│ AboutPractice      │ Verified KPTC partners (Kalpesh Patel FCA & Chaggar CTA)│
+│ PropertyFaq        │ Accordion FAQ covering S24, DLA, MTD, and SPVs         │
+│ CloseCtaSection    │ Final high-converting conversion card + WhatsApp direct│
+│ Footer             │ ICAEW/CIOT statutory disclaimers & dual office addrs   │
+└────────────────────┴────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 4. API & MCP Integration Architecture
+
+To transition the prototype into live production, the following API and MCP server connections are designated:
+
+1. **HMRC Making Tax Digital (MTD) Developer Hub API:**
+   - **Endpoints:** `MTD ITSA (Income Tax Self Assessment)` & `Corporation Tax CT600 Gateway API v2`.
+   - **Auth:** OAuth 2.0 Government Gateway tokens with delegated agent permissions.
+   - **Capability:** Automated quarterly landlord ledger submissions and statutory CT600 filing receipts.
+
+2. **Open Banking Aggregation (Truelayer / Yapily / Plaid UK):**
+   - **Lenders:** Direct feeds from specialist buy-to-let lenders (Paragon Bank PLC, Aldermore, Shawbrook, Barclays BTL).
+   - **Capability:** Read-only transaction stream sync for real-time mortgage interest extraction and DLA tracking.
+
+3. **Autonomous OCR & Document Parsing:**
+   - **Provider:** Serverless Heuristic OCR (AWS Textract / Mindee / Document AI).
+   - **Capability:** Parses contractor invoices, extracts supplier CRN, VAT split, and maps directly to HMRC Chart of Accounts (Codes 7100 vs 7200).
+
+4. **Twilio / WhatsApp Cloud API:**
+   - **Capability:** Direct client onboarding dispatch, 14-day quarterly MTD filing reminder pings, and client document upload channel.
+
+5. **Production Database & Storage (Supabase):**
+   - **Tables:** `spv_entities`, `properties`, `bank_transactions`, `dla_ledger`, `tax_packs`.
+   - **Storage:** Private S3-compatible encrypted vault for tenant tenancy agreements and statutory CT600 vector A4 PDFs.
+
+---
+
+## 5. Automated Video Asset Generation Strategy
+
+To ensure a continuous high-fidelity video asset on the landing page:
+1. **Automated Remotion / Playwright Script:**
+   - A headless script programmatically records high-DPI (60fps) browser interactions through each step of the journey:
+     - *Scene 1 (0:00 - 0:15):* Open Banking mortgage interest line ingested from Paragon Bank.
+     - *Scene 2 (0:15 - 0:35):* 1-click classification into HMRC Code 7100 (Section 24 100% relief).
+     - *Scene 3 (0:35 - 0:50):* DLA indexing and £1,850 tax-free monthly withdrawal calculation.
+     - *Scene 4 (0:50 - 1:15):* CT600 vector A4 tax pack generation with ICAEW partner stamp.
+2. **Interactive Video Walkthrough Component:**
+   - Active on `app/page.tsx` (`VideoWalkthroughSection.tsx`) with chapter markers, live UI highlights, and play/pause controls.
 
 Every header item possesses a dedicated, fully responsive Next.js App Router route:
 

@@ -1162,3 +1162,5 @@ export function useDemoStore() {
   }
   return context;
 }
+
+export const useDemo = useDemoStore;

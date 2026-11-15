@@ -3,7 +3,7 @@ import "./globals.css";
 import { DemoProvider } from "@/lib/store";
 
 export const viewport: Viewport = {
-  themeColor: "#0F172A",
+  themeColor: "#0c1813",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -12,20 +12,23 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mercianwealth.com"),
-  title: "Mercian Wealth | UK Accountancy OS & Property SPV Tax Suite",
+  title: "Mercian Wealth & KP Tax Consultants | UK Property SPV Accountancy OS",
   description:
-    "High-converting digital infrastructure and autonomous accounting OS for UK property portfolio landlords and chartered accountancy practices.",
+    "Institutional accountancy operating system for UK property SPVs and chartered practices. 100% Section 24 mortgage relief, live Open Banking feeds, DLA indexing, and HMRC CT600 filing readiness.",
   alternates: {
     canonical: "https://mercianwealth.com",
   },
   keywords: [
     "Mercian Wealth",
-    "Mercian Tax & Ledger",
+    "KP Tax Consultants",
+    "Kalpesh Patel FCA",
+    "Pritpal Chaggar CTA",
     "UK Property Accountant OS",
     "Section 24 Mortgage Relief",
     "SPV Limited Company Property",
     "Making Tax Digital ITSA",
-    "Autonomous Accountancy Infrastructure",
+    "Director's Loan Account DLA",
+    "HMRC CT600 Tax Pack",
   ],
   authors: [{ name: "Mercian Wealth", url: "https://mercianwealth.com" }],
   creator: "Mercian Wealth",

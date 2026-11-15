@@ -1,65 +1,81 @@
 "use client";
 
 import React from "react";
-import { useDemoStore } from "@/lib/store";
+import { useDemo } from "@/lib/store";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import ToastContainer from "@/components/shared/ToastContainer";
 import ConsultationModal from "@/components/landing/ConsultationModal";
 
-// Landing Page Components (Public Acquisition)
+// Complete XLANE-Engineered Landing Experience
 import LandingHero from "@/components/landing/LandingHero";
-import PinnedLifecycleNav from "@/components/landing/PinnedLifecycleNav";
-import PropertyServicesGrid from "@/components/landing/PropertyServicesGrid";
+import LossesSection from "@/components/landing/LossesSection";
+import InteractiveJourneySection from "@/components/landing/InteractiveJourneySection";
+import AllSpvsDashboardSection from "@/components/landing/AllSpvsDashboardSection";
+import RepeatComplianceSection from "@/components/landing/RepeatComplianceSection";
+import VideoWalkthroughSection from "@/components/landing/VideoWalkthroughSection";
+import OutcomesRoiSection from "@/components/landing/OutcomesRoiSection";
 import PropertyTaxCalculator from "@/components/landing/PropertyTaxCalculator";
-import MtdGuidanceSection from "@/components/landing/MtdGuidanceSection";
 import AboutPracticeSection from "@/components/landing/AboutPracticeSection";
 import PropertyFaqSection from "@/components/landing/PropertyFaqSection";
+import CloseCtaSection from "@/components/landing/CloseCtaSection";
 
 export default function Home() {
-  const { isIntakeModalOpen } = useDemoStore();
+  const { isIntakeModalOpen } = useDemo();
 
   return (
-    <div className="min-h-screen bg-[#0c1813] text-neutral-100 flex flex-col justify-between overflow-x-hidden">
+    <div className="min-h-screen bg-[#0c1813] text-neutral-100 flex flex-col justify-between overflow-x-hidden selection:bg-[#a4f4cf] selection:text-[#0c1813]">
       {/* Global Notifications */}
       <ToastContainer />
 
-      {/* Global Header & Navigation */}
+      {/* Institutional Sticky Header */}
       <Navbar />
 
-      {/* Public Landing Viewport */}
+      {/* Main XLANE-Structured Narrative */}
       <main className="flex-1 w-full text-neutral-100">
-        <div className="animate-in fade-in duration-200">
-          {/* British Forest Green Hero Section */}
+        <div className="animate-in fade-in duration-300">
+          {/* 01. Hero & Real-Time Open Banking Demonstrator */}
           <LandingHero />
 
-          {/* Sticky Lifecycle Sub-Nav */}
-          <PinnedLifecycleNav />
+          {/* 02. The Losses Section (01-04 Cost of Manual Processing) */}
+          <LossesSection />
 
-          {/* Unified British Forest Green & Parchment Landing Sections */}
-          <section id="services">
-            <PropertyServicesGrid />
-          </section>
+          {/* 03. The 6-Step Journey with Sticky Subnav & Interactive Tactile Cards */}
+          <InteractiveJourneySection />
 
+          {/* 04. Multi-Entity SPV Portfolio Ledger Dashboard */}
+          <AllSpvsDashboardSection />
+
+          {/* 05. Recurring MTD ITSA Compliance Engine */}
+          <RepeatComplianceSection />
+
+          {/* 06. Interactive Video & Product Walkthrough */}
+          <VideoWalkthroughSection />
+
+          {/* 07. Measurable ROI & Outcomes (01-04 Impact Cards) */}
+          <OutcomesRoiSection />
+
+          {/* 08. Interactive Section 24 Mortgage Relief Comparison Tool */}
           <section id="calculator">
             <PropertyTaxCalculator />
           </section>
 
-          <section id="mtd-guidance">
-            <MtdGuidanceSection />
-          </section>
-
+          {/* 09. Practice Authority (KP Tax Consultants FCA & CTA Credentials) */}
           <section id="about">
             <AboutPracticeSection />
           </section>
 
+          {/* 10. Statutory HMRC Compliance & Section 24 FAQs */}
           <section id="faq">
             <PropertyFaqSection />
           </section>
+
+          {/* 11. Final High-Contrast Direct CTA Card */}
+          <CloseCtaSection />
         </div>
       </main>
 
-      {/* Consultation Modal */}
+      {/* Consultation Intake Modal */}
       {isIntakeModalOpen && <ConsultationModal />}
 
       {/* Institutional Footer */}
