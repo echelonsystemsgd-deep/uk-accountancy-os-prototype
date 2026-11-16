@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDemoStore } from "@/lib/store";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import { X, ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function ConsultationModal() {
@@ -14,6 +15,19 @@ export default function ConsultationModal() {
   const [entityType, setEntityType] = useState<"individual" | "joint" | "spv_ltd">("spv_ltd");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Lock background scroll when open
+  useScrollLock(isIntakeModalOpen);
+
+  // Close on Escape key
+  useEffect(() => {
+    if (!isIntakeModalOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeIntakeModal();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isIntakeModalOpen, closeIntakeModal]);
 
   if (!isIntakeModalOpen) return null;
 
@@ -32,10 +46,15 @@ export default function ConsultationModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
-      <div className="max-w-lg w-full p-6 bg-[#14241d] border border-[#1e382b] rounded-2xl space-y-5 shadow-2xl relative text-left">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) closeIntakeModal();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150 overscroll-contain"
+    >
+      <div className="max-w-lg w-full max-h-[90vh] overflow-y-auto modal-scrollable p-6 bg-[#14241d] border border-[#1e382b] rounded-2xl space-y-5 shadow-2xl relative text-left">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#1e382b] pb-3">
+        <div className="flex items-center justify-between border-b border-[#1e382b] pb-3 sticky top-0 bg-[#14241d] z-10">
           <div className="flex items-center space-x-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#a4f4cf] text-[#0c1813] flex items-center justify-center font-bold text-xs shrink-0">
               KP

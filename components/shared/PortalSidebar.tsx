@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import { ScreenView } from "@/lib/types";
 import {
   LayoutDashboard,
@@ -61,16 +62,7 @@ export default function PortalSidebar() {
   const [isEntityDropdownOpen, setIsEntityDropdownOpen] = useState(false);
 
   // Control body scroll lock when mobile drawer is open
-  React.useEffect(() => {
-    if (isMobileSidebarOpen) {
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.classList.remove("modal-open");
-    }
-    return () => {
-      document.body.classList.remove("modal-open");
-    };
-  }, [isMobileSidebarOpen]);
+  useScrollLock(isMobileSidebarOpen);
 
   if (currentMode === "landing") return null;
 

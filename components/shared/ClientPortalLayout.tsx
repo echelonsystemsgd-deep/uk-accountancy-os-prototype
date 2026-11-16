@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDemo } from "@/lib/store";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import ToastContainer from "@/components/shared/ToastContainer";
 import {
   LayoutDashboard,
@@ -37,6 +38,17 @@ export default function ClientPortalLayout({
   const pathname = usePathname();
   const { logout, triggerToast } = useDemo();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useScrollLock(mobileMenuOpen);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { href: "/portal/dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },
@@ -139,8 +151,13 @@ export default function ClientPortalLayout({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden bg-[#0c1813]/98 backdrop-blur-md pt-20 px-6 space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-[#1e382b]">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setMobileMenuOpen(false);
+          }}
+          className="fixed inset-0 z-50 lg:hidden bg-[#0c1813]/98 backdrop-blur-md pt-20 px-6 space-y-6 overscroll-contain overflow-y-auto modal-scrollable"
+        >
+          <div className="flex items-center justify-between pb-4 border-b border-[#1e382b] sticky top-0 bg-[#0c1813]/98 z-10 pt-2">
             <span className="font-display font-bold text-white text-base">Client Portal Menu</span>
             <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-slate-300">
               <X className="w-6 h-6" />

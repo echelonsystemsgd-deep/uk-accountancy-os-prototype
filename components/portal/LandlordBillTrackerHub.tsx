@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
 import { BillCategory, PropertyBillItem, NewBillInput } from "@/lib/types";
 import { generateLandlordMonthlyStatementPdf } from "@/lib/pdfGenerator";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import {
   Receipt,
   Plus,
@@ -31,6 +32,8 @@ export default function LandlordBillTrackerHub() {
   const [selectedMonth, setSelectedMonth] = useState<string>("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
+
+  useScrollLock(isAddModalOpen || isPrintModalOpen);
   const [isOcrProcessing, setIsOcrProcessing] = useState(false);
   const [ocrDetected, setOcrDetected] = useState<{ vendor: string; amount: number; vat: number; date: string; category: BillCategory } | null>(null);
 
@@ -488,8 +491,13 @@ export default function LandlordBillTrackerHub() {
 
       {/* 6. Printable Monthly Statement Modal (Full End-of-Month Record Printable Format) */}
       {isPrintModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="accountant-card max-w-3xl w-full p-6 sm:p-8 bg-[#111827] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-6 text-left max-h-[90vh] overflow-y-auto">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsPrintModalOpen(false);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overscroll-contain"
+        >
+          <div className="accountant-card max-w-3xl w-full p-6 sm:p-8 bg-[#111827] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-6 text-left max-h-[90vh] overflow-y-auto modal-scrollable">
             {/* Modal Controls Bar */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-4 no-print">
               <div>
@@ -623,8 +631,16 @@ export default function LandlordBillTrackerHub() {
 
       {/* 7. Manual & OCR Log Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="accountant-card max-w-md w-full p-6 bg-[#162032] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-5 text-left">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsAddModalOpen(false);
+              setOcrDetected(null);
+            }
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overscroll-contain"
+        >
+          <div className="accountant-card max-w-md w-full max-h-[90vh] overflow-y-auto modal-scrollable p-6 bg-[#162032] border border-[#2D3B55] rounded-2xl shadow-2xl space-y-5 text-left">
             <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
               <div className="space-y-0.5">
                 <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDemo } from "@/lib/store";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
@@ -19,6 +20,7 @@ import {
 export default function LoginPage() {
   const { loginWithCredentials, enterClientPortal, enterAccountantPortal } = useDemo();
 
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<"client" | "accountant">("client");
   
   // Clean unfilled state as strictly mandated
@@ -31,8 +33,16 @@ export default function LoginPage() {
     e.preventDefault();
     if (!email || !password) return;
     setIsLoading(true);
-    await loginWithCredentials(email, password);
+    const res = await loginWithCredentials(email, password);
     setIsLoading(false);
+    if (res?.success) {
+      const cleanEmail = email.trim().toLowerCase();
+      if (cleanEmail === "mercianwealthgs@gmail.com" || cleanEmail.includes("admin") || activeTab === "accountant") {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/portal/dashboard");
+      }
+    }
   };
 
   const handleTabChange = (tab: "client" | "accountant") => {

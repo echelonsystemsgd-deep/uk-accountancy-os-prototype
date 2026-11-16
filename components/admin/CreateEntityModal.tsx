@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDemoStore } from "@/lib/store";
 import { EntityType } from "@/lib/types";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import {
   X,
   Building2,
@@ -53,6 +54,17 @@ export default function CreateEntityModal() {
   const [netFee, setNetFee] = useState(1850);
   const [dueDate, setDueDate] = useState("2026-11-15");
 
+  useScrollLock(isCreateEntityModalOpen);
+
+  useEffect(() => {
+    if (!isCreateEntityModalOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeCreateEntityModal();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isCreateEntityModalOpen, closeCreateEntityModal]);
+
   if (!isCreateEntityModalOpen) return null;
 
   const handleCreateClient = (e: React.FormEvent) => {
@@ -97,8 +109,13 @@ export default function CreateEntityModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150">
-      <div className="accountant-card max-w-xl w-full p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-5 shadow-2xl relative text-left">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) closeCreateEntityModal();
+      }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150 overscroll-contain"
+    >
+      <div className="accountant-card max-w-xl w-full max-h-[90vh] overflow-y-auto modal-scrollable p-6 bg-[#162032] border border-[#1F293D] rounded-xl space-y-5 shadow-2xl relative text-left">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#1F293D] pb-3">
           <div>

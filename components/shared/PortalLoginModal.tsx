@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import {
   X,
   Lock,
@@ -27,16 +28,12 @@ export default function PortalLoginModal() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  useScrollLock(isLoginModalOpen);
+
   React.useEffect(() => {
     if (isLoginModalOpen) {
-      document.body.classList.add("modal-open");
       setErrorMessage(null);
-    } else {
-      document.body.classList.remove("modal-open");
     }
-    return () => {
-      document.body.classList.remove("modal-open");
-    };
   }, [isLoginModalOpen]);
 
   if (!isLoginModalOpen) return null;

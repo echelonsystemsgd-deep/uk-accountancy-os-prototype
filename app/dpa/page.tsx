@@ -1,68 +1,88 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, ShieldCheck, FileCheck, Building2 } from "lucide-react";
+import { ArrowLeft, ShieldCheck, FileCheck, Building2, Lock } from "lucide-react";
 import { Metadata } from "next";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
 export const metadata: Metadata = {
-  title: "Data Processing Addendum (DPA) | KP Tax Consultants Ltd",
+  title: "Data Processing Addendum (DPA) | KP Tax Consultants & Mercian Wealth",
   description: "Statutory UK GDPR Article 28 Data Processing Addendum for KP Tax Consultants Ltd client portfolio operations.",
 };
 
 export default function DpaPage() {
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-8 bg-white p-6 sm:p-10 rounded-2xl border border-neutral-200 shadow-sm">
+    <div className="min-h-screen bg-[#0c1813] text-slate-100 flex flex-col justify-between selection:bg-[#a4f4cf] selection:text-[#0c1813]">
+      <Navbar />
+
+      <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8 text-left">
         <Link
           href="/"
-          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-primary hover:text-neutral-700 transition"
+          className="inline-flex items-center space-x-1.5 text-xs font-mono text-[#a4f4cf] hover:underline transition"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Return to Practice Front Door</span>
+          <span>Return to Homepage</span>
         </Link>
 
-        <div className="border-b border-neutral-200 pb-4 space-y-1">
-          <div className="flex items-center space-x-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>UK GDPR Article 28 Statutory Compliance</span>
+        <div className="p-6 sm:p-10 bg-[#14241d] border border-[#1e382b] rounded-2xl shadow-2xl space-y-8">
+          <div className="border-b border-[#1e382b] pb-5 space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0c1813] border border-[#1e382b] text-xs font-mono font-semibold text-[#a4f4cf]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#a4f4cf]" />
+              <span>UK GDPR Article 28 Statutory Compliance</span>
+            </div>
+            <h1 className="text-2xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+              Data Processing Addendum (DPA)
+            </h1>
+            <p className="text-xs text-[#8a9d94] font-mono">
+              Binding Controller-to-Processor Terms &bull; UK GDPR &amp; Data Protection Act 2018
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
-            Data Processing Addendum (DPA)
-          </h1>
-          <p className="text-xs text-neutral-500">
-            Executed by KP Tax Consultants Ltd (Company No. 12908850) &bull; Effective Tax Year 2024/25
-          </p>
+
+          <section className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <h2 className="text-base font-display font-bold text-white">1. Background &amp; Applicability</h2>
+            <p>
+              This Data Processing Addendum (&quot;DPA&quot;) supplements the Terms of Engagement entered into between KP Tax Consultants Ltd / Mercian Wealth (&quot;Data Processor&quot;) and the client entity (&quot;Data Controller&quot;) with respect to the processing of personal data in connection with accountancy, payroll, corporation tax, and property SPV management services.
+            </p>
+          </section>
+
+          <section className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <h2 className="text-base font-display font-bold text-white">2. Scope &amp; Processing Instructions</h2>
+            <p>
+              The Processor shall process personal data solely on documented instructions from the Controller, including with respect to transfers of personal data to HM Revenue &amp; Customs (HMRC), Companies House, and authorised Open Banking account service providers.
+            </p>
+          </section>
+
+          <section className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <h2 className="text-base font-display font-bold text-white">3. Security Measures (Article 32)</h2>
+            <p>
+              The Processor has implemented appropriate technical and organisational measures to ensure a level of security appropriate to the risk, including:
+            </p>
+            <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
+              <li>Pseudonymisation and AES-256-GCM encryption of sensitive statutory identifiers (UTR, NINO).</li>
+              <li>Continuous confidentiality, integrity, availability, and resilience of processing systems.</li>
+              <li>Automated antivirus scanning via ClamAV on all inbound documents prior to review.</li>
+              <li>Role-based access controls and append-only tamper-proof audit trails for all staff actions.</li>
+            </ul>
+          </section>
+
+          <section className="space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            <h2 className="text-base font-display font-bold text-white">4. Sub-Processors</h2>
+            <p>
+              The Controller provides general written authorisation for the engagement of hosting and infrastructure sub-processors (Supabase Inc., Vercel Inc., Resend, Twilio) operating within UK/EU adequacy standards with standard contractual clauses where required.
+            </p>
+          </section>
+
+          <div className="pt-6 border-t border-[#1e382b] flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-[#8a9d94]">
+            <div className="flex items-center space-x-2">
+              <FileCheck className="w-4 h-4 text-[#a4f4cf]" />
+              <span>Article 28 Verified &bull; ICAEW Supervised Practice</span>
+            </div>
+            <div>Valid from: November 2026</div>
+          </div>
         </div>
+      </main>
 
-        <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
-          <h2 className="text-base font-bold text-neutral-900">1. Parties & Purpose</h2>
-          <p>
-            This Data Processing Addendum (&quot;DPA&quot;) supplements the Master Terms of Service between KP Tax Consultants Ltd (&quot;Data Processor&quot;) and the Client / Landlord Entity (&quot;Data Controller&quot;) governing the processing of personal and corporate tax records via the Practice OS and Landlord Vault.
-          </p>
-        </section>
-
-        <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
-          <h2 className="text-base font-bold text-neutral-900">2. Security of Processing (Article 32)</h2>
-          <ul className="list-disc pl-5 space-y-1.5">
-            <li><strong>Data Residency:</strong> All customer data is hosted strictly in the United Kingdom (London Region, eu-west-2).</li>
-            <li><strong>Encryption Standards:</strong> AES-256 encryption at rest for all document uploads and TLS 1.3 transport security in transit.</li>
-            <li><strong>Access Controls:</strong> Role-based access control with tokenized magic links and cryptographic session verification.</li>
-            <li><strong>6-Year Statutory Retention:</strong> Tax documentation retained in accordance with HMRC self-employed and corporate compliance schedules.</li>
-          </ul>
-        </section>
-
-        <section className="space-y-3 text-xs sm:text-sm text-neutral-700 leading-relaxed">
-          <h2 className="text-base font-bold text-neutral-900">3. Sub-Processors</h2>
-          <p>
-            The Data Controller acknowledges and agrees that the Data Processor utilizes verified UK/EU sub-processors for hosting, database management, and transactional communications, each bound by equivalent statutory data protection obligations.
-          </p>
-        </section>
-
-        <div className="p-4 bg-neutral-50 rounded-lg border border-neutral-200 text-xs text-neutral-600 space-y-1">
-          <p><strong>Practice Regulatory Body:</strong> Institute of Chartered Accountants in England and Wales (ICAEW)</p>
-          <p><strong>Senior Partners:</strong> Kalpesh Patel BSc(Hons), FCA &bull; Pritpal Chaggar BSc(Hons), ATT, CTA</p>
-          <p><strong>Registered Address:</strong> 7 Bell Yard, London, WC2A 2JR, United Kingdom</p>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }

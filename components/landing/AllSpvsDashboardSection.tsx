@@ -1,11 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Building2, TrendingUp, Maximize2, ShieldCheck, Download, CheckCircle2, ChevronRight } from "lucide-react";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 
 export default function AllSpvsDashboardSection() {
   const [filter, setFilter] = useState<"all" | "active" | "ready">("all");
   const [isZoomed, setIsZoomed] = useState(false);
+
+  useScrollLock(isZoomed);
+
+  useEffect(() => {
+    if (!isZoomed) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsZoomed(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isZoomed]);
 
   const spvPortfolios = [
     {
@@ -186,9 +198,14 @@ export default function AllSpvsDashboardSection() {
 
       {/* Enlarge Modal */}
       {isZoomed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-          <div className="bg-[#14241d] border border-[#1e382b] rounded-2xl max-w-5xl w-full p-6 space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#1e382b] pb-4">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsZoomed(false);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150 overscroll-contain"
+        >
+          <div className="bg-[#14241d] border border-[#1e382b] rounded-2xl max-w-5xl w-full p-6 space-y-6 shadow-2xl modal-scrollable max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#1e382b] pb-4 sticky top-0 bg-[#14241d] z-10">
               <div>
                 <h3 className="text-lg font-display font-bold text-white">
                   Executive Property Portfolio Ledger Overview

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useDemoStore } from "@/lib/store";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import {
   Building2,
   KeyRound,
@@ -23,6 +24,8 @@ import { NewPropertyInput } from "@/lib/types";
 export default function PropertyPortfolioHub() {
   const { activeClient, addNewProperty, setCurrentView, triggerToast } = useDemoStore();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  useScrollLock(isAddModalOpen);
 
   // Form states
   const [address, setAddress] = useState("");
@@ -270,8 +273,13 @@ export default function PropertyPortfolioHub() {
 
       {/* Add Property Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="accountant-card max-w-lg w-full p-6 bg-cardSurface border border-gold/30 rounded-2xl shadow-2xl space-y-5 text-left">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsAddModalOpen(false);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overscroll-contain"
+        >
+          <div className="accountant-card max-w-lg w-full max-h-[90vh] overflow-y-auto modal-scrollable p-6 bg-cardSurface border border-gold/30 rounded-2xl shadow-2xl space-y-5 text-left">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
               <div className="space-y-0.5">
                 <span className="text-[10px] font-bold text-gold uppercase tracking-wider">

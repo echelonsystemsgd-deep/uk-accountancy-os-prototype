@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import {
   FileText,
   TrendingUp,
@@ -25,6 +26,17 @@ export default function InteractiveJourneySection() {
   const [s24Mode, setS24Mode] = useState<"spv" | "personal">("spv");
   // Step 5 modal state
   const [isTaxPackOpen, setIsTaxPackOpen] = useState(false);
+
+  useScrollLock(isTaxPackOpen);
+
+  useEffect(() => {
+    if (!isTaxPackOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsTaxPackOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isTaxPackOpen]);
 
   const steps = [
     {
@@ -808,9 +820,14 @@ export default function InteractiveJourneySection() {
 
       {/* Tax Pack Lightbox Modal */}
       {isTaxPackOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-[#14241d] border border-[#1e382b] rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#1e382b] pb-3">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsTaxPackOpen(false);
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-150 overscroll-contain"
+        >
+          <div className="bg-[#14241d] border border-[#1e382b] rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl modal-scrollable max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#1e382b] pb-3 sticky top-0 bg-[#14241d] z-10">
               <h4 className="text-base font-display font-bold text-white">
                 Statutory CT600 &amp; Year-End Landlord Tax Pack
               </h4>
@@ -821,7 +838,7 @@ export default function InteractiveJourneySection() {
                 Close (ESC)
               </button>
             </div>
-            <div className="p-5 rounded-lg bg-[#fbfbf8] text-[#171c19] space-y-3 font-mono text-xs max-h-96 overflow-y-auto">
+            <div className="p-5 rounded-lg bg-[#fbfbf8] text-[#171c19] space-y-3 font-mono text-xs max-h-96 overflow-y-auto modal-scrollable">
               <div className="border-b border-stone-300 pb-2 flex justify-between font-bold">
                 <span>BELGRAVE LEGACY WEALTH SPV LTD</span>
                 <span>COMPANY NO. 14892011</span>
