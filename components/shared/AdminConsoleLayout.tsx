@@ -45,7 +45,7 @@ export default function AdminConsoleLayout({
 }: AdminConsoleLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout, triggerToast } = useDemo();
+  const { logout, triggerToast, currentStaffPerspective, setCurrentStaffPerspective } = useDemo();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -219,6 +219,29 @@ export default function AdminConsoleLayout({
 
           {/* Right Header Status & Actions */}
           <div className="flex items-center space-x-3">
+            {/* Staff / Partner Perspective Switcher */}
+            <div className="hidden xl:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-[#111726] border border-[#1F293D] text-[11px] font-mono">
+              <span className="text-slate-500">Perspective:</span>
+              <select
+                value={currentStaffPerspective || "all"}
+                onChange={(e) => {
+                  const val = e.target.value === "all" ? null : e.target.value;
+                  setCurrentStaffPerspective(val);
+                  triggerToast(
+                    val ? `Staff Filter: ${val}` : "Partner Console",
+                    val ? `Displaying clients assigned to ${val}.` : "Showing all practice client portfolios.",
+                    "info"
+                  );
+                }}
+                className="bg-transparent text-[#a4f4cf] focus:outline-none font-bold cursor-pointer"
+              >
+                <option value="all" className="bg-[#0B0F19] text-white">Partner (All SPVs)</option>
+                <option value="Pritpal Chaggar CTA" className="bg-[#0B0F19] text-[#a4f4cf]">Staff: Pritpal CTA</option>
+                <option value="Simran Kaur ACA" className="bg-[#0B0F19] text-[#a4f4cf]">Staff: Simran ACA</option>
+                <option value="Kalpesh Patel FCA" className="bg-[#0B0F19] text-[#a4f4cf]">Staff: Kalpesh FCA</option>
+              </select>
+            </div>
+
             {/* Live Status Pill */}
             <div className="hidden md:flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#111726] border border-[#1F293D] text-[10px] font-mono text-emerald-400">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>

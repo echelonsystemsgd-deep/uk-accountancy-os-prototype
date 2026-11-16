@@ -37,8 +37,14 @@ export default function ClientPortalLayout({
 }: ClientPortalLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout, triggerToast } = useDemo();
+  const { logout, triggerToast, activeClient } = useDemo();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const assignedRaw = activeClient?.assignedAccountant || "Pritpal Chaggar CTA";
+  const parts = assignedRaw.split(" ");
+  const designation = parts.length > 1 ? parts[parts.length - 1] : "CTA";
+  const accountantName = parts.length > 1 ? parts.slice(0, parts.length - 1).join(" ") : assignedRaw;
+  const accountantInitials = parts.slice(0, 2).map((p: string) => p[0]).join("") || "PC";
 
   const handleLogout = () => {
     logout();
@@ -90,17 +96,17 @@ export default function ClientPortalLayout({
               </div>
             </Link>
 
-            {/* Assigned Accountant Badge (Direct Client Requirement) */}
-            <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#14241d] border border-[#1e382b]">
-              <div className="w-7 h-7 rounded-full bg-[#1e382b] border border-[#a4f4cf]/40 flex items-center justify-center text-xs font-bold text-[#a4f4cf]">
-                PC
+            {/* Assigned Accountant Badge (Direct Client Requirement - Dynamic Reactive State) */}
+            <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-[#111726] border border-[#1F293D]">
+              <div className="w-7 h-7 rounded-full bg-[#162032] border border-[#a4f4cf]/40 flex items-center justify-center text-xs font-bold text-[#a4f4cf]">
+                {accountantInitials}
               </div>
               <div className="text-left text-xs font-mono">
                 <div className="text-white font-bold leading-tight flex items-center gap-1.5">
-                  <span>Pritpal Chaggar</span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#a4f4cf]/20 text-[#a4f4cf] font-semibold">CTA</span>
+                  <span>{accountantName}</span>
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#a4f4cf]/20 text-[#a4f4cf] font-semibold">{designation}</span>
                 </div>
-                <span className="text-[10px] text-[#8a9d94] block">Your Assigned Chartered Tax Adviser</span>
+                <span className="text-[10px] text-slate-400 block">Your Assigned Chartered Accountant</span>
               </div>
             </div>
 

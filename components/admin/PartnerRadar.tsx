@@ -26,6 +26,7 @@ export default function PartnerRadar() {
   const {
     metrics,
     clients,
+    currentStaffPerspective,
     setCurrentView,
     setSelectedClientId,
     setActiveChaserDocumentId,
@@ -35,6 +36,10 @@ export default function PartnerRadar() {
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [activeMode, setActiveMode] = useState<"live" | "audit">("live");
+
+  const displayClients = currentStaffPerspective
+    ? clients.filter((c) => c.assignedAccountant?.includes(currentStaffPerspective) || c.assignedAccountant === currentStaffPerspective)
+    : clients;
 
   const handleSyncPracticeStack = async () => {
     setIsSyncing(true);
@@ -58,8 +63,8 @@ export default function PartnerRadar() {
     }
   };
 
-  // Find clients with pending/overdue documents
-  const clientsWithPending = clients
+  // Find clients with pending/overdue documents (filtered by staff perspective if active)
+  const clientsWithPending = displayClients
     .filter((c) => c.documents.some((d) => d.status === "pending"))
     .map((c) => {
       const pendingDocs = c.documents.filter((d) => d.status === "pending");
@@ -162,10 +167,10 @@ export default function PartnerRadar() {
           <div>
             <div className="flex items-baseline space-x-2">
               <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono tabular-nums">
-                {metrics.activeLandlordsCount || 14}
+                {currentStaffPerspective ? displayClients.length : (metrics.activeLandlordsCount || 14)}
               </span>
               <span className="text-xs text-slate-400 font-mono">
-                ({metrics.trackedPropertiesCount || 48} property units)
+                ({currentStaffPerspective ? displayClients.reduce((acc, c) => acc + (c.properties?.length || 1), 0) : (metrics.trackedPropertiesCount || 48)} property units)
               </span>
             </div>
             <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-[#1F293D] text-[11px] font-mono">

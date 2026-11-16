@@ -6,7 +6,7 @@ import { useDemo } from "@/lib/store";
 import { UserCheck, ShieldCheck, CheckCircle2, UserPlus, ArrowRight } from "lucide-react";
 
 export default function AdminStaffAssignmentsPage() {
-  const { clients, triggerToast } = useDemo();
+  const { clients, reassignClientStaff } = useDemo();
   const [selectedStaff, setSelectedStaff] = useState("Pritpal Chaggar CTA");
 
   const staffMembers = [
@@ -16,12 +16,8 @@ export default function AdminStaffAssignmentsPage() {
     { name: "Arjan Gill", role: "Junior Accounting Assistant", clientCount: 6, capacity: "40%" },
   ];
 
-  const handleReassign = (clientName: string, newStaff: string) => {
-    triggerToast(
-      "Client Reassigned",
-      `${clientName} reassigned to ${newStaff}. Audit log updated & client notified.`,
-      "success"
-    );
+  const handleReassign = (clientId: string, newStaff: string) => {
+    reassignClientStaff(clientId, newStaff);
   };
 
   return (
@@ -84,9 +80,9 @@ export default function AdminStaffAssignmentsPage() {
                   </td>
                   <td className="py-4 px-4 text-right">
                     <select
-                      onChange={(e) => handleReassign(c.entityName, e.target.value)}
-                      defaultValue="Pritpal Chaggar CTA"
-                      className="px-2.5 py-1 rounded bg-[#0c1813] border border-[#1e382b] text-white focus:outline-none focus:border-[#a4f4cf] text-xs font-mono"
+                      onChange={(e) => handleReassign(c.id, e.target.value)}
+                      value={c.assignedAccountant || "Pritpal Chaggar CTA"}
+                      className="px-2.5 py-1.5 rounded-lg bg-[#080B11] border border-[#1F293D] text-white focus:outline-none focus:border-[#a4f4cf] text-xs font-mono"
                     >
                       {staffMembers.map((s) => (
                         <option key={s.name} value={s.name}>

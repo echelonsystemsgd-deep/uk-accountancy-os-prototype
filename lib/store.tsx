@@ -89,6 +89,9 @@ interface DemoContextType {
   addDlaEntry: (clientId: string, entry: Omit<DlaEntry, "id">) => void;
   addMileageLog: (clientId: string, log: Omit<MileageLog, "id" | "totalClaim">) => void;
   verifyBillOrDocument: (clientId: string, itemId: string, itemType: "bill" | "document") => void;
+  reassignClientStaff: (clientId: string, staffName: string) => void;
+  currentStaffPerspective: string | null;
+  setCurrentStaffPerspective: (staff: string | null) => void;
   generateTaxPackage: (clientId: string, taxYear?: string) => void;
   downloadAccountantCsvPack: (clientId: string) => void;
 }
@@ -573,6 +576,7 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   // Active User Profile (Defaults to null until explicit login)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [currentStaffPerspective, setCurrentStaffPerspective] = useState<string | null>(null);
 
   const activeClient = clients.find((c) => c.id === selectedClientId) || clients[0];
 
@@ -916,6 +920,17 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     triggerToast("Accountant Verified", "Entry signed off and marked compliance-ready.", "success");
   };
 
+  const reassignClientStaff = (clientId: string, staffName: string) => {
+    setClients((prev) =>
+      prev.map((c) => (c.id === clientId ? { ...c, assignedAccountant: staffName } : c))
+    );
+    triggerToast(
+      "Client Reassigned",
+      `Assigned lead accountant changed to ${staffName}. Client portal notified.`,
+      "success"
+    );
+  };
+
   const generateTaxPackage = (clientId: string, taxYear: string = "2024/25") => {
     const client = clients.find((c) => c.id === clientId);
     if (!client) return;
@@ -1146,6 +1161,9 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
         addDlaEntry,
         addMileageLog,
         verifyBillOrDocument,
+        reassignClientStaff,
+        currentStaffPerspective,
+        setCurrentStaffPerspective,
         generateTaxPackage,
         downloadAccountantCsvPack,
       }}
