@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://kptc.co.uk/sitemap.xml",
+    sitemap: "https://mercianwealth.com/sitemap.xml",
   };
 }

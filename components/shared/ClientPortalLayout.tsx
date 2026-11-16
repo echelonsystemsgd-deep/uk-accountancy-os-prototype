@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDemo } from "@/lib/store";
 import { useScrollLock } from "@/lib/hooks/useScrollLock";
 import ToastContainer from "@/components/shared/ToastContainer";
@@ -36,8 +36,15 @@ export default function ClientPortalLayout({
   actions,
 }: ClientPortalLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { logout, triggerToast } = useDemo();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    triggerToast("Session Ended", "You have been logged out securely.", "info");
+    router.push("/");
+  };
 
   useScrollLock(mobileMenuOpen);
 
@@ -107,7 +114,7 @@ export default function ClientPortalLayout({
                 <Bell className="w-4 h-4" />
               </button>
               <button
-                onClick={() => logout()}
+                onClick={handleLogout}
                 className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-[#8a9d94] hover:text-white bg-[#14241d] border border-[#1e382b]"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -183,9 +190,9 @@ export default function ClientPortalLayout({
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                logout();
+                handleLogout();
               }}
-              className="w-full py-3 rounded-xl bg-[#14241d] border border-[#1e382b] text-white font-mono text-xs flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-mono text-xs flex items-center justify-center gap-2 font-bold"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>

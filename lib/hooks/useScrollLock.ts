@@ -2,8 +2,9 @@ import { useEffect } from "react";
 
 /**
  * useScrollLock hook
- * Completely locks background body & html scrolling when a modal, lightbox,
+ * Completely locks background body scrolling when a modal, lightbox,
  * drawer, or sidebar is open, preventing background jumping or scrolling.
+ * Preserves exact scroll position without resetting to top.
  * Compensates for scrollbar width to avoid layout shift.
  */
 export function useScrollLock(lock: boolean) {
@@ -12,21 +13,17 @@ export function useScrollLock(lock: boolean) {
 
     const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
     const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
     const originalBodyPaddingRight = document.body.style.paddingRight;
     const originalBodyTouchAction = document.body.style.touchAction;
 
-    document.documentElement.classList.add("modal-open");
     document.body.classList.add("modal-open");
-
-    document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
     if (scrollBarWidth > 0) {
       document.body.style.paddingRight = `${scrollBarWidth}px`;
     }
 
-    // Prevent wheel/touch bubbling on the window when cursor/finger is on non-scrollable parts
+    // Prevent touch/wheel bubbling to document body when touch/cursor is outside scrollable area
     const handleTouchMove = (e: TouchEvent) => {
       const target = e.target as HTMLElement | null;
       if (!target?.closest(".modal-scrollable")) {
@@ -38,9 +35,7 @@ export function useScrollLock(lock: boolean) {
 
     return () => {
       window.removeEventListener("touchmove", handleTouchMove);
-      document.documentElement.classList.remove("modal-open");
       document.body.classList.remove("modal-open");
-      document.documentElement.style.overflow = originalHtmlOverflow;
       document.body.style.overflow = originalBodyOverflow;
       document.body.style.paddingRight = originalBodyPaddingRight;
       document.body.style.touchAction = originalBodyTouchAction;

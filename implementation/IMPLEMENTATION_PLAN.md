@@ -571,24 +571,93 @@ Day 90: Automated Purge: Hard delete of unverified personal data; writes deletio
 
 ---
 
-## 11. UI/UX Design System Specification
+## 11. UI/UX Design System, Ergonomics & Critical Enhancements
+
+### 11.1 Core Institutional Aesthetic
+The interface combines institutional wealth aesthetics with modern financial engineering ergonomics:
 
 | Design Element | Specification & Exact Rule |
 | :--- | :--- |
-| **Color Tokens** | British Forest Green (`#0c1813`), Card Surfaces (`#14241d`), Hairline Borders (`#1e382b`), Mint CTA (`#a4f4cf`), Paper Parchment (`#fbfbf8`). |
-| **Grid & Spacing** | Strict **8px grid** (`0.5rem`, `1rem`, `1.5rem`, `2rem`, `3rem`). No random pixel margins. |
-| **Card Styling** | 1px border (`border-[#1e382b]`), rounded corners (`rounded-xl` or `rounded-2xl`), subtle card shadow. **Inner shadows on cards only.** |
-| **Typography** | `Bricolage Grotesque` for titles, `Inter` for clean body, `JetBrains Mono` for currency figures, dates, and counters. |
-| **Metrics & Stats** | High-contrast numbers with Lucide icon indicators. **No eyebrow text and no decorative non-functional pills.** |
+| **Color Tokens** | Pitch Obsidian (`#080B11`, `#09090B`), Card Surfaces (`#111726`, `#162032`), Hairline Borders (`#1F293D`, `border-white/10`), Mint Accent (`#a4f4cf`), Institutional Gold (`#DAA640`, `#D4AF37`), Emerald Status (`#10B981`). |
+| **Grid & Spacing** | Strict **8px grid** (`0.5rem`, `1rem`, `1.5rem`, `2rem`, `3rem`). No ad-hoc margins. |
+| **Card Styling** | 1px border (`border-[#1F293D]`), rounded corners (`rounded-xl` or `rounded-2xl`), subtle card shadow with inner highlights. **Inner shadows on cards only.** |
+| **Typography** | `Plus Jakarta Sans` / `Bricolage Grotesque` for display headings, `Inter` for prose, `Geist Mono` / `JetBrains Mono` for currency figures, CRNs, dates, and nominal codes. |
+| **Metrics & Stats** | High-contrast numbers with top-right Lucide icon indicators in subtle colored pills. **No non-functional eyebrow text.** |
 | **Toasts** | Fixed to **top-left** viewport (`top-4 left-4`), animated with sliding transition. |
-| **Charts** | Clean, high-density **Recharts / Tremor** components using the Mint/Forest Green palette with zero visual bloat. |
-| **Mobile Ergonomics** | Mobile-first layouts with minimum **44px touch targets**, sticky bottom action sheets, and swipeable tab navigation. |
+| **Charts** | Clean, high-density **Recharts / Tremor** components using the Mint/Emerald/Gold palette with zero visual bloat. |
+
+### 11.2 The Five Core Platform Enhancements
+
+#### 1. Interactive Single-Container Lifecycle Console ("How it works")
+* **Problem Solved:** Previously rendered an 889-line vertical stack containing all 6 stages simultaneously, consuming massive screen space.
+* **Architecture:** Transformed into an interactive tabbed console (`01 Ingest`, `02 Nominal Match`, `03 Section 24`, `04 DLA Extraction`, `05 CT600 Pack`, `06 MTD Reconciled`).
+* **Ergonomics:** Clicking any tab updates the active view dynamically within a single fixed container. Includes stage counters (`Stage X of 6`) and `Previous` / `Next Stage` cycling buttons.
+
+#### 2. Zero-Jump Modal Scroll-Locking
+* **Problem Solved:** Opening modals previously caused the viewport to instantly jump to the top of the page.
+* **Root Cause & Fix:** The selector `body.modal-open, html.modal-open { height: 100% !important; }` in CSS forced document collapse to 100vh. Removed `height: 100%` and implemented zero-jump scroll locking in `lib/hooks/useScrollLock.ts` preserving the window's exact scroll position while completely preventing background scrolling.
+
+#### 3. Standalone Institutional Gateway (`/login`)
+* **Problem Solved:** Previously rendered within the public landing page navbar and footer.
+* **Architecture:** Redesigned into a standalone, distraction-free authentication gateway matching institutional security standards (`mercianwealth.com/login`).
+* **Features:** Pitch obsidian background (`#09090B`), subtle ambient radial glow, centered gold monogram (`MW·KP`), TLS 1.3 256-bit encryption badge, role switcher (`SPV Client` vs `Practice Admin`), password toggle, and one-click test credentials for evaluation.
+
+#### 4. Categorized 256px Left Sidebar Command Center (`/admin/dashboard`)
+* **Architecture:** Implemented a fixed 256px (`w-64`) left sidebar categorized into:
+  - **CONTROL CENTER:** Overview / Command Center, Enquiries Pipeline, Clients Directory
+  - **COMPLIANCE & FILINGS:** Deadlines Board, Review Queue, Financial Statements
+  - **COMMUNICATIONS:** Messages Inbox, Availability & Calendar
+  - **PRACTICE MANAGEMENT:** Staff Assignments, Services & Pricing, Audit Trail, Practice Settings
+* **Command Center Dashboard:** Sticky top header with search (`⌘K`), HMRC MTD live gateway status pill, mode switcher toggle (`Live Practice` vs `Audit Mode`), and 6 comprehensive financial KPI cards:
+  1. *Active SPV Portfolios* (14 entities, 48 units)
+  2. *Unbilled WIP Retainers* (£18,450.00 accrued)
+  3. *Statutory Filing Deadlines* (3 approaching CT600 & MTD)
+  4. *Pending Client Records / KYC* (2 awaiting review)
+  5. *Section 24 Aggregate Relief* (£142,800.00 sheltered)
+  6. *Total Tax-Free DLA Pool* (£385,200.00 monitored)
+
+#### 5. Deterministic Logout Redirection
+* **Problem Solved:** Logging out previously cleared auth state but left the user stranded on internal dashboard routes.
+* **Fix:** Wired `logout()` in `AdminConsoleLayout` and `ClientPortalLayout` to trigger an informative toast and invoke `router.push('/')`, immediately returning users to the landing page.
 
 ---
 
-## 12. Authentication Credentials for Demonstration
+## 12. Mobile-First Optimization & Viewport Ergonomics
 
-In accordance with practice testing requirements, login forms will render clean with **unfilled fields by default**, accompanied by one-click pre-fill test buttons for developer evaluation:
+Every screen across the platform is engineered mobile-first:
+1. **Touch Targets:** All buttons, pills, toggles, and navigation elements meet or exceed the **44px × 44px minimum tap target** requirement (`.touch-target-44`).
+2. **Zero Horizontal Scroll Leakage:** Strict `overflow-x: hidden` on viewport roots and wrapping containers to ensure flawless horizontal locking.
+3. **Responsive Drawers & Slide-Overs:** Mobile navigation menus slide in smoothly from the side with backdrop blur, full touch isolation, and Escape key dismissal.
+4. **Card Stacking & Density:** Grids gracefully scale from 1 column on mobile (`grid-cols-1`) to 2 columns on tablets (`sm:grid-cols-2`) and 3-4 columns on desktops (`lg:grid-cols-3` / `lg:grid-cols-4`).
+
+---
+
+## 13. Metadata, SEO, AEO, GEO & Structured Schema Standards
+
+The application implements enterprise-level discoverability and Answer Engine Optimization:
+
+### 13.1 Metadata Hierarchy
+* **Title Templates:** Dynamic title interpolation (`%s | Mercian & KP Tax Consultants`).
+* **Canonical URLs:** Hardened to `https://mercianwealth.com`.
+* **Theme Color:** Pitch obsidian `#080B11` with `colorScheme: 'dark'`.
+* **OpenGraph & Twitter:** `summary_large_image` cards with high-resolution brand asset previews.
+
+### 13.2 GEO & AEO (Generative Engine Optimization)
+* Explicit geographic coordinate meta-tags (`geo.region: "GB-LND"`, `geo.placename: "London"`, `geo.position: "51.5138;-0.1119"`, `ICBM: "51.5138, -0.1119"`).
+* Semantic entity intent declarations (`aeo:intent` and `aeo:entity`).
+
+### 13.3 Structured JSON-LD Schema (`@graph`)
+* **Types:** `["AccountingService", "ProfessionalService"]`.
+* **Founders:** Kalpesh Patel FCA (Fellow Chartered Accountant) and Pritpal Chaggar CTA (Chartered Tax Adviser).
+* **Offer Catalog:** Section 24 Mortgage Relief, HMRC CT600 & FRS 105 Accounts, DLA Architecture, MTD ITSA Quarterly Compliance, SPV Bookkeeping & Confirmation Statements.
+* **Accreditations:** ICAEW, CIOT, HMRC Supervised & AML Registered.
+* **Aggregate Rating:** 4.98 / 5.0 across 142 verified client reviews.
+
+---
+
+## 14. Authentication Credentials for Demonstration
+
+In accordance with practice testing requirements, login forms render clean with **unfilled fields by default**, accompanied by one-click pre-fill test buttons for developer evaluation:
 
 * **Practice Partner / Admin Account:**
   - Email: `mercianwealthgs@gmail.com`
@@ -601,7 +670,7 @@ In accordance with practice testing requirements, login forms will render clean 
 
 ---
 
-## 13. Phased Implementation Milestones & Hour Estimates
+## 15. Phased Implementation Milestones & Hour Estimates
 
 | Milestone | Deliverables & Tasks | Est. Hours |
 | :--- | :--- | :--- |
@@ -617,10 +686,11 @@ In accordance with practice testing requirements, login forms will render clean 
 
 ---
 
-## 14. Acceptance Criteria & Verification Protocol
+## 16. Acceptance Criteria & Verification Protocol
 
 1. **Zero-Error Compilation:** `npm run build` must compile cleanly with 0 TypeScript errors and 0 lint warnings.
-2. **Strict RLS Enforcement:** A staff member querying the database must receive zero records for clients not assigned to them.
-3. **No Sensitive Plaintext:** No UTR or NINO ever exists unencrypted in database tables or client network responses.
-4. **Clean Mobile Usability:** 100% of dashboard views must be responsive on 375px mobile viewports with no horizontal scroll leakage.
-5. **Brand Integrity:** All pages must adhere strictly to the XLANE British Forest Green, Tactile Parchment, and Mint design system.
+2. **Zero Scroll Jump:** Opening any modal or drawer must never reset the window scroll position.
+3. **Strict RLS Enforcement:** A staff member querying the database must receive zero records for clients not assigned to them.
+4. **No Sensitive Plaintext:** No UTR or NINO ever exists unencrypted in database tables or client network responses.
+5. **Clean Mobile Usability:** 100% of dashboard views must be responsive on 375px mobile viewports with no horizontal scroll leakage.
+6. **Brand Integrity:** All pages must adhere strictly to the pitch obsidian, tactile parchment, gold, and mint design system.

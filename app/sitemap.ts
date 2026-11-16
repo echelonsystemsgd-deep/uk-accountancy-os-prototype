@@ -1,57 +1,29 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://kptc.co.uk";
+  const baseUrl = "https://mercianwealth.com";
   const currentDate = new Date().toISOString();
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/#calculator`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#team`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#solutions`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#faq`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/dpa`,
-      lastModified: currentDate,
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
+  const publicRoutes = [
+    { path: "", priority: 1.0, freq: "weekly" as const },
+    { path: "/services", priority: 0.9, freq: "weekly" as const },
+    { path: "/calculator", priority: 0.9, freq: "weekly" as const },
+    { path: "/mtd", priority: 0.85, freq: "weekly" as const },
+    { path: "/about", priority: 0.8, freq: "monthly" as const },
+    { path: "/faq", priority: 0.8, freq: "monthly" as const },
+    { path: "/enquiry", priority: 0.8, freq: "monthly" as const },
+    { path: "/qualify", priority: 0.8, freq: "monthly" as const },
+    { path: "/login", priority: 0.7, freq: "monthly" as const },
+    { path: "/signup", priority: 0.7, freq: "monthly" as const },
+    { path: "/privacy", priority: 0.5, freq: "yearly" as const },
+    { path: "/terms", priority: 0.5, freq: "yearly" as const },
+    { path: "/dpa", priority: 0.5, freq: "yearly" as const },
   ];
+
+  return publicRoutes.map((route) => ({
+    url: `${baseUrl}${route.path}`,
+    lastModified: currentDate,
+    changeFrequency: route.freq,
+    priority: route.priority,
+  }));
 }
