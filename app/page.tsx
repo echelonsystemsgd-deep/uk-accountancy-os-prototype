@@ -9,6 +9,7 @@ import ConsultationModal from "@/components/landing/ConsultationModal";
 
 // Complete XLANE-Engineered Landing Experience
 import LandingHero from "@/components/landing/LandingHero";
+import ClearNextStepsSection from "@/components/landing/ClearNextStepsSection";
 import LossesSection from "@/components/landing/LossesSection";
 import InteractiveJourneySection from "@/components/landing/InteractiveJourneySection";
 import AllSpvsDashboardSection from "@/components/landing/AllSpvsDashboardSection";
@@ -37,7 +38,10 @@ export default function Home() {
           {/* 01. Hero & Real-Time Open Banking Demonstrator */}
           <LandingHero />
 
-          {/* 02. The Losses Section (01-04 Cost of Manual Processing) */}
+          {/* 02. Clear Next Steps: 3-Step Confusion-Free Onboarding */}
+          <ClearNextStepsSection />
+
+          {/* 03. The Losses Section (01-04 Cost of Manual Processing) */}
           <LossesSection />
 
           {/* 03. The 6-Step Journey with Sticky Subnav & Interactive Tactile Cards */}

@@ -142,21 +142,29 @@ export default function LandingHero() {
               <p className="text-[11px] text-[#8a9d94]">Interest-only finance costs (Paragon, Shawbrook, etc.)</p>
             </div>
 
-            {/* Step 3: Result & Direct WhatsApp Dispatch */}
-            <div className="p-4 rounded-xl bg-[#0c1813] border border-[#1e382b] flex flex-col justify-between space-y-3">
-              <div>
-                <span className="text-[10px] font-mono uppercase text-[#a4f4cf] block">
-                  SPV Limited Company Net Savings
+            {/* Step 3: Tactile Cream Parchment Certificate */}
+            <div className="p-5 rounded-2xl bg-[#fbfbf8] border border-[#e2e0d5] text-[#171c19] flex flex-col justify-between space-y-3 shadow-lg font-mono">
+              <div className="border-b border-stone-200 pb-2 flex items-center justify-between text-xs">
+                <span className="text-[10px] font-bold uppercase text-stone-700">
+                  Section 24 Corporate Shelter
                 </span>
-                <span className="text-2xl sm:text-3xl font-display font-extrabold text-[#a4f4cf] font-mono">
+                <span className="text-[10px] text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded font-bold">
+                  100% Allowable
+                </span>
+              </div>
+              <div>
+                <div className="text-2xl sm:text-3xl font-display font-extrabold text-[#0c1813] font-mono">
                   £{netSaved.toLocaleString()}
-                  <span className="text-xs text-[#8a9d94] font-sans font-normal ml-1">/year saved</span>
+                  <span className="text-xs text-stone-500 font-sans font-normal ml-1">/year saved</span>
+                </div>
+                <span className="text-[11px] text-stone-600 block pt-1 font-sans">
+                  Shielded from 40% personal income tax brackets.
                 </span>
               </div>
               <button
                 type="button"
                 onClick={handleSendWhatsAppDispatch}
-                className="touch-target-44 w-full py-2.5 px-3 rounded-lg font-bold text-xs bg-[#14241d] hover:bg-[#1e382b] text-white border border-[#1e382b] flex items-center justify-center space-x-1.5 transition"
+                className="touch-target-44 w-full py-2.5 px-3 rounded-xl font-bold font-mono text-xs bg-[#0c1813] hover:bg-[#182e22] text-[#a4f4cf] flex items-center justify-center space-x-2 transition shadow-sm active:scale-95"
               >
                 <MessageSquare className="w-3.5 h-3.5 text-[#a4f4cf]" />
                 <span>Deliver Audit via WhatsApp</span>
