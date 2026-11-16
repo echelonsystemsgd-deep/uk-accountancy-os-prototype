@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Bell,
+  ArrowUpRight,
 } from "lucide-react";
 
 interface ClientPortalLayoutProps {
@@ -229,8 +230,19 @@ export default function ClientPortalLayout({
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#1e382b] bg-[#0c1813] py-6 text-center text-xs text-[#8a9d94] font-mono">
-        <p>&copy; 2026 Mercian Wealth Ltd &bull; KP Tax Consultants &bull; ICAEW &amp; CIOT Regulated Client Vault</p>
+      <footer className="border-t border-[#1e382b] bg-[#0c1813] py-6 px-4 text-xs text-[#8a9d94] font-mono">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <p>&copy; 2026 KP Tax Consultants &bull; ICAEW &amp; CIOT Regulated Client Vault</p>
+          <a
+            href="https://mercianwealth.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#14241d] hover:bg-[#1a3325] border border-[#234433] hover:border-[#a4f4cf]/60 text-[10px] font-mono text-[#a4f4cf] transition group"
+          >
+            <span>Built &amp; Designed by Mercian Wealth</span>
+            <ArrowUpRight className="w-2.5 h-2.5 text-[#a4f4cf] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
       </footer>
     </div>
   );

@@ -16,6 +16,7 @@ import {
   EyeOff,
   UserCheck,
   Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 export default function LoginPage() {
@@ -230,8 +231,19 @@ export default function LoginPage() {
 
       {/* Minimal Footer */}
       <footer className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-xs font-mono text-slate-500 z-10 border-t border-[#1F293D]/50">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>&copy; {new Date().getFullYear()} KP Tax Consultants Ltd &bull; Mercian Wealth Accountancy OS</span>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <span>&copy; {new Date().getFullYear()} KP Tax Consultants Ltd &bull; Accountancy OS</span>
+            <a
+              href="https://mercianwealth.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#14241d] hover:bg-[#1a3325] border border-[#234433] hover:border-[#a4f4cf]/60 text-[10px] font-mono text-[#a4f4cf] transition group"
+            >
+              <span>Built &amp; Designed by Mercian Wealth</span>
+              <ArrowUpRight className="w-2.5 h-2.5 text-[#a4f4cf] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
           <div className="flex items-center gap-4 text-[11px]">
             <Link href="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-slate-300">Terms of Engagement</Link>

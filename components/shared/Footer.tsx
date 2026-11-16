@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Mail, Phone, MapPin, CheckCircle2, Lock, ShieldCheck } from "lucide-react";
+import { Mail, Phone, MapPin, CheckCircle2, Lock, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -123,9 +123,20 @@ export default function Footer() {
 
         {/* Statutory Disclaimers */}
         <div className="pt-6 border-t border-[#1e382b] flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-[#8a9d94] font-mono">
-          <p>
-            &copy; 2026 Mercian Wealth Ltd &amp; KP Tax Consultants. Regulated by the ICAEW and CIOT. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            <p>
+              &copy; 2026 KP Tax Consultants Ltd. Regulated by ICAEW &amp; CIOT. All rights reserved.
+            </p>
+            <a
+              href="https://mercianwealth.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#14241d] hover:bg-[#1a3325] border border-[#234433] hover:border-[#a4f4cf]/60 text-[10px] font-mono text-[#a4f4cf] transition shadow-sm group"
+            >
+              <span>Built &amp; Designed by Mercian Wealth</span>
+              <ArrowUpRight className="w-3 h-3 text-[#a4f4cf] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
           <div className="flex items-center space-x-4">
             <Link href="/privacy" className="hover:text-white transition">
               Privacy Policy
