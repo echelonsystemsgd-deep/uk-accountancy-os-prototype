@@ -24,12 +24,12 @@ export default function Navbar() {
   }, [mobileMenuOpen]);
 
   const navLinks = [
-    { href: "/#how-it-works", label: "How it works" },
-    { href: "/#losses", label: "Tax Leaks" },
-    { href: "/#all-spvs", label: "SPV Ledger" },
+    { href: "/services", label: "SPV Solutions" },
+    { href: "/how-it-works", label: "How It Works" },
     { href: "/calculator", label: "Section 24 Engine" },
-    { href: "/#outcomes", label: "Outcomes" },
+    { href: "/outcomes", label: "Client Outcomes" },
     { href: "/about", label: "About Practice" },
+    { href: "/faq", label: "Statutory FAQs" },
   ];
 
   return (
